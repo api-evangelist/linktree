@@ -1,23 +1,85 @@
 aid: linktree
 name: Linktree
-description: 'Linktree is a company surfaced as a portfolio company of index-ventures, insight-partners
-  and added to the API Evangelist network as a stub for enrichment. Sector: media. This profile is a lead
-  awaiting the enrichment pipeline.'
+description: >-
+  Linktree is the link-in-bio platform used by 70M+ creators, brands, and businesses to share
+  everything they create, curate, and sell from a single URL. Operated by Linktree Pty Ltd from
+  Collingwood, Victoria, Australia, the product builds a mobile-friendly landing page that
+  aggregates social profiles, content, products, and services behind one link, with paid Starter,
+  Pro, and Premium plans adding customization, analytics, commerce, scheduling, and AI features.
+  Linktree publishes no general-purpose public REST API — its developer program is an
+  expression-of-interest waitlist for forthcoming APIs and SDKs. It does, however, run a live,
+  fully documented OAuth 2.0-protected Model Context Protocol server at mcp.linktr.ee exposing 30
+  tools for managing profiles, links, collections, appearance, social icons, workspaces, and
+  analytics, discoverable from an RFC 9727 api-catalog on the apex domain.
+accessModel:
+  pricing: unknown
+  onboarding: approval
+  trial: false
+  try_now: false
+  public: false
+  label: Requires approval
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://linktr.ee/_marketing/og/linktree-default.jpg
 url: https://raw.githubusercontent.com/api-evangelist/linktree/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - index-ventures
 - insight-partners
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: enriched
+x-tier-reason: mcp-server-published
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
 - Media
-apis: []
+- Link in Bio
+- Creator Economy
+- Social Media
+- Marketing
+- Analytics
+- MCP
+- Agents
+apis:
+- aid: linktree-mcp
+  name: Linktree MCP
+  description: >-
+    OAuth 2.0-protected Model Context Protocol server, speaking streamable-http, that lets agents
+    manage Linktree profiles, links, collections, appearance, social icon links, workspaces, and
+    analytics. Thirty tools, each gated by its own mcp:<tool_name> scope, with write and
+    destructive tools flagged for client-side user approval. This is Linktree's only live
+    programmatic surface — there is no public REST API.
+  humanURL: https://mcp.linktr.ee/docs
+  baseURL: https://mcp.linktr.ee/mcp
+  tags:
+  - MCP
+  - Agents
+  - Analytics
+  - Link in Bio
+  properties:
+  - type: MCPServer
+    url: mcp/linktree-mcp.yml
+  - type: APIReference
+    url: https://mcp.linktr.ee/docs
+  - type: Documentation
+    url: https://mcp.linktr.ee/docs
+  - type: Authentication
+    url: authentication/linktree-authentication.yml
+  - type: OAuthScopes
+    url: scopes/linktree-scopes.yml
+  - type: ErrorCatalog
+    url: errors/linktree-error-codes.yml
+  - type: Conventions
+    url: conventions/linktree-conventions.yml
+  - type: AgenticAccess
+    url: agentic-access/linktree-agentic-access.yml
+  - type: LLMsTxt
+    url: llms/linktree-mcp-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -25,4 +87,77 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: http://www.linktr.ee
+  url: https://linktr.ee/
+- type: DeveloperPortal
+  url: https://linktr.ee/marketplace/developer
+- type: Documentation
+  url: https://mcp.linktr.ee/docs
+- type: APIReference
+  url: https://mcp.linktr.ee/docs
+- type: MCPServer
+  url: mcp/linktree-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/linktree-agentic-access.yml
+- type: Authentication
+  url: authentication/linktree-authentication.yml
+- type: OAuthScopes
+  url: scopes/linktree-scopes.yml
+- type: ErrorCatalog
+  url: errors/linktree-error-codes.yml
+- type: Conventions
+  url: conventions/linktree-conventions.yml
+- type: Conformance
+  url: conformance/linktree-conformance.yml
+- type: WellKnown
+  url: well-known/linktree-well-known.yml
+- type: APICatalog
+  url: https://linktr.ee/.well-known/api-catalog
+- type: LLMsTxt
+  url: llms/linktree-llms.txt
+- type: Lifecycle
+  url: lifecycle/linktree-lifecycle.yml
+- type: StatusPage
+  url: https://status.linktr.ee/
+- type: ChangeLog
+  url: https://app.getbeamer.com/linktree/en
+- type: Security
+  url: https://bugcrowd.com/engagements/linktree-mbb-og
+- type: VulnerabilityDisclosure
+  url: security/linktree-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/linktree-trust-center.yml
+- type: DomainSecurity
+  url: security/linktree-domain-security.yml
+- type: GettingStarted
+  url: https://help.linktr.ee/en/collections/3020860-getting-started-with-linktree
+- type: Support
+  url: https://linktr.ee/help
+- type: HelpCenter
+  url: https://help.linktr.ee/
+- type: Blog
+  url: https://linktr.ee/blog
+- type: Pricing
+  url: https://linktr.ee/s/pricing/
+- type: SignUp
+  url: https://linktr.ee/register
+- type: Login
+  url: https://linktr.ee/login
+- type: TermsOfService
+  url: https://linktr.ee/s/terms/
+- type: PrivacyPolicy
+  url: https://linktr.ee/s/privacy/
+- type: Marketplace
+  url: https://linktr.ee/marketplace
+- type: About
+  url: https://linktr.ee/s/about/
+- type: Contact
+  url: https://linktr.ee/s/contact/
+- type: Press
+  url: https://linktr.ee/s/about/press/
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
