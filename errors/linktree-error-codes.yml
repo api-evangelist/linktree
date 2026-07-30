@@ -1,0 +1,35 @@
+# Linktree MCP error catalog — the published tool-result error contract.
+generated: '2026-07-19'
+method: searched
+source: https://mcp.linktr.ee/.well-known/mcp/tools.json
+docs: https://mcp.linktr.ee/docs#error-contract
+format: mcp-tool-result
+envelope:
+  transport: MCP tool result with isError true
+  body: single text content block containing JSON
+  fields: [error, message]
+  extended_fields:
+    PROFILE_REQUIRED: [reason, candidates, nextAction]
+  note: not RFC 9457 — Linktree exposes no REST surface, so errors are MCP tool-result envelopes.
+problems:
+  - code: PROFILE_REQUIRED
+    title: "The caller has multiple accessible profiles (or none selected) and must choose one. The envelope includes `candidates` and a `nextAction`."
+  - code: NOT_FOUND
+    title: "A referenced resource (link, collection, integration, account) does not exist."
+  - code: INVALID_INPUT
+    title: "A parameter was missing, empty, or invalid for the requested operation."
+  - code: UNAUTHORIZED
+    title: "The request is missing required identity/authorization headers or the token cannot act on the target."
+  - code: RATE_LIMITED
+    title: "The caller exceeded the public MCP rate limit. Retry after backing off."
+  - code: UPGRADE_REQUIRED
+    title: "The tool or requested option requires a paid Linktree plan."
+  - code: UPSTREAM_ERROR
+    title: "A downstream Linktree service returned an error while handling the request."
+  - code: UNEXPECTED_ERROR
+    title: "An unclassified error occurred. Safe to retry once; report if it persists."
+retry_guidance:
+  RATE_LIMITED: back off and retry
+  UNEXPECTED_ERROR: safe to retry once, then report
+  UPGRADE_REQUIRED: not retryable — requires a paid Linktree plan
+  PROFILE_REQUIRED: not retryable as-is — call set_active_profile or pass username/profileUrl

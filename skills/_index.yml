@@ -1,0 +1,21 @@
+generated: '2026-07-19'
+method: generated
+source: mcp/linktree-mcp-tools.json
+note: skills are grounded in the 30 tool names published in Linktree's MCP tool manifest.
+skills:
+  - file: linktree-manage-profile-links.md
+    name: Manage the links on a Linktree profile
+    api: mcp/linktree-mcp.yml
+    operations: [list_accessible_profiles, set_active_profile, get_links, add_link, update_link, reorder_link, delete_link]
+  - file: linktree-report-profile-analytics.md
+    name: Report on Linktree profile and link performance
+    api: mcp/linktree-mcp.yml
+    operations: [set_active_profile, get_account_analytics, get_analytics_lifetime_totals, get_top_links, get_profile_views, get_link_analytics]
+  - file: linktree-update-profile-appearance.md
+    name: Update a Linktree profile's identity and appearance
+    api: mcp/linktree-mcp.yml
+    operations: [set_active_profile, get_account, get_suggested_bio, update_account_profile, get_appearance, update_appearance, get_social_links, upsert_social_link, reorder_social_links, delete_social_link]
+  - file: linktree-audit-workspace.md
+    name: Audit a Linktree workspace and its profiles
+    api: mcp/linktree-mcp.yml
+    operations: [get_workspaces_for_user, get_workspace, get_workspace_profiles, get_workspace_members, get_workspace_profiles_analytics]

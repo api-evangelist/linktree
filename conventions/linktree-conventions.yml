@@ -1,0 +1,67 @@
+# Cross-cutting conventions for the Linktree agentic (MCP) surface.
+generated: '2026-07-19'
+method: searched
+source: https://mcp.linktr.ee/docs
+docs: https://mcp.linktr.ee/docs
+surface: mcp-only
+notes:
+  - Linktree publishes no public REST API. The only programmatic surface is the MCP server
+    at https://mcp.linktr.ee/mcp, so these conventions are MCP tool-call semantics, not HTTP semantics.
+authentication:
+  style: oauth2-bearer
+  provider: Descope
+  granularity: one OAuth scope per tool (mcp:<tool_name>)
+  discovery: RFC 9728 protected-resource metadata + RFC 8414 authorization-server metadata
+  see: authentication/linktree-authentication.yml
+resource_targeting:
+  name: profile targeting
+  params: [username, profileUrl, query, workspaceUuid]
+  active_profile:
+    tool: set_active_profile
+    behavior: persists the target profile for the rest of the conversation
+  ambiguity_error: PROFILE_REQUIRED
+  note: >-
+    When the caller can access multiple profiles and none is active, tools return PROFILE_REQUIRED
+    with a candidates[] list and a nextAction hint rather than guessing a target.
+pagination:
+  style: page-number
+  params: [page, limit]
+  defaults:
+    page: 1
+    limit: 100
+  all_pages_param: allPages
+  observed_on: [list_accessible_profiles]
+idempotency:
+  supported: false
+  evidence: >-
+    No idempotency key, request-id, or de-duplication contract is documented in the published
+    MCP tool reference or tool manifest.
+approval:
+  supported: true
+  hint_header: x-linktree-require-approval
+  applies_to: write and destructive tools
+  behavior: clients are expected to prompt the user for confirmation before executing
+  see: agentic-access/linktree-agentic-access.yml
+error_envelope:
+  style: mcp-tool-result
+  fields: [error, message]
+  is_error_flag: isError
+  see: errors/linktree-error-codes.yml
+rate_limiting:
+  documented: true
+  signal: RATE_LIMITED error code
+  headers_documented: false
+  guidance: back off and retry
+  note: no numeric limit or reset header is published.
+entitlements:
+  model: plan-gated options
+  signal: UPGRADE_REQUIRED error code
+  field: freeAccountLimitations (per tool, in the tool manifest)
+  note: >-
+    Several analytics options (device, location, referrer, per-link, subscriber breakdowns and
+    custom date ranges) require a paid Linktree plan.
+versioning:
+  mcp_protocol_version: '2025-03-26'
+  server_version: '0.1.0'
+  scheme: MCP protocol date + server semver
+  note: server card advertises protocol 2025-06-18 while the tool reference states 2025-03-26.

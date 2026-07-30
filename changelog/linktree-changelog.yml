@@ -1,0 +1,22 @@
+generated: '2026-07-19'
+method: searched
+source: https://app.getbeamer.com/linktree/en
+url: https://app.getbeamer.com/linktree/en
+title: What's new on Linktree
+platform: Beamer
+scheme: dated product news feed (no semantic version numbers)
+scope: product/feature announcements for the Linktree application
+status: 200
+entries: []
+entries_note: >-
+  The changelog is a JavaScript-rendered Beamer feed; individual dated entries could not be
+  extracted from the server-rendered HTML during this pass. The feed URL is captured and is the
+  source of truth. No entries are recorded rather than fabricating any.
+developer_changelog:
+  present: false
+  note: >-
+    There is no separate changelog for the MCP server or developer surface. Tool-level change
+    tracking would have to be diffed from https://mcp.linktr.ee/.well-known/mcp/tools.json.
+related:
+  engineering_blog: https://linktr.ee/blog/engineering/
+  product_news: https://linktr.ee/blog/product-news

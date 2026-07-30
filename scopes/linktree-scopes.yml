@@ -1,0 +1,172 @@
+# OAuth scopes for the Linktree MCP server. One scope per tool.
+generated: '2026-07-19'
+method: searched
+source: https://mcp.linktr.ee/.well-known/mcp/tools.json
+docs: https://mcp.linktr.ee/docs
+schemes:
+  - name: LinktreeMCPOAuth2
+    type: oauth2
+    provider: Descope
+    source: well-known/linktree-oauth-authorization-server.json
+    issuer: https://mcp.linktr.ee
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://ciam.linktr.ee/oauth2/v1/apps/agentic/P32ACVpudk8MNftmpf1LR1pW5k8s/MS3C64tMj5Trl5KunDJVudGIMAeGB/authorize
+        tokenUrl: https://ciam.linktr.ee/oauth2/v1/apps/agentic/P32ACVpudk8MNftmpf1LR1pW5k8s/MS3C64tMj5Trl5KunDJVudGIMAeGB/token
+        pkce: [S256]
+      - flow: clientCredentials
+        tokenUrl: https://ciam.linktr.ee/oauth2/v1/apps/agentic/P32ACVpudk8MNftmpf1LR1pW5k8s/MS3C64tMj5Trl5KunDJVudGIMAeGB/token
+      - flow: deviceCode
+        deviceAuthorizationUrl: https://ciam.linktr.ee/oauth2/v1/apps/device
+scope_count: 30
+scopes:
+  - scope: mcp:list_accessible_profiles
+    description: "Retrieve every Linktree profile the authenticated user can access across direct accounts and workspaces."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:set_active_profile
+    description: "Set the active Linktree profile for the current conversation so later tools target it."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_account
+    description: "Retrieve a Linktree profile's details (display name, bio, avatar, username)."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:update_account_profile
+    description: "Update a Linktree profile's display name and/or bio."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_suggested_bio
+    description: "Retrieve a suggested bio for a Linktree profile based on its existing content."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_account_analytics
+    description: "Retrieve account-level analytics for a Linktree profile (views, clicks, CTR, and optional breakdowns)."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_analytics_lifetime_totals
+    description: "Retrieve lifetime analytics totals for a Linktree profile (views, clicks, CTR, earnings)."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_top_links
+    description: "Retrieve every link on a Linktree profile ranked by clicks, including links with zero clicks."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_profile_views
+    description: "Retrieve profile view counts for a Linktree profile over a recent time window."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_social_integrations
+    description: "Retrieve the active social integrations connected to a Linktree profile."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_appearance
+    description: "Retrieve a Linktree profile's appearance settings (colors, fonts, button styles, background)."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:update_appearance
+    description: "Update a Linktree profile's appearance (colors, fonts, button styles, background)."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_knowledge_base
+    description: "Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ information)."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_workspaces_for_user
+    description: "Retrieve every workspace the authenticated user is a member of."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_workspace
+    description: "Retrieve details for a workspace the authenticated user belongs to."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_workspace_profiles
+    description: "Retrieve every Linktree profile belonging to a workspace."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_workspace_profiles_analytics
+    description: "Retrieve lifetime analytics for every Linktree profile in a workspace."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_workspace_members
+    description: "Retrieve the members of a workspace."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_links
+    description: "Retrieve the ordered links on a Linktree profile, including link-app metadata."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:add_link
+    description: "Add a new URL-backed link to a Linktree profile."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:create_collection
+    description: "Create a new empty collection on a Linktree profile."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:add_links_to_collection
+    description: "Move existing top-level links into a collection on a Linktree profile."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:update_link
+    description: "Update an existing link or collection on a Linktree profile (title, URL, or active state)."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:reorder_link
+    description: "Reorder a top-level link, collection, or collection item on a Linktree profile."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:delete_link
+    description: "Delete a top-level link from a Linktree profile."
+    access: destructive
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_link_analytics
+    description: "Retrieve analytics for a specific link on a Linktree profile (clicks, views, CTR, trend data)."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:get_social_links
+    description: "Retrieve a Linktree profile's social icon links and their display order."
+    access: read
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:upsert_social_link
+    description: "Create or update a social icon link on a Linktree profile for a supported platform."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:reorder_social_links
+    description: "Move a social icon link to a new position on a Linktree profile."
+    access: write
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]
+  - scope: mcp:delete_social_link
+    description: "Delete a social icon link from a Linktree profile by platform type."
+    access: destructive
+    flows: [authorizationCode]
+    sources: [mcp/linktree-mcp-tools.json]

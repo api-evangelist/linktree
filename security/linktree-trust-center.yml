@@ -1,0 +1,37 @@
+generated: '2026-07-19'
+method: searched
+probe: true
+url: https://linktr.ee/s/about/trust-center/
+status: 200
+certifications: []
+certifications_note: >-
+  No named certification (SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP, CSA STAR) is published on
+  the Trust Center. Absence recorded as data — do not infer a certification that is not stated.
+resources:
+- name: Privacy Notice
+  url: https://linktr.ee/s/privacy/
+- name: Terms and Conditions
+  url: https://linktr.ee/s/terms/
+- name: Cookie Notice
+  url: https://linktr.ee/s/cookie-notice/
+- name: Community Standards
+  url: https://linktr.ee/s/about/community-standards/
+- name: Data Processing Addendum
+  url: https://linktr.ee/s/about/trust-center/
+  note: linked from the Trust Center page
+- name: Data Request form
+  url: https://linktr.ee/s/about/trust-center/
+  note: GDPR/CCPA data subject request intake, linked from the Trust Center page
+- name: Public Bug Bounty
+  url: https://bugcrowd.com/engagements/linktree-mbb-og
+- name: Transparency Report
+  url: https://linktr.ee/s/about/trust-center/
+- name: Law Enforcement Access Policy
+  url: https://linktr.ee/s/about/trust-center/law-enforcement-access-request-policy
+- name: Report a Violation
+  url: https://linktr.ee/s/about/trust-center/report
+- name: Appeal a Decision
+  url: https://linktr.ee/s/about/trust-center/appeals
+evidence:
+- source: https://linktr.ee/s/about/trust-center/
+  keywords: [trust center, data security, privacy, bug bounty, data processing addendum, transparency report]

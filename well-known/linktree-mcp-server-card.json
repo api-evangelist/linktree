@@ -1,0 +1,38 @@
+{
+  "schema_version": "1",
+  "description": "Manage Linktree profiles, links, appearance, and analytics via the Model Context Protocol.",
+  "serverInfo": {
+    "name": "Linktree MCP",
+    "version": "0.1.0",
+    "description": "Manage Linktree profiles, links, appearance, and analytics via the Model Context Protocol.",
+    "homepage": "https://developers.linktr.ee"
+  },
+  "endpoint": "https://mcp.linktr.ee/mcp",
+  "transport": "streamable-http",
+  "protocol_version": "2025-06-18",
+  "auth": {
+    "type": "oauth2",
+    "resource_metadata": "https://mcp.linktr.ee/.well-known/oauth-protected-resource/mcp"
+  },
+  "tools_preview": [
+    { "name": "list_accessible_profiles", "description": "List all Linktree profiles the authenticated user can access across direct accounts and workspaces." },
+    { "name": "get_account", "description": "Retrieve Linktree profile details (display name, bio, avatar, username)." },
+    { "name": "update_account_profile", "description": "Update a profile's display name and/or bio." },
+    { "name": "get_links", "description": "Retrieve the ordered list of links on a Linktree profile, including link-app metadata." },
+    { "name": "add_link", "description": "Add a new URL-backed link to a profile." },
+    { "name": "update_link", "description": "Update an existing top-level link's title, URL, or active state." },
+    { "name": "move_link", "description": "Reorder a top-level link within a profile." },
+    { "name": "delete_link", "description": "Delete a top-level link from a profile." },
+    { "name": "get_appearance", "description": "Retrieve a profile's appearance settings (colors, fonts, button styles, background)." },
+    { "name": "update_appearance", "description": "Update a profile's appearance (colors, fonts, button styles, background)." },
+    { "name": "get_social_links", "description": "Retrieve a profile's social icon links and their display order." },
+    { "name": "upsert_social_link", "description": "Create or update a social icon link for a supported platform." },
+    { "name": "get_account_analytics", "description": "Retrieve account-level analytics (views, clicks, CTR, trend data)." },
+    { "name": "get_link_analytics", "description": "Retrieve analytics for a specific link (clicks, views, CTR, trend data)." },
+    { "name": "get_knowledge_base", "description": "Retrieve a profile's AI chatbot knowledge base entries." },
+    { "name": "get_workspaces_for_user", "description": "List all workspaces the authenticated user is a member of." },
+    { "name": "get_workspace_profiles", "description": "List all Linktree profiles belonging to a workspace." }
+  ],
+  "documentation": "https://developers.linktr.ee",
+  "contact": "https://linktr.ee/developers"
+}

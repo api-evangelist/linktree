@@ -1,0 +1,227 @@
+# Agentic access contract — sourced from Linktree's OWN published per-tool access,
+# approval, and identity classifications (not heuristically inferred).
+generated: '2026-07-19'
+method: searched
+source: https://mcp.linktr.ee/.well-known/mcp/tools.json
+model: x-agentic-access
+summary:
+  operation_count: 30
+  by_access:
+    read: 19
+    write: 9
+    destructive: 2
+  approval_required: 11
+  approval_hint_header: x-linktree-require-approval
+  auth: oauth2 per-tool scope (mcp:<tool>)
+  audience: null
+operations:
+  - operation: list_accessible_profiles
+    action_class: read
+    consequence: read
+    scope: mcp:list_accessible_profiles
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: set_active_profile
+    action_class: read
+    consequence: read
+    scope: mcp:set_active_profile
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: get_account
+    action_class: read
+    consequence: read
+    scope: mcp:get_account
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: update_account_profile
+    action_class: acting
+    consequence: write
+    scope: mcp:update_account_profile
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: get_suggested_bio
+    action_class: read
+    consequence: read
+    scope: mcp:get_suggested_bio
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_account_analytics
+    action_class: read
+    consequence: read
+    scope: mcp:get_account_analytics
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_analytics_lifetime_totals
+    action_class: read
+    consequence: read
+    scope: mcp:get_analytics_lifetime_totals
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_top_links
+    action_class: read
+    consequence: read
+    scope: mcp:get_top_links
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_profile_views
+    action_class: read
+    consequence: read
+    scope: mcp:get_profile_views
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_social_integrations
+    action_class: read
+    consequence: read
+    scope: mcp:get_social_integrations
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_appearance
+    action_class: read
+    consequence: read
+    scope: mcp:get_appearance
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: update_appearance
+    action_class: acting
+    consequence: write
+    scope: mcp:update_appearance
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: get_knowledge_base
+    action_class: read
+    consequence: read
+    scope: mcp:get_knowledge_base
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_workspaces_for_user
+    action_class: read
+    consequence: read
+    scope: mcp:get_workspaces_for_user
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: get_workspace
+    action_class: read
+    consequence: read
+    scope: mcp:get_workspace
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: get_workspace_profiles
+    action_class: read
+    consequence: read
+    scope: mcp:get_workspace_profiles
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: get_workspace_profiles_analytics
+    action_class: read
+    consequence: read
+    scope: mcp:get_workspace_profiles_analytics
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: get_workspace_members
+    action_class: read
+    consequence: read
+    scope: mcp:get_workspace_members
+    human_in_the_loop: none
+    audit: optional
+    identity: "user"
+  - operation: get_links
+    action_class: read
+    consequence: read
+    scope: mcp:get_links
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: add_link
+    action_class: acting
+    consequence: write
+    scope: mcp:add_link
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: create_collection
+    action_class: acting
+    consequence: write
+    scope: mcp:create_collection
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: add_links_to_collection
+    action_class: acting
+    consequence: write
+    scope: mcp:add_links_to_collection
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: update_link
+    action_class: acting
+    consequence: write
+    scope: mcp:update_link
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: reorder_link
+    action_class: acting
+    consequence: write
+    scope: mcp:reorder_link
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: delete_link
+    action_class: acting
+    consequence: destructive
+    scope: mcp:delete_link
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: get_link_analytics
+    action_class: read
+    consequence: read
+    scope: mcp:get_link_analytics
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: get_social_links
+    action_class: read
+    consequence: read
+    scope: mcp:get_social_links
+    human_in_the_loop: none
+    audit: optional
+    identity: "user_or_account"
+  - operation: upsert_social_link
+    action_class: acting
+    consequence: write
+    scope: mcp:upsert_social_link
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: reorder_social_links
+    action_class: acting
+    consequence: write
+    scope: mcp:reorder_social_links
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"
+  - operation: delete_social_link
+    action_class: acting
+    consequence: destructive
+    scope: mcp:delete_social_link
+    human_in_the_loop: required
+    audit: required
+    identity: "user_or_account"

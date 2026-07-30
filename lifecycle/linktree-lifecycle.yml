@@ -1,0 +1,40 @@
+generated: '2026-07-19'
+method: searched
+source: https://mcp.linktr.ee/docs
+surface: mcp-only
+versioning:
+  scheme: mcp-protocol-date + server-semver
+  mcp_protocol_version: '2025-03-26'
+  server_version: '0.1.0'
+  docs: https://mcp.linktr.ee/docs
+  note: >-
+    The server card advertises protocol version 2025-06-18 while the tool reference states
+    2025-03-26; the discrepancy is recorded as observed, not reconciled.
+  discrepancy_sources:
+  - https://linktr.ee/.well-known/mcp/server-card.json
+  - https://mcp.linktr.ee/docs
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No deprecation or sunset policy is published for the MCP surface. The server is at 0.1.0 and
+    Linktree describes the wider developer program as still expanding access.
+sla:
+  url: null
+  uptime_target: null
+status_page: https://status.linktr.ee/
+changelog: https://app.getbeamer.com/linktree/en
+deprecated_operations: []
+developer_program:
+  stage: expression-of-interest
+  url: https://linktr.ee/marketplace/developer
+  statement: >-
+    "We're expanding access to our APIs and SDKs. Register your interest to join our developer
+    program and start building integrations for millions of creators."
+  note: >-
+    As of this pass Linktree publishes no general-purpose public REST API. The MCP server is the
+    only live programmatic surface; broader API/SDK access is waitlisted.
+documentation_gaps:
+- >-
+  The server card and llms.txt both point documentation at https://developers.linktr.ee, which
+  does not resolve (DNS failure). The live tool reference is at https://mcp.linktr.ee/docs.

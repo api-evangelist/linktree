@@ -1,0 +1,58 @@
+# Linktree MCP
+
+> Manage Linktree profiles, links, appearance, and analytics via the Model Context Protocol.
+
+OAuth2-protected (Descope) Model Context Protocol server speaking streamable-http at https://mcp.linktr.ee/mcp. 30 tools; every tool requires its own `mcp:<tool>` scope.
+
+## Getting started
+- [MCP endpoint](https://mcp.linktr.ee/mcp): Streamable-HTTP MCP endpoint (OAuth2 required)
+- [Server card](https://mcp.linktr.ee/.well-known/mcp/server-card.json): Machine-readable server descriptor and tool preview
+- [OAuth protected-resource metadata](https://mcp.linktr.ee/.well-known/oauth-protected-resource): RFC 9728 discovery for the authorization server
+
+## Reference
+- [Tool reference](https://mcp.linktr.ee/docs): Human-readable tool and parameter reference (Markdown)
+- [Tool manifest](https://mcp.linktr.ee/.well-known/mcp/tools.json): Machine-readable JSON of tools, parameters, scopes, and the error contract
+
+## Tools
+- `list_accessible_profiles` (scope `mcp:list_accessible_profiles`, read): Retrieve every Linktree profile the authenticated user can access across direct accounts and workspaces.
+- `set_active_profile` (scope `mcp:set_active_profile`, read): Set the active Linktree profile for the current conversation so later tools target it.
+- `get_account` (scope `mcp:get_account`, read): Retrieve a Linktree profile's details (display name, bio, avatar, username).
+- `update_account_profile` (scope `mcp:update_account_profile`, write): Update a Linktree profile's display name and/or bio.
+- `get_suggested_bio` (scope `mcp:get_suggested_bio`, read): Retrieve a suggested bio for a Linktree profile based on its existing content.
+- `get_account_analytics` (scope `mcp:get_account_analytics`, read): Retrieve account-level analytics for a Linktree profile (views, clicks, CTR, and optional breakdowns).
+- `get_analytics_lifetime_totals` (scope `mcp:get_analytics_lifetime_totals`, read): Retrieve lifetime analytics totals for a Linktree profile (views, clicks, CTR, earnings).
+- `get_top_links` (scope `mcp:get_top_links`, read): Retrieve every link on a Linktree profile ranked by clicks, including links with zero clicks.
+- `get_profile_views` (scope `mcp:get_profile_views`, read): Retrieve profile view counts for a Linktree profile over a recent time window.
+- `get_social_integrations` (scope `mcp:get_social_integrations`, read): Retrieve the active social integrations connected to a Linktree profile.
+- `get_appearance` (scope `mcp:get_appearance`, read): Retrieve a Linktree profile's appearance settings (colors, fonts, button styles, background).
+- `update_appearance` (scope `mcp:update_appearance`, write): Update a Linktree profile's appearance (colors, fonts, button styles, background).
+- `get_knowledge_base` (scope `mcp:get_knowledge_base`, read): Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ information).
+- `get_workspaces_for_user` (scope `mcp:get_workspaces_for_user`, read): Retrieve every workspace the authenticated user is a member of.
+- `get_workspace` (scope `mcp:get_workspace`, read): Retrieve details for a workspace the authenticated user belongs to.
+- `get_workspace_profiles` (scope `mcp:get_workspace_profiles`, read): Retrieve every Linktree profile belonging to a workspace.
+- `get_workspace_profiles_analytics` (scope `mcp:get_workspace_profiles_analytics`, read): Retrieve lifetime analytics for every Linktree profile in a workspace.
+- `get_workspace_members` (scope `mcp:get_workspace_members`, read): Retrieve the members of a workspace.
+- `get_links` (scope `mcp:get_links`, read): Retrieve the ordered links on a Linktree profile, including link-app metadata.
+- `add_link` (scope `mcp:add_link`, write): Add a new URL-backed link to a Linktree profile.
+- `create_collection` (scope `mcp:create_collection`, write): Create a new empty collection on a Linktree profile.
+- `add_links_to_collection` (scope `mcp:add_links_to_collection`, write): Move existing top-level links into a collection on a Linktree profile.
+- `update_link` (scope `mcp:update_link`, write): Update an existing link or collection on a Linktree profile (title, URL, or active state).
+- `reorder_link` (scope `mcp:reorder_link`, write): Reorder a top-level link, collection, or collection item on a Linktree profile.
+- `delete_link` (scope `mcp:delete_link`, destructive): Delete a top-level link from a Linktree profile.
+- `get_link_analytics` (scope `mcp:get_link_analytics`, read): Retrieve analytics for a specific link on a Linktree profile (clicks, views, CTR, trend data).
+- `get_social_links` (scope `mcp:get_social_links`, read): Retrieve a Linktree profile's social icon links and their display order.
+- `upsert_social_link` (scope `mcp:upsert_social_link`, write): Create or update a social icon link on a Linktree profile for a supported platform.
+- `reorder_social_links` (scope `mcp:reorder_social_links`, write): Move a social icon link to a new position on a Linktree profile.
+- `delete_social_link` (scope `mcp:delete_social_link`, destructive): Delete a social icon link from a Linktree profile by platform type.
+
+## Errors
+> Errors are returned as an MCP tool result with `isError: true` and a single text content block containing JSON: `{ "error": "<CODE>", "message": "<human-readable>" }`. Some codes carry extra fields (e.g. PROFILE_REQUIRED adds `candidates` and `nextAction`).
+
+- `PROFILE_REQUIRED`: The caller has multiple accessible profiles (or none selected) and must choose one. The envelope includes `candidates` and a `nextAction`.
+- `NOT_FOUND`: A referenced resource (link, collection, integration, account) does not exist.
+- `INVALID_INPUT`: A parameter was missing, empty, or invalid for the requested operation.
+- `UNAUTHORIZED`: The request is missing required identity/authorization headers or the token cannot act on the target.
+- `RATE_LIMITED`: The caller exceeded the public MCP rate limit. Retry after backing off.
+- `UPGRADE_REQUIRED`: The tool or requested option requires a paid Linktree plan.
+- `UPSTREAM_ERROR`: A downstream Linktree service returned an error while handling the request.
+- `UNEXPECTED_ERROR`: An unclassified error occurred. Safe to retry once; report if it persists.

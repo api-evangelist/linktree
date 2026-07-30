@@ -1,0 +1,76 @@
+generated: '2026-07-19'
+method: searched
+source: live probes of the /.well-known/ surface on each Linktree host
+note: >-
+  Linktree publishes an RFC 9727 api-catalog linkset whose single anchor is the MCP endpoint —
+  the api-catalog is how the MCP server is discoverable from the apex domain. There is no
+  security.txt on any host.
+hosts:
+- host: https://linktr.ee
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    rfc: RFC 9727
+    file: linktree-api-catalog.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    rfc: RFC 8414
+    file: linktree-oauth-authorization-server.json
+  - path: /.well-known/mcp/server-card.json
+    status: 200
+    content_type: application/json
+    file: linktree-mcp-server-card.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    rfc: RFC 9728
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/mcp/tools.json
+    status: 404
+- host: https://mcp.linktr.ee
+  documents:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    rfc: RFC 9728
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    rfc: RFC 8414
+  - path: /.well-known/mcp/server-card.json
+    status: 200
+  - path: /.well-known/mcp/tools.json
+    status: 200
+    file: ../mcp/linktree-mcp-tools.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.linktr.ee
+  reachable: false
+  note: host resolves but every path returns 503; it is not a public API surface.
+  documents:
+  - path: /.well-known/security.txt
+    status: 503
+  - path: /.well-known/openid-configuration
+    status: 503
+  - path: /.well-known/oauth-authorization-server
+    status: 503
+  - path: /.well-known/api-catalog
+    status: 503
+  - path: /.well-known/ai-plugin.json
+    status: 503
+security_txt:
+  present: false
+  checked: [https://linktr.ee/.well-known/security.txt, https://mcp.linktr.ee/.well-known/security.txt]
+  note: >-
+    Linktree runs a public bug bounty on Bugcrowd but does not publish an RFC 9116 security.txt.
+    See security/linktree-vulnerability-disclosure.yml.

@@ -1,0 +1,19 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://mcp.linktr.ee/mcp",
+      "service-desc": [
+        {
+          "href": "https://linktr.ee/.well-known/mcp/server-card.json",
+          "type": "application/json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://linktr.ee/marketplace/developer",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+}
