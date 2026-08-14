@@ -10,7 +10,11 @@ description: >-
   expression-of-interest waitlist for forthcoming APIs and SDKs. It does, however, run a live,
   fully documented OAuth 2.0-protected Model Context Protocol server at mcp.linktr.ee exposing 30
   tools for managing profiles, links, collections, appearance, social icons, workspaces, and
-  analytics, discoverable from an RFC 9727 api-catalog on the apex domain.
+  analytics, discoverable from an RFC 9727 api-catalog on the apex domain. Alongside it Linktree
+  operates Arbor, a public unauthenticated component registry at arbor.linktr.ee serving a
+  versioned JSON manifest of 51 React components plus a health endpoint and an llms.txt, and it
+  ships first-party developer tooling on npm under the @linktr.ee scope — the LinkApps
+  scaffold/build/deploy CLIs and a stdio Arbor MCP server.
 accessModel:
   pricing: unknown
   onboarding: approval
@@ -34,7 +38,7 @@ x-tier: enriched
 x-tier-reason: mcp-server-published
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-19'
+modified: '2026-08-13'
 tags:
 - Company
 - Media
@@ -45,6 +49,8 @@ tags:
 - Analytics
 - MCP
 - Agents
+- Design System
+- Developer Tools
 apis:
 - aid: linktree-mcp
   name: Linktree MCP
@@ -80,6 +86,38 @@ apis:
     url: agentic-access/linktree-agentic-access.yml
   - type: LLMsTxt
     url: llms/linktree-mcp-llms.txt
+  - type: RateLimits
+    url: rate-limits/linktree-rate-limits.yml
+  - type: Plans
+    url: plans/linktree-plans-pricing.yml
+- aid: linktree-arbor-registry
+  name: Linktree Arbor Registry
+  description: >-
+    Arbor is Linktree's design system, published as a public HTTP component registry. Anonymous,
+    unauthenticated GETs return a versioned JSON manifest of 51 React components (/manifest.json,
+    registry version 26.0.1), individual component definitions at /r/{name}.json following the
+    shadcn registry-item schema, and a /health endpoint. It is the only Linktree programmatic
+    surface an agent can call today with no credentials. Components are installed as source via
+    the shadcn CLI rather than as an npm dependency, so consumers take no runtime lock-in. No
+    OpenAPI is published for its four endpoints.
+  humanURL: https://arbor.linktr.ee/
+  baseURL: https://arbor.linktr.ee
+  tags:
+  - Design System
+  - Components
+  - Developer Tools
+  - Registry
+  properties:
+  - type: Documentation
+    url: https://arbor.linktr.ee/
+  - type: Components
+    url: components/linktree-components.yml
+  - type: LLMsTxt
+    url: llms/linktree-arbor-llms.txt
+  - type: Registry
+    url: https://arbor.linktr.ee/manifest.json
+  - type: SourceCode
+    url: https://github.com/blstrco/arbor
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -116,6 +154,18 @@ common:
   url: https://linktr.ee/.well-known/api-catalog
 - type: LLMsTxt
   url: llms/linktree-llms.txt
+- type: Packages
+  url: packages/linktree-packages.yml
+- type: CLI
+  url: cli/linktree-cli.yml
+- type: Components
+  url: components/linktree-components.yml
+- type: Plans
+  url: plans/linktree-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/linktree-rate-limits.yml
+- type: GitHubOrganization
+  url: https://github.com/blstrco
 - type: Lifecycle
   url: lifecycle/linktree-lifecycle.yml
 - type: StatusPage
@@ -157,7 +207,12 @@ common:
 - type: Press
   url: https://linktr.ee/s/about/press/
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 7
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+  note: >-
+    Round 2. Found a previously-unrecorded second API surface — the public Arbor component
+    registry at arbor.linktr.ee — plus the first-party @linktr.ee npm scope (8 packages incl. a
+    stdio MCP server). Added packages, plans, rate-limits, components, cli. No agent card, no
+    OpenAPI, no security.txt on any host.
