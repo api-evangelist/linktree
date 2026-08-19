@@ -1,0 +1,144 @@
+# Linktree product plans. These are the plans that gate the MCP surface, not separate API plans.
+generated: '2026-08-13'
+method: searched
+source: https://linktr.ee/s/pricing/
+docs: https://linktr.ee/s/pricing/
+status: 200
+currency: USD
+billing_periods: [monthly, annual]
+note: >-
+  Linktree sells no API-specific plan. The MCP server is entitled by the caller's ordinary
+  Linktree product plan: several tools and analytics options return UPGRADE_REQUIRED on a free
+  account, and the MCP tool manifest carries a per-tool `freeAccountLimitations` field. So the
+  tiers below ARE the API's commercial terms. Prices were read from the machine-readable pricing
+  payload embedded in the pricing page (React Server Component data with a
+  `prices: {currency, freePrice, paid1, paid2, paid3}` object), then cross-checked against the
+  rendered tier cards.
+plan_count: 5
+plans:
+  - name: Free
+    tier: free
+    price: 0
+    currency: USD
+    period: month
+    price_annual: 0
+    cta: Get started
+    trial: null
+    included:
+      - Unlimited basic links
+      - Sell products, courses, and make money on brand offers
+    limits:
+      - name: analytics
+        detail: >-
+          Basic analytics only. Device, location, referrer, per-link, and subscriber breakdowns
+          and custom date ranges require a paid plan (MCP returns UPGRADE_REQUIRED).
+      - name: branding
+        detail: Linktree branding cannot be removed.
+      - name: seller_fees
+        detail: Digital product sales carry seller fees.
+    api_access:
+      mcp: partial
+      note: >-
+        Read tools work; several analytics options and paid-only tools return UPGRADE_REQUIRED.
+  - name: Starter
+    tier: paid1
+    price: 8
+    currency: USD
+    period: month
+    billing: monthly
+    price_annual: 6
+    price_annual_billed: annually
+    annual_label: "Billed annually, or $8 monthly"
+    cta: Get started
+    trial: null
+    included:
+      - Everything in Free
+      - Personalized Linktree
+      - Basic analytics
+      - Sell digital products (9% seller fees)
+    limits:
+      - name: seller_fees
+        detail: 9% seller fees on digital products.
+    api_access:
+      mcp: partial
+  - name: Pro
+    tier: paid2
+    price: 15
+    currency: USD
+    period: month
+    billing: monthly
+    price_annual: 12
+    price_annual_billed: annually
+    annual_label: "Billed annually, or $15 monthly"
+    cta: Try free for 7 days
+    trial:
+      length_days: 7
+      type: free-trial
+    recommended: true
+    included:
+      - Everything in Starter
+      - Remove Linktree branding
+      - Enhanced themes, fonts, and layouts
+      - Advanced analytics
+      - Mailing list integrations
+    api_access:
+      mcp: full-read
+      note: Advanced analytics unlocks the breakdown options the analytics tools expose.
+  - name: Premium
+    tier: paid3
+    price: 35
+    currency: USD
+    period: month
+    billing: monthly
+    price_annual: 30
+    price_annual_billed: annually
+    annual_label: "Billed annually, or $35 monthly"
+    cta: Try free for 7 days
+    trial:
+      length_days: 7
+      type: free-trial
+    included:
+      - Everything in Pro
+      - Sell digital products (0% seller fees)
+      - Linktree affiliate shop (keep 100%)
+      - Dynamic links and smart routing
+      - Advanced analytics and data export
+      - Social media scheduling
+      - Unlimited Instagram auto-replies
+    api_access:
+      mcp: full
+  - name: Agency / Enterprise
+    tier: enterprise
+    price: null
+    price_model: custom
+    currency: USD
+    period: null
+    cta: Get in touch
+    contact_only: true
+    included:
+      - Team seats
+      - SSO
+      - Dedicated support
+      - Custom contracts
+    api_access:
+      mcp: full
+      note: >-
+        Workspace tools (get_workspaces_for_user, get_workspace, get_workspace_profiles,
+        get_workspace_members, get_workspace_profiles_analytics) target the team/workspace
+        construct this tier sells.
+overage:
+  model: none
+  note: >-
+    No metered overage is published. Plans are flat-rate seat/feature subscriptions, not
+    usage-metered API plans, and no per-call price is published for the MCP surface.
+transaction_fees:
+  published: true
+  note: >-
+    Seller fees vary by tier (9% on Starter/Pro, 0% on Premium). The pricing page adds
+    "Transaction and processing fees may apply" with a footnote link.
+developer_program:
+  api_plans_published: false
+  url: https://linktr.ee/marketplace/developer
+  note: >-
+    The developer program is an expression-of-interest waitlist ("We're expanding access to our
+    APIs and SDKs"). No developer/API pricing tier is published.

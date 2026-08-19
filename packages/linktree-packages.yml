@@ -1,0 +1,179 @@
+# First-party Linktree client libraries and developer tooling.
+generated: '2026-08-13'
+method: searched
+source: https://registry.npmjs.org/-/v1/search?text=linktr.ee
+note: >-
+  Linktree publishes no client SDK for the MCP server — the MCP endpoint is consumed by any
+  MCP client, so there is nothing to wrap. What it DOES publish, under the first-party npm
+  scope @linktr.ee, is the LinkApps developer toolchain (build/deploy tooling for the
+  Marketplace link-app format) and the Arbor design system registry + MCP server. Ownership is
+  confirmed on two independent signals: the scope name is Linktree's own domain, and the
+  packages that declare a repository point at github.com/blstrco — the GitHub org whose page
+  title is "Linktree · GitHub" (blstrco is Linktree's original corporate name). @linktr.ee/arbor-mcp
+  additionally declares homepage https://arbor.linktr.ee.
+registry_checked:
+  - registry: npm
+    endpoint: https://registry.npmjs.org/
+    result: 8 packages found under the @linktr.ee scope
+  - registry: pypi
+    result: no first-party package
+  - registry: rubygems
+    result: no first-party package
+  - registry: packagist
+    result: no first-party package
+  - registry: crates.io
+    result: no first-party package
+  - registry: nuget
+    result: no first-party package
+  - registry: maven-central
+    result: no first-party package
+  - registry: pkg.go.dev
+    result: no first-party package
+packages:
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/arbor-mcp"
+    url: https://www.npmjs.com/package/@linktr.ee/arbor-mcp
+    install: npx -y @linktr.ee/arbor-mcp
+    official: true
+    version: 0.12.0
+    published: '2026-08-08'
+    first_published: '2026-04-29'
+    release_count: 72
+    license: UNLICENSED
+    repository: https://github.com/blstrco/arbor
+    homepage: https://arbor.linktr.ee
+    bin: arbor-mcp
+    kind: mcp-server
+    description: >-
+      Local (stdio) Model Context Protocol server exposing Arbor design system tools —
+      Playroom snippets, Figma-to-code sync health, UX-writing checks.
+    see: mcp/linktree-mcp.yml
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/messaging-react"
+    url: https://www.npmjs.com/package/@linktr.ee/messaging-react
+    install: npm install @linktr.ee/messaging-react
+    official: true
+    version: 4.0.4
+    published: '2026-08-11'
+    first_published: '2025-10-19'
+    release_count: 785
+    license: UNLICENSED
+    kind: ui-components
+    description: React messaging components built on messaging-core for web applications.
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/create-link-app"
+    url: https://www.npmjs.com/package/@linktr.ee/create-link-app
+    install: npx @linktr.ee/create-link-app
+    official: true
+    version: 2.2.5
+    published: '2026-02-19'
+    first_published: '2022-07-12'
+    release_count: 94
+    license: UNLICENSED
+    bin: create-link-app
+    kind: cli
+    description: Scaffolds a Link App (Marketplace app) on Linktr.ee.
+    see: cli/linktree-cli.yml
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/linkapp"
+    url: https://www.npmjs.com/package/@linktr.ee/linkapp
+    install: npm install -g @linktr.ee/linkapp
+    official: true
+    version: 0.0.56
+    published: '2026-02-19'
+    first_published: '2025-10-09'
+    release_count: 55
+    license: null
+    bin: linkapp
+    kind: cli
+    description: Development, build, and deployment tooling for LinkApps.
+    see: cli/linktree-cli.yml
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/create-linkapp"
+    url: https://www.npmjs.com/package/@linktr.ee/create-linkapp
+    install: npx @linktr.ee/create-linkapp
+    official: true
+    version: 0.0.14
+    published: '2025-11-20'
+    first_published: '2025-10-09'
+    release_count: 14
+    license: null
+    bin: create-linkapp
+    kind: cli
+    description: Scaffolding tool for creating new LinkApps (successor naming to create-link-app).
+    see: cli/linktree-cli.yml
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/registry"
+    url: https://www.npmjs.com/package/@linktr.ee/registry
+    install: npm install @linktr.ee/registry
+    official: true
+    version: 0.0.9
+    published: '2025-11-20'
+    first_published: '2025-10-17'
+    release_count: 8
+    license: null
+    kind: component-registry
+    description: Component registry for LinkApps.
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/ui-link-kit"
+    url: https://www.npmjs.com/package/@linktr.ee/ui-link-kit
+    install: npm install @linktr.ee/ui-link-kit
+    official: true
+    version: 0.0.59
+    published: '2023-06-26'
+    first_published: '2021-11-11'
+    release_count: 155
+    license: UNLICENSED
+    kind: ui-components
+    status: stale
+    description: UI components for custom links.
+    note: >-
+      Last published 2023-06-26 — nearly three years stale, and superseded in practice by the
+      Arbor registry (arbor.linktr.ee) and @linktr.ee/registry. Recorded as an abandonment
+      signal, not as a recommended dependency.
+  - language: javascript
+    registry: npm
+    name: "@linktr.ee/knapsack-gherkin-testcafe"
+    url: https://www.npmjs.com/package/@linktr.ee/knapsack-gherkin-testcafe
+    install: npm install @linktr.ee/knapsack-gherkin-testcafe
+    official: true
+    version: 1.0.8
+    published: '2020-10-08'
+    first_published: '2020-10-08'
+    release_count: 9
+    license: MIT
+    repository: https://github.com/blstrco/knapsack-pro-gherkin-testcafe
+    kind: internal-test-tooling
+    status: abandoned
+    description: Knapsack Pro custom runner for Gherkin/TestCafe.
+    note: >-
+      Internal CI tooling, not a Linktree API client. Single release day in 2020; listed for
+      completeness of the first-party scope inventory only.
+distribution_not_on_a_registry:
+  - name: Arbor design system components
+    registry: http-registry
+    url: https://arbor.linktr.ee/r/{name}.json
+    manifest: https://arbor.linktr.ee/manifest.json
+    version: 26.0.1
+    published: null
+    note: >-
+      Arbor components are NOT distributed as an npm package — they are installed as source
+      via the shadcn CLI from an HTTP registry (`npx shadcn@latest add @arbor/button`). The
+      manifest publishes a registry version (26.0.1) but no per-item release date, so
+      `published` is null: checked, nothing dated to record. See components/linktree-components.yml.
+summary:
+  official_count: 8
+  official_maintained_count: 6
+  languages: [javascript]
+  registries: [npm, http-registry]
+  api_client_sdk_count: 0
+  api_client_sdk_note: >-
+    None of these wrap the Linktree MCP server or any Linktree REST API. There is no
+    first-party API client library, because there is no public REST API to wrap.

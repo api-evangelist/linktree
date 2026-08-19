@@ -1,0 +1,2221 @@
+{
+  "name": "@linktr.ee/arbor",
+  "version": "26.0.1",
+  "description": "Arbor design system shadcn registry",
+  "protocol_version": "1.0",
+  "capabilities": {
+    "components": true
+  },
+  "items": [
+    {
+      "name": "icons",
+      "type": "registry:ui",
+      "title": "Icons",
+      "description": "Full re-export of @phosphor-icons/react. Every icon is available under bare and Icon-suffixed names; all weights, sizes, and colors are supported. Arbor's system default weight is bold — Arbor components set it explicitly, and mounting IconProvider at the app root applies it to your own bare icons (Phosphor's built-in default is regular).",
+      "categories": [
+        "icons"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "You need a generic UI glyph (arrow, plus, magnifying glass) inside a button, list row, field, or empty state.",
+            "You're placing any Phosphor glyph by name (bare or Icon-suffixed) from @linktr.ee/arbor/icons inside Arbor UI.",
+            "You want to set weight, size, or color per icon via Phosphor's standard props. Arbor's system default weight is bold — pass weight='bold' explicitly, or mount IconProvider at the app root so bare icons pick it up (Phosphor's own default is regular).",
+            "You need an SVG glyph that inherits currentColor and scales with surrounding type."
+          ],
+          "notWhen": [
+            "You need a third-party or Linktree service logo (Spotify, YouTube, TikTok) — use AppIcon.",
+            "You need a pressable icon control with hit area and states — wrap it in IconButton.",
+            "You want decorative imagery or a photo — reach for Thumbnail or an image element."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "AppIcon",
+              "distinction": "AppIcon renders brand and service logos from the synced SVG set; icons renders generic Phosphor UI glyphs. Pick AppIcon for a recognizable product mark, icons for an interface symbol."
+            },
+            {
+              "component": "IconButton",
+              "distinction": "IconButton is an interactive control with states and a hit target; icons is just the glyph you place inside it. Pick IconButton when it must be clickable."
+            },
+            {
+              "component": "icon font / SVG sprite sheet",
+              "distinction": "Phosphor ships as individual tree-shakeable React components, not a font file or sprite. Import the named component; there is no glyph-by-class or <use href> step."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Action button built on Radix Slot with seven variants, five sizes, two shapes, an optional loading state, and start/end icon slots.",
+      "categories": [
+        "button"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "The action does something in place — submit a form, confirm a dialog, trigger a state change.",
+            "You need a clear visual hierarchy of actions: primary for the main action, secondary/tertiary/ghost for the rest.",
+            "You want one component to cover both real buttons and button-styled navigation via the link prop or asChild.",
+            "An async action needs in-place feedback — use state=\"loading\" to keep the label width and accessible name."
+          ],
+          "notWhen": [
+            "The action is icon-only with no visible label — use IconButton, which requires an aria-label.",
+            "It's pure navigation in flowing text — use Link or the link variant, not a filled button.",
+            "You need a setting that takes effect immediately on toggle — use Switch, not a Button styled as pressed.",
+            "More than one primary button competes in the same view — keep one primary and demote the rest."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "IconButton",
+              "distinction": "Button shows a text label (optionally with a start/end icon); IconButton is icon-only and forces a required aria-label. Pick IconButton when there is no visible text, Button when a label adds clarity."
+            },
+            {
+              "component": "Link",
+              "distinction": "Link is a real anchor for navigating between destinations; Button fires an action (click handler, form submit). A button that navigates should keep link semantics — use the link prop (renders an <a>) or Button variant=\"link\" for inline text. Pick Link to go somewhere, Button to do something."
+            },
+            {
+              "component": "Switch",
+              "distinction": "Button fires a one-shot action; a control that holds an on/off setting belongs in Switch, not a Button styled as pressed. Pick Switch for live settings, Button for one-shot actions."
+            },
+            {
+              "component": "SegmentedControl",
+              "distinction": "SegmentedControl is a single-select toggle across mutually-exclusive choices that stays visually selected; a row of independent Buttons fires independent actions. Pick SegmentedControl for single-select, Buttons for distinct actions."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/button.md",
+          "implementation": "docs/design-system/guidelines/button-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "Layout container that pairs exactly two related action buttons (e.g. Cancel / Save) with shared sizing and an equal-width, auto-width, or stacked layout. Place the primary action last in a row, or first (top) when stacked; caps at two to reduce cognitive load.",
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "You are pairing exactly two related actions, like Cancel / Save or Discard / Update.",
+            "The two actions should split a row equally, or stack on a narrow layout.",
+            "You want one size applied to both buttons and consistent 8px spacing (12px when stacked).",
+            "The actions are independent — each fires its own handler — not a single-select toggle."
+          ],
+          "notWhen": [
+            "You need a single-select toggle across mutually-exclusive choices that stays visually selected — use SegmentedControl.",
+            "Each option reveals a distinct content panel — use Tabs.",
+            "You have one action, or more than two — use a standalone Button and lay it out yourself.",
+            "The choice is part of a submitted form — use RadioGroup."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "SegmentedControl",
+              "distinction": "SegmentedControl is one joined single-select control with aria-pressed segments that change a view immediately; ButtonGroup is a layout that pairs two independent action Buttons with their own radii and handlers. Pick SegmentedControl for single-select, ButtonGroup for a two-action pair."
+            },
+            {
+              "component": "Tabs",
+              "distinction": "Tabs navigate between distinct content panels (tablist/tab/tabpanel); ButtonGroup fires actions and owns no panels. Pick Tabs for panel navigation, ButtonGroup for an action pair."
+            },
+            {
+              "component": "Button",
+              "distinction": "A standalone Button is for a single action or an unrelated set; ButtonGroup adds shared sizing, equal-width or stacked layout, and group semantics for exactly two related actions. Pick ButtonGroup only for a genuine two-action pair."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/button-group.md",
+          "implementation": "docs/design-system/guidelines/button-group-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "link",
+      "type": "registry:ui",
+      "title": "Link",
+      "description": "Inline link with three sizes, four semantic color variants, underline controls, and safe external-URL handling. Composes via asChild.",
+      "categories": [
+        "navigation"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Linking to another destination inline in body text or as a standalone text link.",
+            "An external link needs safe defaults: target _blank, rel noopener noreferrer, and a trailing external icon.",
+            "You want a semantic anchor with accent/primary/secondary/danger color and hover/always/none underline control.",
+            "Wrapping a router Link or custom element via asChild while keeping Arbor link styling."
+          ],
+          "notWhen": [
+            "The control runs a click handler or submits a form rather than navigating — use Button variant=\"link\".",
+            "You need Button's size, shape, or leading-icon API on something that looks like a link — use Button variant=\"link\".",
+            "The target is a primary page action or call-to-action — use Button with a filled or accent variant.",
+            "Rendering a long-form heading or paragraph that is not navigational — use Text."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Button variant=\"link\"",
+              "distinction": "Link is a real anchor for navigation between destinations; Button variant=\"link\" looks like a link but is a button for actions (click handlers, form submit). Pick Link to go somewhere, Button to do something."
+            },
+            {
+              "component": "Button",
+              "distinction": "Button is a filled/bordered action affordance for primary tasks; Link is lightweight inline text navigation. Use Button for CTAs, Link for in-text or standalone navigation."
+            },
+            {
+              "component": "Text",
+              "distinction": "Text renders non-interactive typography; Link is an interactive navigational anchor. Use Text for content, Link only when it goes somewhere."
+            },
+            {
+              "component": "bare <a> tag",
+              "distinction": "A raw anchor skips Arbor's variants, focus ring, and javascript:/data: href sanitization. Use Link so external and unsafe-URL handling come for free."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "text",
+      "type": "registry:ui",
+      "title": "Text",
+      "description": "Typography component spanning Arbor's full type scale. Maps each variant to semantic HTML and composes via asChild for headings, links, and labels.",
+      "categories": [
+        "typography"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Rendering any text in Arbor's type scale — pick a foundations variant like body-medium-regular or display-large-bold.",
+            "You need visual style and semantic element decoupled — set the look with variant, the HTML tag with as.",
+            "Wrapping a styled child element via asChild so it inherits the typography without an extra wrapper node.",
+            "Applying the right font family automatically — category (hero/display vs title/body/caption) selects the binding."
+          ],
+          "notWhen": [
+            "You want a heading by HTML level — variant is visual-only; always set as=\"h1\"..\"h6\" for document structure.",
+            "Reaching for deprecated names like title-xl or body-base-emph — use the foundations {category}-{size}-{weight} name.",
+            "Styling a Button or Field label — those components own their typography; don't wrap their text in Text.",
+            "Needing an illegal tier×weight (caption has no extrabold, title/display have no regular) — it is unrepresentable by design."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Raw HTML heading/paragraph tags",
+              "distinction": "A bare h1/p has no design-system styling; Text applies the foundations type scale. Use Text and set as to control the element."
+            },
+            {
+              "component": "Native Text (index.native.tsx)",
+              "distinction": "The React Native Text is still on the legacy abbreviated scale with a different variant union; web Text uses foundations names. Don't assume variant parity across platforms — use the platform's own variant set."
+            },
+            {
+              "component": "Heading / Typography / Title (external DS naming)",
+              "distinction": "Other systems split into Heading + Text or a Typography component; Arbor unifies all five categories (hero/display/title/body/caption) into one Text with a baked variant. Use Text and pick the category via variant."
+            },
+            {
+              "component": "Field label / Button label",
+              "distinction": "Form labels and button text are owned by Field and Button respectively. Use those components; reach for Text only for standalone copy."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/text.md"
+        }
+      }
+    },
+    {
+      "name": "sanitize-href",
+      "type": "registry:lib",
+      "title": "sanitizeHref Utility",
+      "description": "Strips dangerous URI protocols (javascript:, data:, vbscript:) from href values. Returns undefined for unsafe inputs.",
+      "categories": [
+        "utility"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Rendering a user- or CMS-supplied URL into an href to strip javascript:, data:, and vbscript: schemes.",
+            "Accepting untrusted link values in a custom anchor or button that Arbor's Link/Button/IconButton don't cover.",
+            "You need control-char-aware blocking that catches WHATWG parser bypasses like embedded tabs or null bytes in the scheme."
+          ],
+          "notWhen": [
+            "Linking with Arbor Link, Button, or IconButton — they already call sanitizeHref on href/link internally.",
+            "You need to escape HTML body content or attributes for XSS — use a full sanitizer like DOMPurify, not this scheme filter.",
+            "Validating that a URL is well-formed or reachable — this only blocks dangerous protocols, it does not parse or verify URLs."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Link",
+              "distinction": "Link is the rendered anchor component and calls sanitizeHref on its href automatically; sanitizeHref is the bare utility. Use Link to render an anchor, sanitizeHref only when building your own."
+            },
+            {
+              "component": "Button / IconButton (link mode)",
+              "distinction": "Both sanitize their link prop internally via sanitizeHref. Use them for clickable navigation; call the utility directly only outside these components."
+            },
+            {
+              "component": "DOMPurify (external sanitizer)",
+              "distinction": "DOMPurify cleans arbitrary HTML markup; sanitizeHref only filters dangerous URI schemes from a single href string. Pick DOMPurify for rich content, sanitizeHref for link targets."
+            },
+            {
+              "component": "encodeURI / encodeURIComponent (browser API)",
+              "distinction": "Those percent-encode URL characters; sanitizeHref instead blocks unsafe protocols and returns undefined. Use encode* for encoding, sanitizeHref for protocol safety."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "cn",
+      "type": "registry:lib",
+      "title": "cn Utility",
+      "description": "Class merger extending tailwind-merge with Arbor's color, border, radius, shadow, spacing, height, and typography utilities.",
+      "categories": [
+        "utility"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Merging or conditionally composing Tailwind class strings inside any Arbor component or app.",
+            "Passing a className override to an Arbor component so consumer classes win over defaults.",
+            "You need Arbor-aware conflict resolution for color, border, radius, shadow/elevation, spacing, height, or typography utilities."
+          ],
+          "notWhen": [
+            "Joining classes with no chance of conflicting Tailwind utilities — plain clsx or a template string is lighter.",
+            "Merging vanilla Tailwind in a non-Arbor project — bare tailwind-merge already handles the default scales.",
+            "Computing variant styles for a leaf component — define them with class-variance-authority and pass the result through cn."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "clsx",
+              "distinction": "clsx only concatenates and dedupes class names; it cannot resolve conflicts. cn runs clsx then tailwind-merge, so a later class beats an earlier one. Use cn when classes might conflict, clsx for plain joining."
+            },
+            {
+              "component": "tailwind-merge (bare twMerge)",
+              "distinction": "Bare tailwind-merge doesn't know Arbor overrides Tailwind's scales (e.g. rounded-lg = 24px) or adds elevation/typography groups, so it mis-merges them. cn is tailwind-merge pre-extended with those groups — always use cn in Arbor."
+            },
+            {
+              "component": "classnames",
+              "distinction": "classnames is the older clsx-equivalent concatenator with the same limitation: no conflict resolution. Reach for cn instead so Arbor utility collisions resolve."
+            },
+            {
+              "component": "cva (class-variance-authority)",
+              "distinction": "cva builds variant-to-class maps; cn merges arbitrary class strings. They compose — define variants with cva, then pass its output plus className through cn."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "elevation",
+      "type": "registry:ui",
+      "title": "Elevation",
+      "description": "Shadow utility for Arbor elevation levels 100–400. Defaults to asChild composition so it adds no wrapper div.",
+      "categories": [
+        "utility"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Adding an Arbor elevation shadow (levels 100-400) to a surface like a card, toolbar, or floating panel.",
+            "Wrapping an existing element with asChild so the shadow applies without injecting an extra div.",
+            "Mapping level to intent: 100 list items, 200 emphasized item, 300 fixed toolbar, 400 modal/popover.",
+            "Keeping shadows theme-aware (auto opacity bump in dark mode, border replacement in high-contrast)."
+          ],
+          "notWhen": [
+            "Layering overlays above siblings — that is z-index; use the z-overlay/z-toast utilities, not Elevation.",
+            "Shadowing a shape with protrusions like a tooltip arrow — use the drop-elevation-* token classes (filter: drop-shadow).",
+            "Reaching for an elevation level you invented — only 100-400 exist; pick the closest semantic level.",
+            "Tinting a surface color per depth — Elevation only sets shadow, not background; pair with the right bg-* token yourself."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "z-index utilities (z-overlay / z-toast)",
+              "distinction": "Elevation is visual shadow depth; z-index is stacking order in the DOM. Reach for z-overlay/z-toast when one thing must render on top of another, Elevation when something should look raised."
+            },
+            {
+              "component": "drop-elevation-* token classes",
+              "distinction": "Elevation applies box-shadow, which clips to the element's rectangle; drop-elevation-* uses filter: drop-shadow() to trace child shapes (e.g. tooltip arrows). Use drop-elevation for protruding shapes, Elevation otherwise."
+            },
+            {
+              "component": "Card",
+              "distinction": "Card is a full surface component with padding, radius, and background; Elevation is a shadow-only utility. Use Card for a content container, Elevation to lift any element."
+            },
+            {
+              "component": "Material Design tonal elevation",
+              "distinction": "Some systems convey depth by lightening the surface color (Material 3 tonal elevation). Arbor's Elevation is shadow-based only and does not change background color — use Elevation for the shadow and set the surface color separately."
+            },
+            {
+              "component": "legacy card shadow token",
+              "distinction": "The legacy 'card' shadow token (16px blur) overlaps elevation-100 (4px blur) but is not the same value. Prefer the Elevation component's levels for new work; keep the legacy token only for existing usages."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/elevation-and-shadow.md"
+        }
+      }
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "title": "Icon Button",
+      "description": "Icon-only button with six variants, five sizes, and squircle or capsule shape. Requires aria-label for screen readers.",
+      "categories": [
+        "button"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "A control needs to be icon-only and space is tight (toolbars, headers, card corners, input adornments).",
+            "The action is universally recognizable from its glyph alone, like close, search, or more options.",
+            "You need a compact same-size button matching Button's variants and sizes but with no text label.",
+            "You can supply a descriptive aria-label naming the action."
+          ],
+          "notWhen": [
+            "The action benefits from a text label for clarity — use Button with a start/end icon instead.",
+            "You are toggling between mutually exclusive views — use SegmentedControl.",
+            "You cannot give it a meaningful aria-label — the prop is required and the control is inaccessible without one.",
+            "You need a tappable status or category marker, not an action — use Badge."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Button",
+              "distinction": "Button shows a text label (optionally with an icon); IconButton is icon-only and forces a square footprint plus a required aria-label. Reach for Button whenever a label adds clarity, IconButton when space is tight and the glyph is unambiguous."
+            },
+            {
+              "component": "SegmentedControl",
+              "distinction": "SegmentedControl picks one option from a set and stays visually selected; IconButton fires a one-shot action with no persistent selected state. Use SegmentedControl for toggling between views, IconButton for a single action."
+            },
+            {
+              "component": "Badge",
+              "distinction": "Badge is a read-only status/category marker; IconButton is an interactive action control. Use Badge to label state, IconButton when the glyph must be pressable."
+            },
+            {
+              "component": "ToggleButton / toggle (external concept)",
+              "distinction": "A toggle is a two-state on/off control that stays pressed; IconButton has no built-in pressed state. For an on/off icon toggle, manage aria-pressed yourself; for a settings on/off, use Switch instead of IconButton."
+            },
+            {
+              "component": "FAB (floating action button, external concept)",
+              "distinction": "A FAB is a screen-anchored primary action common in mobile UIs; Arbor has no FAB. Use an inline IconButton — it has no floating/anchoring behavior."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/button.md",
+          "implementation": "docs/design-system/guidelines/icon-button-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "icon-list",
+      "type": "registry:ui",
+      "title": "Icon List",
+      "description": "Display-only vertical list of icon-led rows: a circular icon medallion, a bold label, and an optional description, with an optional connector for a lightweight timeline. Not interactive — for clickable or step-state rows, use a different component; for columnar data, use a table.",
+      "categories": [
+        "data-display"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "You're presenting a short vertical list of icon-led rows for reading — each row a circular icon medallion, a bold label, and optional supporting text (feature lists, amenity lists, what's-included, a trial schedule).",
+            "You want a lightweight display timeline: turn on connectors and render as an ordered list (as=\"ol\") for chronological or sequential rows.",
+            "The rows are display-only — nothing in a row is clickable, selectable, or reports acted-on progress.",
+            "You want the medallion, icon, and type to scale together via one size prop (sm/md/lg) with Arbor tokens."
+          ],
+          "notWhen": [
+            "Rows are clickable, selectable, or navigable — that's an interactive list, not this (Icon List stays display-only).",
+            "Rows carry step-state you advance or act on (current/complete) — use a Stepper/Timeline, not this.",
+            "You're lining up columnar, comparable values (plans, specs) — use a table.",
+            "Rows are plain text with no icon medallion — use a generic list.",
+            "A row's only content is the medallion with no text label — meaning must live in text, not an icon alone."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Data Row / table",
+              "distinction": "A table presents structured, columnar, comparable data for scanning and analysis; Icon List presents icon-led prose rows for reading. Pick a table when columns and comparison matter; Icon List when each row is an icon medallion + label + optional supporting line."
+            },
+            {
+              "component": "List (generic)",
+              "distinction": "A generic bulleted/numbered list renders plain text items; Icon List leads each row with a colored icon medallion and adds an optional description. Pick List for plain text, Icon List when the leading icon is part of the content."
+            },
+            {
+              "component": "Timeline / Stepper",
+              "distinction": "A Timeline/Stepper models an ordered process with step-state you act on or advance; Icon List is display-only. Icon List can look like a timeline (connectors + as=\"ol\") but never carries interactive step-state. Pick a Stepper when a step is current/complete/actionable."
+            },
+            {
+              "component": "Menu",
+              "distinction": "A Menu is a trigger-opened list of actions or links with keyboard navigation and roles; Icon List is static content with no interaction. Pick Menu when rows do something."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/icon-list.md"
+        }
+      }
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tabbed navigation built on Radix UI with five variants (underline, pill, pill-subtle, segmented, segmented-pill) and three sizes.",
+      "categories": [
+        "navigation"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Switching between parallel content panels of equal importance within one page context.",
+            "You need real TabsContent panels with tablist/tabpanel a11y — the natural home for URL-anchoring or lazy-mount patterns you wire up yourself.",
+            "Showing an enclosed segmented look that still wraps content panels — use the segmented or segmented-pill variant."
+          ],
+          "notWhen": [
+            "A panel-less in-place toggle (filter, sort, view density) with no content panel — use SegmentedControl.",
+            "Step-by-step or sequential flows — use a progress indicator, not tabs.",
+            "Primary page or route navigation — use real routes or site nav, not tabs.",
+            "People must compare content across panels at once — keep it on one page instead."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "SegmentedControl",
+              "distinction": "Tabs reveal distinct TabsContent panels (tablist/tabpanel semantics); SegmentedControl is a panel-less role=group / aria-pressed toggle that re-renders in place. Ask one question: do you have real content panels? Yes → Tabs; no → SegmentedControl. The segmented and segmented-pill variants share the look but keep tab semantics (DL-065)."
+            },
+            {
+              "component": "HeaderBar",
+              "distinction": "HeaderBar's embedded tabs are the navigation-only tab slot scoped to the page-chrome header; plain Tabs renders interactive content panels. Use HeaderBar tabs for route navigation in the header, Tabs for content switching in the page body."
+            },
+            {
+              "component": "Carbon ContentSwitcher",
+              "distinction": "The enclosed segmented bar people call a 'content switcher' or 'toggle group' is Tabs variant=\"segmented\" when it wraps panels; reach for SegmentedControl only when there are no panels."
+            },
+            {
+              "component": "Navigation / nav bar",
+              "distinction": "Tabs organize content within a page; they are not a replacement for URL-based site navigation. If destinations are routes, use nav, not Tabs."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/tabs.md",
+          "implementation": "docs/design-system/guidelines/tabs-implementation.md",
+          "decisions": [
+            "DL-065"
+          ]
+        }
+      }
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "Segmented Control",
+      "description": "Compact inline control for switching between mutually exclusive options — a view or mode toggle with a sliding selected pill. Reach for Tabs with variant=\"segmented\" instead when the segmented look has to wrap real tab panels; SegmentedControl carries no tab semantics of its own.",
+      "categories": [
+        "navigation"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Switching between presentations of the same content (grid vs list, weekly vs monthly vs yearly).",
+            "You have 2-3 tightly related, mutually exclusive options and the change applies immediately.",
+            "The control lives outside a form and does not submit a value.",
+            "Filtering or sorting the same data set in place, with no confirm step."
+          ],
+          "notWhen": [
+            "Selecting an option reveals a distinct content panel or changes the route — use Tabs.",
+            "The selection is part of a submitted form or dialog — use RadioGroup.",
+            "There are 4 or more options — use Tabs or a Select.",
+            "Each option triggers an independent action rather than a selection state — use a row of Buttons."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Tabs",
+              "distinction": "Same enclosed pill look as Tabs variant=\"segmented\", but split by semantics not appearance (DL-065): Tabs owns real tabpanel content (and is where you'd wire URL-anchoring or lazy-mount patterns yourself); SegmentedControl is panel-less (role=group + aria-pressed) and only emits a value change. Ask: do you have real content panels? Yes → Tabs; no → SegmentedControl."
+            },
+            {
+              "component": "RadioGroup",
+              "distinction": "RadioGroup is a form field (role=radiogroup, roving tabindex, submitted value) for any number of options; SegmentedControl is a toggle-button group for immediate in-place view switching outside forms. Inside a form → RadioGroup; live view toggle → SegmentedControl."
+            },
+            {
+              "component": "Button (independent actions)",
+              "distinction": "A row of Buttons fires independent actions and can be pressed non-exclusively; SegmentedControl enforces a single active selection that changes view state. Distinct actions → Buttons; single-select view toggle → SegmentedControl."
+            },
+            {
+              "component": "iOS UISegmentedControl",
+              "distinction": "Arbor's web SegmentedControl mirrors the iOS sliding-pill lineage, but arbor-native ships tokens only — there is no native component. On React Native, reference the tokens and compose a Pressable-based control."
+            },
+            {
+              "component": "Material 3 segmented button (\"connected button group\")",
+              "distinction": "Material's per-segment background cross-fade and multi-select are deliberately not Arbor's model; Arbor uses a single shared pill that slides and is single-select only. Use SegmentedControl with single-select semantics, not M3 multi-select."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/segmented-control.md",
+          "implementation": "docs/design-system/guidelines/segmented-control-implementation.md",
+          "decisions": [
+            "DL-065"
+          ]
+        }
+      }
+    },
+    {
+      "name": "header-bar",
+      "type": "registry:ui",
+      "title": "Header Bar",
+      "description": "Page header bar with title, actions, tabs, and a responsive primary/secondary variant. Supports a declarative context API and emits a headerbar:tab-change event for cross-MFE communication.",
+      "categories": [
+        "layout",
+        "navigation"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Building top-of-page chrome for Frontyard pages that needs a consistent title, leading slot, and actions.",
+            "Remote MFEs must inject title, actions, or tabs into a host-rendered header without prop-drilling (declarative context API).",
+            "You need a desktop/mobile action split or a navigation tab strip that responds to container width, not viewport.",
+            "Actions should automatically pick up the toolbar button variant."
+          ],
+          "notWhen": [
+            "Building marketing, landing, or other non-standard page layouts — use a plain <header> element instead.",
+            "Rendering a header inside a dialog or drawer that already has its own heading — use a plain <header> or set titleAs to h2.",
+            "You expect tabs to render content panels below the header — HeaderBar tabs are navigation-only; render content by route or page state.",
+            "You only need a static heading with no responsive, federation, or tab behavior — plain <header> is simpler."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Tabs",
+              "distinction": "Tabs renders interactive content panels; HeaderBar's embedded tabs are navigation-only (panels are hidden) and emit onTabChange / a headerbar:tab-change event. Use Tabs for in-page panel switching, HeaderBar tabs for route navigation in the header."
+            },
+            {
+              "component": "Toolbar / toolbar button variant",
+              "distinction": "There is no standalone Toolbar component — HeaderBar's actions slot auto-applies variant=toolbar to its buttons. Reach for HeaderBar when you want page-level chrome, not a freestanding action row."
+            },
+            {
+              "component": "plain HTML <header>",
+              "distinction": "A plain <header> is right for marketing/landing layouts or headers inside overlays. HeaderBar is for Frontyard page chrome that needs federation, responsive action splits, or embedded nav tabs."
+            },
+            {
+              "component": "Dialog / Drawer header",
+              "distinction": "Overlay surfaces own their heading; nesting HeaderBar inside one risks a duplicate h1. Use the overlay's built-in header or a plain <header> with the appropriate titleAs level, HeaderBar only for page-level chrome."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/header-bar.md",
+          "implementation": "docs/design-system/guidelines/header-bar-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Compound input system with floating labels, addons, actions, counters, and three control variants (filled, outline, elevated). Supports stacked (default) and horizontal (settings-row) layouts.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Building a single labeled input (text, textarea, or select) with its message, counter, or addons wired up.",
+            "You need floating labels, leading/trailing addons, inline actions, or a character counter on one control.",
+            "You want label-to-control association, error/success state, and aria-describedby handled for you.",
+            "You want a two-column label/control settings row via Field.Root layout=\"horizontal\"."
+          ],
+          "notWhen": [
+            "Grouping several related controls under one legend (radio or checkbox lists) — use Fieldset + FieldsetLegend.",
+            "Laying out a title/description beside its input on a settings page — use Field.Root layout=\"horizontal\".",
+            "Placing a standalone checkbox, switch, or radio group — use those components directly, not Field.Control.",
+            "You only need a raw uncontrolled <input> with no label, message, or state styling.",
+            "Entering a short fixed-length code (one-time passcode or PIN) — use OneTimePasswordField for segmented entry, auto-advance, and paste distribution, not a Field.Input with maxLength."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Fieldset",
+              "distinction": "Field wraps one labeled control; Fieldset groups multiple related controls under a shared legend. Reach for Fieldset when the label is a question answered by several inputs, Field for a single control."
+            },
+            {
+              "component": "SearchInput",
+              "distinction": "SearchInput is a purpose-built search combobox with suggestions and a clear affordance; Field is the general-purpose labeled-input system. Use SearchInput for search, Field for form data entry."
+            },
+            {
+              "component": "FileInput",
+              "distinction": "FileInput is a standalone, large drop-area for selecting files to upload; Field is for labeled form inputs. Use FileInput for a prominent dropzone (it replaced the former Field file input), Field for text/select inputs embedded in a form."
+            },
+            {
+              "component": "text input / form group",
+              "distinction": "What people loosely call a 'text input' or 'form group' maps to Field's compound parts (Field.Root + Field.Label + Field.Control + Field.Input), not a single flat element — compose the parts rather than a bare <input>."
+            },
+            {
+              "component": "OneTimePasswordField",
+              "distinction": "OneTimePasswordField is the segmented one-time-passcode / PIN input (per-box auto-advance, paste distribution, numeric IME); Field is general-purpose free-text entry. Use OneTimePasswordField for fixed-length codes, not a Field.Input with maxLength."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/form-controls.md",
+          "implementation": "docs/design-system/guidelines/field-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "file-input",
+      "type": "registry:ui",
+      "title": "File Input",
+      "description": "File upload dropzone surface for selecting files to upload. A dashed drop target with a cloud-upload glyph, click and keyboard activation, drag-and-drop, plus error and disabled states. Use it as the upload trigger; compose selected-file lists and progress above it.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Offering a large, primary drop area for uploading one or more files — drag-and-drop or click to browse.",
+            "An empty-state upload surface needs a prompt, an icon, and optional supporting text (accepted types, size limits).",
+            "The file picker is the main action on a screen, not one input among several in a form.",
+            "You want a slot-based dropzone whose icon, label, and supporting text you can customize."
+          ],
+          "notWhen": [
+            "Adding a compact file picker inline alongside other form inputs — use a Field control instead.",
+            "Managing already-uploaded files (lists, thumbnails, reordering, progress) — compose those above FileInput; it is the upload trigger only.",
+            "You need a general labeled text or select input — use Field."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Field",
+              "distinction": "FileInput is a standalone, large drop-area for the upload action itself; Field is the compound labeled-input system for form data entry. FileInput replaced the former Field file input — reach for it when the dropzone is prominent, Field when a control sits among other form inputs."
+            }
+          ],
+          "implementation": "docs/design-system/guidelines/file-input-implementation.md",
+          "decisions": [
+            "DL-088"
+          ]
+        }
+      }
+    },
+    {
+      "name": "file-input-item",
+      "type": "registry:ui",
+      "title": "File Input Item",
+      "description": "Selected-file row composed above FileInput. Shows the file name with middle truncation that keeps the extension visible, secondary metadata, and idle / loading / error states with a trailing action slot, optional thumbnail preview, and a drag-handle affordance.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Listing files a Linker has already selected or uploaded, above a FileInput dropzone.",
+            "A row needs to show upload progress, a completed file, or a failed upload with a retry or remove action.",
+            "You want the file name to truncate without hiding its extension — the row pins the extension and ellipsizes the stem.",
+            "An image upload should preview as a thumbnail tile rather than a generic file glyph."
+          ],
+          "notWhen": [
+            "Offering the upload action itself — that is FileInput; this row is what you compose above it.",
+            "Rendering a generic list row with an icon and supporting text — use IconList.",
+            "You need working drag-and-drop reordering. The drag handle is a visual affordance only; wire your own DnD to [data-drag-handle]."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "FileInput",
+              "distinction": "FileInput is the dropzone — the upload trigger. FileInputItem is one already-selected file, composed above it. FileInput ships no list of its own on purpose (DL-088), so a complete upload UI is FileInput plus one FileInputItem per file."
+            },
+            {
+              "component": "IconList",
+              "distinction": "IconList is display-only icon-led rows for general content. FileInputItem is file-specific: extension-preserving truncation, upload status, thumbnail previews, and a remove action."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/file-input-item.md"
+        }
+      }
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Loading placeholder with pulse and shimmer animations. Includes Text, Avatar, Button, Input, Card, and ListItem preset compositions.",
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "A full page or content area whose layout is known loads, and the wait runs 1-10 seconds.",
+            "Several elements load at once — one skeleton beats stacking multiple spinners.",
+            "Container-shaped content loads: cards, tiles, structured lists, tables, grids.",
+            "You can match the placeholder to real dimensions using a preset (Text, Avatar, Button, Input, Card, ListItem)."
+          ],
+          "notWhen": [
+            "A single inline action loads, like a save or submit — use Button's loading state (state=\"loading\"), not a skeleton.",
+            "Duration is known or exceeds 10 seconds — use a progress bar.",
+            "Content arrives in under 1 second — render it directly; a flashing skeleton is more jarring.",
+            "Static text (titles like 'Settings') or action components exist before data — render them as-is."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Spinner (no standalone export)",
+              "distinction": "Skeleton mimics a known layout while a whole region loads; for a single inline action use Button's built-in loading state — Arbor has no standalone Spinner export. Use Skeleton for structured regions, the button loading state for one action."
+            },
+            {
+              "component": "Progress bar",
+              "distinction": "Skeleton is for indeterminate structural loads; a progress bar communicates measurable advancement toward a known duration. Pick the progress bar past ~10 seconds or when progress is measurable."
+            },
+            {
+              "component": "Shimmer",
+              "distinction": "Shimmer is not a separate component — it is Skeleton's animation prop (pulse default, shimmer, none). Reach for the Skeleton component, not a standalone shimmer."
+            },
+            {
+              "component": "Empty state",
+              "distinction": "Skeleton covers a transient load before data arrives; an empty state is the resolved view when there is genuinely no data. Swap a never-resolving skeleton to an empty or error state."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/skeleton.md",
+          "implementation": "docs/design-system/guidelines/skeleton-implementation.md",
+          "decisions": [
+            "DL-097"
+          ]
+        }
+      }
+    },
+    {
+      "name": "use-media-query",
+      "type": "registry:hook",
+      "title": "useMediaQuery",
+      "description": "SSR-safe React hook tracking a CSS media query. Exports the BREAKPOINT_MD constant aligned with Tailwind's md: breakpoint.",
+      "categories": [
+        "utility"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "You need JS-side responsive logic that mirrors Tailwind's md: breakpoint — import BREAKPOINT_MD so CSS and JS agree at 768px.",
+            "A component must branch behavior (not just styling) on viewport, e.g. render a Drawer on mobile vs a Popover on desktop.",
+            "You're in an SSR or hydration context and need a hook that safely returns false on the server until the first effect runs.",
+            "You want to react to any CSS media query string (orientation, prefers-reduced-motion, custom widths), not only width breakpoints."
+          ],
+          "notWhen": [
+            "Pure visual responsiveness — reach for Tailwind md:/lg: utility classes instead; they avoid the hydration flash this hook has.",
+            "You need the exact viewport width in pixels — useMediaQuery only returns a boolean match, write a window.innerWidth listener instead.",
+            "Desktop content must be correct on first paint — this hook returns false until after hydration, so desktop briefly sees the mobile branch."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Tailwind md:/lg: responsive utilities",
+              "distinction": "Tailwind handles styling that changes at a breakpoint with zero JS and no hydration flash; useMediaQuery is for JS logic that must branch (which component to mount, what data to fetch). Prefer Tailwind unless you genuinely need to run code."
+            },
+            {
+              "component": "BREAKPOINT_MD constant",
+              "distinction": "BREAKPOINT_MD is the exported '(min-width: 768px)' query string aligned to Tailwind md:, not the hook itself. Pass it into useMediaQuery; use the constant directly only when you need the raw string."
+            },
+            {
+              "component": "AdaptiveModal",
+              "distinction": "AdaptiveModal is the ready-made overlay switcher built on useMediaQuery (Dialog on desktop, Drawer on mobile). Use AdaptiveModal for that exact overlay pattern, the hook for arbitrary responsive branching."
+            },
+            {
+              "component": "window.matchMedia (browser API)",
+              "distinction": "useMediaQuery wraps matchMedia with SSR safety, React state, a dev-mode invalid-query warning, and event cleanup. Use the hook in React; call matchMedia directly only in non-React or non-reactive one-shot checks."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "Binary-confirmation modal (Cancel/Delete, Cancel/OK, Leave/Stay). Enforces two-button footer with no close button. Built on @radix-ui/react-alert-dialog.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Confirming a destructive or irreversible action (delete account, remove link) before it runs.",
+            "Interrupting flow over unsaved state: \"Leave without saving?\" with two clear paths.",
+            "The decision is binary and the body is text-only — exactly two footer buttons (Cancel + action).",
+            "You need to block dismissal until a deliberate choice — no X, escape/outside-click are constrained."
+          ],
+          "notWhen": [
+            "The body needs form fields, lists, or rich layout — use the future Modal (Dialog is deprecated).",
+            "You need more than two footer buttons or a close (X) affordance — use Modal.",
+            "The action is low-stakes and easily undone — confirm inline or surface a Toast with undo instead.",
+            "You only need transient, non-blocking feedback — use Toast, not a modal."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Dialog",
+              "distinction": "Dialog is the deprecated general modal (role=\"dialog\", optional X, any content, scrollable, outside-click closes). AlertDialog is the canonical binary-confirmation modal (role=\"alertdialog\", no X, text-only, blocks outside-click). Pick AlertDialog for confirmations; don't start new work on Dialog."
+            },
+            {
+              "component": "Modal",
+              "distinction": "Modal is the unscoped future component for form-based and rich-content overlays with flexible footers. AlertDialog is text-only with a fixed two-button footer. Reach for Modal once content goes beyond a yes/no question, AlertDialog for the confirmation itself."
+            },
+            {
+              "component": "Toast",
+              "distinction": "Toast is transient, non-blocking notification (often with undo). AlertDialog blocks the page and demands a choice before continuing. Use Toast for low-stakes feedback, AlertDialog when a deliberate confirmation is required."
+            },
+            {
+              "component": "Alert",
+              "distinction": "Alert is an inline, non-modal status banner that stays in page flow; AlertDialog is a focus-trapping modal overlay. Same word, different surface — pick Alert to inform in place, AlertDialog to interrupt and confirm."
+            },
+            {
+              "component": "Popover",
+              "distinction": "Popover (deprecated) is a non-modal floating panel anchored to a trigger; the page stays interactive. AlertDialog is modal and centered with a scrim. Use AlertDialog for a blocking decision; for contextual extras use RichTooltip or Menu — do not adopt Popover."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/dialog.md",
+          "implementation": "docs/design-system/guidelines/alert-dialog-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal dialog built on Radix UI for blocking interactions. Compound API covers trigger, portal, overlay, content, header, footer, title, description, and close.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "deprecated",
+          "useWhen": [
+            "Maintaining or migrating an existing Dialog usage already in the codebase; do not adopt it for new work.",
+            "You need the older modal anatomy (any number of footer buttons, optional X close) only until a Modal replacement exists."
+          ],
+          "notWhen": [
+            "Confirming a destructive or consequential action (Delete, Leave without saving) — use AlertDialog.",
+            "Building any new modal — Dialog is deprecated; use AlertDialog now, or the planned Modal for forms and rich content.",
+            "Showing a low-stakes, easily-undone confirmation — use Toast or inline confirmation instead.",
+            "Presenting a side panel or non-blocking overlay — use Drawer."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "AlertDialog",
+              "distinction": "AlertDialog is the canonical, non-deprecated modal for binary confirmations: role=alertdialog, blocks outside-click, exactly Cancel + Action, no X. Reach for it instead of Dialog for new confirmation work."
+            },
+            {
+              "component": "Modal",
+              "distinction": "Modal is the planned (not-yet-shipped) replacement for Dialog covering form-based and rich-content overlays. When it lands, prefer it over Dialog for complex flows; until then maintain existing Dialog usage only."
+            },
+            {
+              "component": "Drawer",
+              "distinction": "Drawer slides in from a screen edge for secondary navigation or panels; Dialog is a centered blocking modal. Pick Drawer when content is a side panel, Dialog for a focused interruption."
+            },
+            {
+              "component": "Popover",
+              "distinction": "Popover (deprecated) is a non-modal anchored overlay that does not trap focus or block the page; Dialog blocks interaction. Both are deprecated — for a blocking task use AlertDialog; for lightweight anchored content use RichTooltip or Menu."
+            },
+            {
+              "component": "Toast",
+              "distinction": "People sometimes call a transient confirmation a snackbar/toast. Toast is a non-blocking notification; Dialog interrupts. Use Toast for low-stakes, undoable feedback rather than a modal."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/dialog.md"
+        }
+      }
+    },
+    {
+      "name": "adaptive-modal",
+      "type": "registry:ui",
+      "title": "AdaptiveModal",
+      "description": "Renders a Drawer below the breakpoint and a Dialog at or above it. Only one branch mounts at a time; state stays external.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Content works equally well as a centered dialog and a bottom sheet — confirmations, list pickers, settings toggles, single-field forms.",
+            "Mobile is a significant audience and you want a native sheet on phones, a compact dialog on laptops.",
+            "You want one shared open state and one parallel content tree across both surfaces.",
+            "The two branches stay structurally identical — same title, copy, and buttons, only presentation differs."
+          ],
+          "notWhen": [
+            "The interaction is a destructive or consequential confirmation — use AlertDialog on every viewport instead.",
+            "The panel is side-anchored (nav, filters, notifications) or scroll-heavy — use Drawer at all sizes.",
+            "The surface is primarily desktop — use a single Dialog rather than maintaining two branches.",
+            "Mobile and desktop content genuinely diverge — build two separate flows, not one AdaptiveModal."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Dialog",
+              "distinction": "Dialog is one centered modal for all viewports; AdaptiveModal swaps to a Drawer below the breakpoint. Reach for Dialog when desktop is the only target, AdaptiveModal when mobile deserves a sheet."
+            },
+            {
+              "component": "Drawer",
+              "distinction": "Drawer is an anchored sheet at every size; AdaptiveModal is the desktop Dialog branch wrapped around a Drawer. Use Drawer alone for anchored or scroll-heavy panels, AdaptiveModal for centered-on-desktop content."
+            },
+            {
+              "component": "AlertDialog",
+              "distinction": "AlertDialog enforces role=alertdialog, blocks outside-click, and a binary footer on all viewports; never wrap it in AdaptiveModal. Use AlertDialog directly for destructive confirmations."
+            },
+            {
+              "component": "useMediaQuery hook",
+              "distinction": "useMediaQuery is the raw breakpoint primitive AdaptiveModal is built on. Use the hook when you need a boolean for arbitrary responsive logic, AdaptiveModal when you specifically want a dialog/sheet switcher."
+            },
+            {
+              "component": "responsive-dialog (other DS naming)",
+              "distinction": "Other systems call this pattern ResponsiveDialog or a single dialog with CSS visibility swaps. Arbor's AdaptiveModal mounts only one branch and shares external state — pick it for the same intent."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/adaptive-modal.md"
+        }
+      }
+    },
+    {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio",
+      "description": "Single-select controls built on Radix UI — the canonical Radio (control) and RadioItem (control + label + description), plus RadioButton selectable surfaces (compact, pill, squircle, card).",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Picking exactly one option from 2-6 mutually exclusive choices that all benefit from being visible at once.",
+            "Nearly every radio group — RadioItem (control + label + optional description) is the default.",
+            "Choices carry supporting descriptions that help someone decide between them.",
+            "You're composing your own label and layout, so you want the bare Radio control."
+          ],
+          "notWhen": [
+            "More than one option can be selected at once — use Checkbox instead.",
+            "7+ options, or space is tight, or choices are familiar and low-stakes — use Select.",
+            "Switching a view or mode inline (Day/Week/Month) where the choice is a reversible toggle — use SegmentedControl.",
+            "Reaching for the legacy RadioButton pill/card/squircle surfaces in new work — they are retained only for existing Frontyard consumers."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Select",
+              "distinction": "Both pick one value; Radio shows every answer at once, Select hides them behind one trigger. Use Radio for 2-6 visible options, Select for 7+ or tight space."
+            },
+            {
+              "component": "SegmentedControl",
+              "distinction": "Radio asks a form question with a label/description slot; SegmentedControl is a compact inline view toggle with no form semantics. Pick Radio for a form choice, SegmentedControl for switching a view/mode."
+            },
+            {
+              "component": "Checkbox",
+              "distinction": "Radio is single-select within a group; Checkbox is independent on/off per item. Pick Radio when exactly one option applies, Checkbox when several can."
+            },
+            {
+              "component": "RadioButton (legacy)",
+              "distinction": "RadioButton's pill/card/squircle selectable surfaces predate the canonical Radio and are kept only for existing consumers; new work should use Radio/RadioItem."
+            },
+            {
+              "component": "Switch (toggle)",
+              "distinction": "People confuse a two-option radio with a switch; a Switch is a binary on/off for one setting, a Radio group is a choice between distinct named options. Pick Switch for enable/disable, Radio for either/or."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/radio.md",
+          "implementation": "docs/design-system/guidelines/radio-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group (deprecated alias)",
+      "description": "Deprecated alias of `radio` — kept so `npx shadcn add radio-group` keeps resolving during the rename window. Removed in 16.0.0; install `radio` instead.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "deprecated",
+          "useWhen": [
+            "You are migrating an existing `npx shadcn add radio-group` install and need it to keep resolving during the rename window.",
+            "You hit a legacy reference to `radio-group` and need to know it now maps to the `radio` component."
+          ],
+          "notWhen": [
+            "You are starting new work — install `radio` instead; it ships the same RadioGroup, Radio, and RadioItem.",
+            "You want the canonical single-select control with label and description — reach for RadioItem inside a RadioGroup.",
+            "You want a component named `radio-group` to be the source of truth — it is only an alias pointing at `radio`."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "radio",
+              "distinction": "`radio` is the real, supported registry entry (RadioGroup + Radio + RadioItem); `radio-group` is just a deprecated alias pointing at the same source. Install `radio`, not `radio-group`."
+            },
+            {
+              "component": "RadioGroup (exported component)",
+              "distinction": "The `RadioGroup` React export is the live Radix container you compose with; `radio-group` is a registry install-name alias, not a distinct component. Import RadioGroup from the `radio` install."
+            },
+            {
+              "component": "RadioItem",
+              "distinction": "RadioItem is the default single-option control (control + label + description) you place inside a group; `radio-group` is only the deprecated install alias for the whole family. Use RadioItem for options, install via `radio`."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Checkbox built on Radix UI with checked, unchecked, and indeterminate states. Theme-aware inverse fill and a press-scale animation.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Letting people pick any number of options in a list, or none — multi-select and opt-in choices.",
+            "Capturing explicit consent before a form submits, like agreeing to terms.",
+            "A parent control needs an indeterminate state to reflect partially-selected children.",
+            "Selecting table rows or filter items where the effect is deferred until submit or apply."
+          ],
+          "notWhen": [
+            "The setting takes effect immediately on toggle — use Switch instead.",
+            "Choosing exactly one of several mutually exclusive options — use RadioGroup.",
+            "You need an error or validation state on an on/off toggle — Switch has none; use Checkbox or rephrase.",
+            "Grouping several checkboxes with a shared label — wrap them in Fieldset + FieldsetLegend."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Switch",
+              "distinction": "Switch is for an on/off setting that applies immediately; Checkbox is for selection or opt-in whose effect is usually deferred to submit. Switch has no indeterminate or error state — pick Checkbox when you need either, Switch for live settings."
+            },
+            {
+              "component": "RadioGroup",
+              "distinction": "RadioGroup picks exactly one of N mutually exclusive options; a checkbox group lets each option be toggled independently. Use RadioGroup when only one answer is valid, Checkbox when several can be."
+            },
+            {
+              "component": "ToggleButton / toggle (external concept)",
+              "distinction": "A 'toggle' often means a pressed/unpressed button that holds visual state; Checkbox is a form input that submits a value. Arbor has no Toggle component — use Checkbox for form data, SegmentedControl or aria-pressed for in-context pressed actions."
+            }
+          ],
+          "implementation": "docs/design-system/guidelines/checkbox-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Animated show/hide region built on Radix UI. Supports controlled and uncontrolled modes; honors prefers-reduced-motion.",
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Revealing a single supplementary section the page reads fine without (advanced settings, read more, show filters).",
+            "You need an animated height transition on open/close that respects prefers-reduced-motion.",
+            "You want a controlled or uncontrolled disclosure with a trigger plus one content panel.",
+            "Composing an accordion: lift open state to the parent across several Collapsibles for one-open-at-a-time."
+          ],
+          "notWhen": [
+            "The content is essential to understanding the page — show it inline instead of hiding it.",
+            "You need many grouped sections expanded at once — compose multiple Collapsibles rather than one.",
+            "A static show/hide with no animation suffices — native details/summary is simpler.",
+            "Hiding navigation between distinct views — use Tabs; deep hierarchies hurt keyboard nav."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Accordion",
+              "distinction": "Arbor ships no Accordion component; build accordion behavior by grouping Collapsibles and lifting open state to the parent. Reach for Collapsible, not a missing Accordion."
+            },
+            {
+              "component": "details/summary (native disclosure)",
+              "distinction": "Native details/summary is the same disclosure pattern but has no animated height transition or controlled state. Pick Collapsible when you need animation or controlled open, native when a plain static toggle is enough."
+            },
+            {
+              "component": "Tabs",
+              "distinction": "Tabs switch between mutually exclusive panels in a fixed slot; Collapsible expands optional content below a trigger. Use Tabs for view switching, Collapsible for reveal-in-place."
+            },
+            {
+              "component": "Popover",
+              "distinction": "Popover (deprecated) floats content in a portal anchored to a trigger; Collapsible expands content inline in document flow, pushing siblings down. Use Collapsible for persistent inline reveal; for transient overlays use RichTooltip or Menu — do not adopt Popover."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/collapsible.md"
+        }
+      }
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Deprecated — shipped without an approved design (DS-290); do not use for new UI. Floating content surface built on Radix UI with default and inverse variants, configurable side and align, and portal rendering.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "deprecated",
+          "useWhen": [
+            "Maintaining or migrating an existing Popover usage already in the codebase; do not adopt it for new work.",
+            "You need a click-anchored non-modal panel only until the Design System team lands an approved design for one."
+          ],
+          "notWhen": [
+            "Building any new anchored panel — Popover shipped without an approved design (DS-290) and is deprecated. Route to RichTooltip (rich hover or click-nudge content), Tooltip (plain text hints), Menu (action lists), or AlertDialog (blocking confirmations); escalate anything else to the Design System team.",
+            "The content is a brief, non-interactive label shown on hover or focus — use Tooltip or RichTooltip.",
+            "It opens on hover rather than click — use RichTooltip.",
+            "It is only a list of action items needing arrow-key navigation — use Menu.",
+            "The task must be completed or acknowledged before continuing, or needs a focus trap — use AlertDialog."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "RichTooltip",
+              "distinction": "RichTooltip opens on hover/focus with a curated title/description layout; Popover (deprecated) opens on click and holds free-form interactive content. Reach for RichTooltip for hover content; do not adopt Popover for new click-anchored panels — escalate to the Design System team."
+            },
+            {
+              "component": "Tooltip",
+              "distinction": "Tooltip is a plain-text label (role=tooltip) shown on hover/focus and never holds interactive content; Popover (deprecated) is a click-activated role=dialog surface. Just a label? Tooltip. Interactive content? Use Menu for action lists or escalate to the Design System team."
+            },
+            {
+              "component": "Menu",
+              "distinction": "Menu is a role=menu action list with arrow-key navigation; Popover (deprecated) held free-form Tab-navigable content. Action items go in Menu; for free-form anchored panels there is no approved component — escalate to the Design System team."
+            },
+            {
+              "component": "AlertDialog",
+              "distinction": "AlertDialog is modal, centered, and focus-trapped for tasks requiring completion or confirmation; Popover (deprecated) is non-modal and anchored to its trigger. Needing modal behavior means you want AlertDialog."
+            },
+            {
+              "component": "HoverCard",
+              "distinction": "HoverCard is a read-only hover-activated preview card (a Radix primitive not in Arbor); for a hover preview use RichTooltip. Popover (deprecated) was the click-activated equivalent — do not adopt it for new work."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/popover.md"
+        }
+      }
+    },
+    {
+      "name": "rich-tooltip",
+      "type": "registry:ui",
+      "title": "RichTooltip",
+      "description": "Click-triggered, content-rich tooltip built on Radix Popover (not Tooltip). Use for onboarding nudges and contextual education; theme-aware inverse styling.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Showing a click-triggered nudge with a title plus description that persists until dismissed.",
+            "Delivering contextual education or onboarding hints anchored to a specific control.",
+            "You need a dismiss (close) button and theme-aware inverse styling on a small overlay.",
+            "Content stays short — a heading and one or two lines — and is supplementary, not required."
+          ],
+          "notWhen": [
+            "The content is one short text phrase shown on hover or focus — use Tooltip.",
+            "The overlay holds arbitrary interactive content like links, forms, or menus — use Menu for action lists; for a free-form anchored panel there is no approved component (Popover is deprecated) — escalate to the Design System team.",
+            "The message blocks the page and demands a decision — use Dialog or AlertDialog.",
+            "The information is required to complete the task — put it in always-visible helper text instead."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Tooltip",
+              "distinction": "Tooltip is an ephemeral, hover/focus-triggered plain-text label with no interactive content; RichTooltip is click-triggered, persistent, and carries a title, description, icon, and dismiss button. Pick Tooltip for a one-line hint, RichTooltip for a structured nudge."
+            },
+            {
+              "component": "Popover",
+              "distinction": "Both are built on Radix Popover and persist on click, but RichTooltip is a curated title/description/close layout with inverse styling; Popover (deprecated) is a generic slot for any content tree. Pick RichTooltip for a fixed nudge layout; do not adopt Popover for free-form content — escalate to the Design System team."
+            },
+            {
+              "component": "Dialog",
+              "distinction": "Dialog is a focus-trapping modal for content that blocks the page and requires a decision; RichTooltip is a lightweight, non-blocking overlay anchored to a trigger. Pick Dialog when the page should be inert behind it, RichTooltip for in-place education."
+            },
+            {
+              "component": "Toast",
+              "distinction": "A toast (sometimes called a snackbar) is a transient, system-initiated message not anchored to any control; RichTooltip is user-initiated and anchored to a specific trigger. Pick Toast for ephemeral status feedback, RichTooltip for in-place education."
+            }
+          ],
+          "implementation": "docs/design-system/guidelines/rich-tooltip-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Hover-triggered label built on Radix UI with inverse styling, configurable positioning, and prefers-reduced-motion support.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Labeling an icon-only button or control whose action has no visible text.",
+            "Adding a keyboard shortcut hint to an action that already has a visible label.",
+            "Giving a short supplementary field hint that helps but is not required to finish the task.",
+            "Explaining a truncated label, short code, or symbol on hover or keyboard focus."
+          ],
+          "notWhen": [
+            "Information is required to complete a task — use always-visible helper text or a Field description.",
+            "Content has links, buttons, or form fields — use Menu for action lists or escalate to the Design System team (Popover is deprecated).",
+            "Content needs a title, description, and dismiss button that persists — use RichTooltip.",
+            "Triggering on a disabled button or non-focusable div — keyboard people never see it."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "RichTooltip",
+              "distinction": "RichTooltip is click-triggered, persists until dismissed, and holds a title + description + close button; Tooltip is hover/focus, ephemeral, plain text only. Pick Tooltip for a one-line label, RichTooltip for an onboarding nudge."
+            },
+            {
+              "component": "Popover",
+              "distinction": "Popover (deprecated) holds arbitrary interactive content and moves focus into itself; Tooltip content is never focusable. Tooltip is for a static label; the moment content has something to click, use Menu or escalate to the Design System team."
+            },
+            {
+              "component": "HoverCard",
+              "distinction": "HoverCard previews rich content (avatar, bio, stats) on hover, but Arbor has no HoverCard yet; Tooltip is a short text label. For a hover-triggered preview today use RichTooltip, Tooltip for naming an action."
+            },
+            {
+              "component": "native title attribute",
+              "distinction": "The browser title tooltip has uncontrollable timing, no styling, and inconsistent screen-reader support. Use Arbor Tooltip for styled, accessible hints — and drop title to avoid a double tooltip."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/tooltip.md",
+          "implementation": "docs/design-system/guidelines/tooltip-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Dropdown select built on Radix UI with outline and filled triggers across three sizes. Integrates with Field for form usage.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Picking one option from a list of 4 or more, where you want Arbor styling on the menu.",
+            "Options need grouping with labels, custom rendering (icons, descriptions), or popper positioning.",
+            "The trigger should match Arbor's outline or filled input styling across sm, md, or lg sizes.",
+            "Wrapping in Field for a labeled, validated form control via FieldSelect."
+          ],
+          "notWhen": [
+            "The form is simple or mobile-first and OS-native pickers serve better — use NativeSelect.",
+            "There are fewer than 4 options — use RadioGroup or SegmentedControl.",
+            "People need to search, filter, or create entries in a long list — use Combobox.",
+            "Multiple values can be selected at once — Select is single-value only."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "NativeSelect",
+              "distinction": "NativeSelect wraps the browser <select> for platform-native pickers and dense forms; Select is the Radix-based custom listbox for grouped options and Arbor-styled menus. Pick NativeSelect for simple mobile forms, Select for rich grouped UX."
+            },
+            {
+              "component": "SegmentedControl",
+              "distinction": "SegmentedControl shows all 2-5 options at once as a single-choice toggle; Select hides options behind a trigger. Use SegmentedControl for few always-visible choices, Select for longer lists."
+            },
+            {
+              "component": "Combobox",
+              "distinction": "A Combobox lets you type to filter a long list and keeps the selection as a value; Select only picks from a short fixed list with no typing. Roughly 10+ options or any filtering need → Combobox."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/select.md",
+          "implementation": "docs/design-system/guidelines/select-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Inline label for status, metadata, and classification. Composes Status, Plan, and Notification specialized badges across nine variants and three emphasis levels.",
+      "categories": [
+        "badge"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Labeling status, metadata, or classification inline next to a row title or icon (1-2 words).",
+            "Showing one primary signal per item across eight semantic variants (success, danger, warning, info, etc.).",
+            "Rendering a status pill via StatusBadge or a plan/tier label via PlanBadge.",
+            "Showing an online/offline state with a dot-only badge plus an aria-label."
+          ],
+          "notWhen": [
+            "Showing a numeric unread or new count — use NotificationBadge (circular, role=status, auto-hides at 0).",
+            "Needing dismiss, toggle-select, or removable filter behavior — that's Chip.",
+            "Making the whole thing clickable as a filter or link — use Button variant=ghost or a real link.",
+            "Surfacing page-level status with a headline and description — use Alert."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "NotificationBadge",
+              "distinction": "NotificationBadge is a circular numeric count (role=status, auto-hides at 0); Badge is a text/dot status pill. Pick NotificationBadge for unread counts, Badge for state labels."
+            },
+            {
+              "component": "Chip",
+              "distinction": "A chip is interactive — dismissible or toggle-selectable. Badge is strictly read-only with zero focusable descendants. If people can de-select or remove it, use Chip; if it only informs, use Badge."
+            },
+            {
+              "component": "Alert",
+              "distinction": "Alert is a page-level status block with icon, headline, description, and optional dismiss; Badge is a compact inline indicator. Use Alert for 'Payment failed', Badge for 'Active'."
+            },
+            {
+              "component": "Avatar",
+              "distinction": "Avatar represents a person or account image; Badge labels words, counts, or status. Pick Avatar for identity, Badge for a status/category label — and AvatarBadge for a presence dot on an Avatar."
+            },
+            {
+              "component": "Inline status text",
+              "distinction": "Plain inline text carries three or more metadata dimensions on one row; Badge carries only the single primary signal. Don't stack multiple badges — use inline text for the rest."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/badge.md",
+          "implementation": "docs/design-system/guidelines/badge-implementation.md",
+          "decisions": [
+            "DL-059"
+          ]
+        }
+      }
+    },
+    {
+      "name": "indicator-badge",
+      "type": "registry:ui",
+      "title": "Indicator Badge",
+      "description": "Communicates presence, activity state, or a count. Renders as a dot for binary states (active/online/error) or a count bubble for notification quantities, with a custom-color escape hatch for off-system use.",
+      "categories": [
+        "badge"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Showing a numeric notification count (unread, new) as a small bubble that auto-hides at 0 and caps as '{max}+'.",
+            "Showing a binary presence or activity state (active, online, error) as a 6px dot.",
+            "Needing an off-system custom color for a state outside the built-in notification color."
+          ],
+          "notWhen": [
+            "Labeling status, plan, or metadata with text — that's Badge (StatusBadge / PlanBadge).",
+            "Surfacing page-level status with a headline and description — use Alert.",
+            "Putting descriptive words inside the indicator — IndicatorBadge holds a count or nothing, never a text label."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Badge",
+              "distinction": "Badge is a label — a text/dot status, plan, or metadata pill. IndicatorBadge is an indicator — a dot for a binary state or a count bubble for a quantity, with no text label inside. Pick Badge for 'Active', IndicatorBadge for a red '3'."
+            },
+            {
+              "component": "NotificationBadge (deprecated)",
+              "distinction": "NotificationBadge is the older count bubble on Badge (subtle fill); IndicatorBadge supersedes it with the saturated notification color that matches Figma, plus dot and custom-color modes. Use IndicatorBadge for new work."
+            },
+            {
+              "component": "AvatarBadge",
+              "distinction": "AvatarBadge is the presence dot positioned on an Avatar; IndicatorBadge is the standalone indicator. Use AvatarBadge when it overlays an avatar, IndicatorBadge elsewhere."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/indicator-badge.md",
+          "implementation": "docs/design-system/guidelines/indicator-badge-implementation.md",
+          "decisions": [
+            "DL-085"
+          ]
+        }
+      }
+    },
+    {
+      "name": "chip",
+      "type": "registry:ui",
+      "title": "Chip",
+      "description": "Interactive compact control for filters and dismissible tags. Toggle mode renders an aria-pressed filter pill; dismissible mode adds a trailing remove button. For read-only metadata, use Badge.",
+      "categories": [
+        "badge"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Toggling a filter on and off as a compact pill — the whole chip is an aria-pressed button (pass onSelectedChange).",
+            "Showing applied tags or filters people can remove — the trailing remove button is the only tab stop (pass onRemove + removeLabel).",
+            "Rendering selected values inside an input, like Combobox multi-select chips — static mode, with interaction semantics supplied by the composing component.",
+            "Compact filter rows where several independent chips can be selected at once."
+          ],
+          "notWhen": [
+            "Labeling read-only status, plan, or metadata — that's Badge (zero focusable descendants).",
+            "Choosing exactly one option from a mutually exclusive set — use SegmentedControl (2-5 options) or RadioGroup.",
+            "Building a filter button that opens a menu and shows an active-filter count — compose Button + Menu + IndicatorBadge; Chip deliberately doesn't absorb that trigger pattern.",
+            "Showing a numeric notification count — use IndicatorBadge."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Badge",
+              "distinction": "Badge is strictly read-only metadata; Chip is interactive — toggleable or dismissible. If people can select, de-select, or remove it, it's a Chip; if it only informs, it's a Badge."
+            },
+            {
+              "component": "SegmentedControl",
+              "distinction": "SegmentedControl is a single-choice control where exactly one segment is always active; Chips are independent toggles where zero, one, or many can be selected. Pick SegmentedControl for view switching, Chips for additive filtering."
+            },
+            {
+              "component": "Button (filter-button pattern)",
+              "distinction": "A filter button (Figma's multi-filter chip: dark fill + count + caret) is a dropdown trigger, not a toggle — compose Button + Menu + IndicatorBadge. Chip toggles or dismisses in place and never opens a menu."
+            },
+            {
+              "component": "IndicatorBadge",
+              "distinction": "IndicatorBadge is a tiny read-only count/dot indicator; Chip is an interactive pill with a text label. A count inside a filter button comes from IndicatorBadge, not from a Chip."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/chip.md",
+          "implementation": "docs/design-system/guidelines/chip-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable selection built on Base UI — a text input that filters an option list and keeps a persistent value. Single mode fills the input; multiple mode renders selections as dismissible Chips. Composes with Field for label, error state, and layout.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Selecting from a long list (roughly 10+ options) where typing to filter beats scanning — assignees, tags, countries, links.",
+            "Multi-select tagging where selections should render as dismissible chips inside the input (pass multiple).",
+            "Async or remote option lists — pass filter={null} and drive the list from your own query results.",
+            "A selection needs a persistent value bound to a form (name renders a hidden input) with full Field label, error, and layout integration."
+          ],
+          "notWhen": [
+            "Picking from a short static list (under ~10 options) with no filtering need — use Select or NativeSelect.",
+            "Navigational search where people visit a result rather than keep a selected value — use SearchInput.",
+            "Searching for actions or commands (a command palette) — out of Combobox's scope by design.",
+            "Choosing among 2-5 always-visible options — use RadioGroup or SegmentedControl."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Select",
+              "distinction": "Select is a trigger button over a fixed list — no typing, value shown on the trigger. Combobox is a text input that filters options and keeps a persistent value. If people would want to type, it's a Combobox."
+            },
+            {
+              "component": "SearchInput",
+              "distinction": "SearchInput is navigational — type, pick a result, go there; nothing stays selected (a <search> landmark). Combobox is selectional — the chosen value persists in the input (single) or as chips (multiple) and submits with forms."
+            },
+            {
+              "component": "NativeSelect",
+              "distinction": "NativeSelect is the OS-native picker for simple forms; it has no filtering beyond browser typeahead. Reach for Combobox when the list is long enough that type-to-filter matters."
+            },
+            {
+              "component": "Menu",
+              "distinction": "Menu hosts actions; Combobox hosts a selection. Combobox deliberately never absorbs command-palette behavior — options are values, not commands."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/combobox.md",
+          "implementation": "docs/design-system/guidelines/combobox-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "search-bar",
+      "type": "registry:ui",
+      "title": "Search Bar",
+      "description": "A search-specific text input for filtering, querying, or navigating content in place — a named ergonomic recipe over Field with a leading magnifying-glass, an optional clear (×) button, and Escape-to-clear. No suggestion dropdown (use Combobox for a persistent value, or SearchBar + an anchored Menu to navigate) and no error state (surface \"No results\" in the results region).",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Letting someone type a query to filter, search, or narrow content that renders in place (a list, table, grid, or results region).",
+            "A search-entry control needs a leading magnifying-glass and an optional clear (×) without hand-wiring them, plus Escape-to-clear.",
+            "The field is a self-contained search control — a toolbar/header search, a list filter, a page search — not one input among several in a data-entry form."
+          ],
+          "notWhen": [
+            "Typing should reveal a dropdown of suggestions to pick from — use Combobox (selectable value persists) or SearchBar + an anchored Menu (navigational). Do not rebuild the deprecated SearchInput.",
+            "The value is form data entered and submitted (name, URL, email) — use Field plus Field.Input.",
+            "Choosing from a fixed, static option set — use Select or NativeSelect.",
+            "You need an error/validation state — search has none; surface \"No results\" in the results region instead."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Field + Input",
+              "distinction": "Field is the compound labeled-input for form data entry; SearchBar is a search-specific recipe over Field with a built-in leading glass, clear button, Escape-to-clear, and no error state. Entering data to submit? Field. Querying/filtering content in place? SearchBar."
+            },
+            {
+              "component": "Combobox",
+              "distinction": "Combobox is a type-to-filter input with a listbox popup whose selected value persists and submits with forms; SearchBar is the text entry only — no dropdown, nothing selected. Need a kept, selectable value? Combobox. Just the query field? SearchBar."
+            },
+            {
+              "component": "SearchInput",
+              "distinction": "SearchInput is the deprecated search-with-suggestions dropdown compound. For plain text search use SearchBar; for suggestions use Combobox (selectable) or SearchBar + an anchored Menu (navigational)."
+            },
+            {
+              "component": "Select",
+              "distinction": "Select picks from a fixed, static option set; SearchBar searches free text over dynamic content. Fixed options? Select. Free-text query? SearchBar."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/search-bar.md",
+          "decisions": [
+            "DL-104"
+          ]
+        }
+      }
+    },
+    {
+      "name": "divider",
+      "type": "registry:ui",
+      "title": "Divider",
+      "description": "Visual separator built on Radix Separator with horizontal or vertical orientation and an optional inline label (e.g. \"or\").",
+      "categories": [
+        "layout"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Separating content groups or stacked rows with a thin horizontal or vertical line.",
+            "Splitting two sections of inline content with a centered label like 'or' between auth options.",
+            "Marking a meaningful boundary for screen readers — pass decorative={false} for role=\"separator\"."
+          ],
+          "notWhen": [
+            "Separating items inside a Select — use SelectDivider instead.",
+            "Adding empty space between elements — use gap or spacing tokens, not a Divider.",
+            "Drawing a box outline or grouping into a panel — use a bordered container instead.",
+            "Underlining or boxing a heading for emphasis — use typography tokens."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "SelectDivider",
+              "distinction": "SelectDivider is a listbox-scoped separator with the right insets and roles; Divider is the standalone separator for page and layout content. Pick SelectDivider inside a select, Divider everywhere else."
+            },
+            {
+              "component": "Separator",
+              "distinction": "Separator is the deprecated alias for Divider (renamed in v13.0.0; still exported as a deprecated alias today, pending removal). Always use Divider in new code, and run the separator-to-divider codemod to migrate."
+            },
+            {
+              "component": "HTML <hr> / 'rule'",
+              "distinction": "Divider is the Arbor-tokenized, orientation- and label-aware version of a horizontal rule; reach for Divider, not a raw <hr>, so it picks up theme tokens and ARIA."
+            },
+            {
+              "component": "Border / outline",
+              "distinction": "A border wraps or outlines an element; a Divider is a freestanding line between two elements. Use a container border to enclose content, a Divider to split it."
+            }
+          ],
+          "implementation": "docs/design-system/guidelines/divider-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "backdrop",
+      "type": "registry:ui",
+      "title": "Backdrop",
+      "description": "Translucent scrim that dims UI behind a modal, sheet, or drawer. Composes with Radix overlay primitives via asChild.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Building a custom modal, sheet, or drawer that needs a translucent scrim dimming the UI behind it.",
+            "Slotting a shared scrim into a Radix overlay primitive via asChild so Dialog/Drawer share one backdrop look.",
+            "Dimming a dark surface — pass inverted to render the light scrim instead of the default dark one."
+          ],
+          "notWhen": [
+            "Showing a standard modal — use Dialog or AlertDialog; they already render Backdrop inside their Radix Overlay.",
+            "Showing a side panel — use Drawer, which composes the scrim for you.",
+            "Needing focus trap, escape-to-close, or click-outside dismissal — Backdrop is presentation only (aria-hidden div); wire those via the Radix overlay it composes into.",
+            "Frosting a Popover or Button surface — use the glass material axis (.glass-frosted), not the dimming scrim."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Dialog / AlertDialog",
+              "distinction": "Dialog is a full Radix-driven modal with focus trap and DialogOverlay (which itself renders Backdrop asChild); Backdrop is just the dimming scrim. Reach for Dialog for a complete modal, Backdrop only when composing your own overlay."
+            },
+            {
+              "component": "Drawer",
+              "distinction": "Drawer is a sliding panel that already includes the scrim via DrawerOverlay; Backdrop is the bare scrim it builds on. Pick Drawer for a panel, Backdrop only for custom overlays."
+            },
+            {
+              "component": "Scrim (Material / generic term)",
+              "distinction": "What Material Design and other systems call a scrim is exactly this component in Arbor — it is named Backdrop. Same concept, use Backdrop."
+            },
+            {
+              "component": "Glass material (translucent/glass surface)",
+              "distinction": "The glass material axis frosts a content surface (Popover, Button) so what is behind shows through; Backdrop dims the whole viewport behind a modal. Use material for frosted UI, Backdrop for dimming."
+            }
+          ],
+          "implementation": "docs/design-system/guidelines/backdrop-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Toggle switch built on Radix UI with compact and neutral options, an optional inline label, and animated track-and-thumb.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "A single binary setting takes effect immediately, like enabling notifications or dark mode.",
+            "The on/off state maps to a real-time toggle rather than a value submitted with a form.",
+            "You need a compact toggle (set compact) or a neutral ink track instead of the success-green active state.",
+            "An inline label sits beside the control via the label prop, wired with htmlFor."
+          ],
+          "notWhen": [
+            "The choice is opt-in or deferred until form submit, or needs an indeterminate state — use Checkbox.",
+            "You need validation or an error state — Switch has none by design; use Checkbox.",
+            "People pick one of several mutually exclusive options — use RadioGroup.",
+            "An icon-only control triggers an action rather than holding state — use IconButton."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Checkbox",
+              "distinction": "Switch is on/off with immediate effect and no error state; Checkbox is selection/opt-in, supports indeterminate and validation. Pick Switch for live settings, Checkbox for deferred form submission."
+            },
+            {
+              "component": "RadioGroup",
+              "distinction": "Switch toggles one binary state; RadioGroup picks one of N mutually exclusive options. Use RadioGroup when there are more than two choices, Switch for a single on/off."
+            },
+            {
+              "component": "Button",
+              "distinction": "Button fires a one-shot action; Switch holds an on/off setting that applies immediately. Pick Switch for live settings, Button for actions — don't style a Button as a pressed toggle."
+            },
+            {
+              "component": "ToggleButton / toggle (external concept)",
+              "distinction": "A 'toggle' often means a pressed/unpressed button (IconButton or SegmentedControl in Arbor); Switch is the labeled on/off setting control. Pick Switch for settings, a pressed-state control for toolbar actions."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/form-controls.md",
+          "implementation": "docs/design-system/guidelines/switch-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "An icon-only, binary pressable control (button with aria-pressed) rendered as a switch-shaped sliding pill. Two icons show the off/on states of one concept and the thumb slides over the active one. For toolbar modes and binary view switches — not form settings (use Switch) or picking one of several labeled views (use SegmentedControl).",
+      "categories": [
+        "button"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "A single binary mode is switched on/off on the current surface, like mute/unmute or live-preview on/off.",
+            "The control is icon-only and the two icons represent the off and on states of one concept.",
+            "You need a compact toolbar-style control whose state is held (pressed), not a one-shot action.",
+            "The change applies immediately in place and is not a value submitted with a form."
+          ],
+          "notWhen": [
+            "The setting is a saved on/off preference in a form — use Switch (role=switch), Toggle is for modes not settings.",
+            "People pick one of several labeled, mutually exclusive views (grid/list, day/week) — use SegmentedControl.",
+            "The control fires a one-shot action with no held state — use Button or IconButton.",
+            "You need a visible text label beside the icon, or more than two states — use SegmentedControl."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Switch",
+              "distinction": "Both are binary and switch-shaped, but semantics differ: Switch is role=switch for a saved on/off SETTING that takes effect immediately (form-adjacent); Toggle is a button+aria-pressed for a toolbar MODE. The sliding-pill shape on Toggle is chosen for icon identity, not to imply a persisted setting. Setting → Switch; mode → Toggle."
+            },
+            {
+              "component": "SegmentedControl",
+              "distinction": "Toggle is ONE button (aria-pressed) whose two icons are the two STATES of a single concept; SegmentedControl is N independently-selectable buttons picking one of several parallel OPTIONS, and it carries labels. Two states of one thing → Toggle; one-of-several labeled views → SegmentedControl."
+            },
+            {
+              "component": "IconButton",
+              "distinction": "IconButton is a one-shot action with no held state and no track/thumb; Toggle holds a pressed on/off state and renders the sliding-pill track. Action → IconButton; held binary mode → Toggle."
+            },
+            {
+              "component": "Checkbox",
+              "distinction": "Checkbox is a form selection with deferred submit, indeterminate, and validation; Toggle is an immediate icon-only mode with none of those. Deferred form choice → Checkbox; live toolbar mode → Toggle."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/toggle.md",
+          "implementation": "docs/design-system/guidelines/toggle-implementation.md",
+          "decisions": [
+            "DL-103"
+          ]
+        }
+      }
+    },
+    {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "A floating panel of contextual actions opened from a trigger. Built on Radix UI with leading/trailing icon slots, an optional description line, section headings, checkbox and radio items, submenus, keyboard-shortcut hints, and a destructive variant. The canonical Arbor menu surface.",
+      "categories": [
+        "overlay"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Opening a floating panel of contextual actions, commands, or navigation from a trigger you control via asChild.",
+            "Rendering rows with a leading icon, an optional secondary description line, a trailing supporting hint or keyboard shortcut, and a destructive variant.",
+            "Toggling settings inline via checkbox or radio items, where the choice is a command not a submitted form value.",
+            "Grouping related actions under non-focusable section headings, separated by MenuDivider."
+          ],
+          "notWhen": [
+            "Selecting a value for a form field from a list — use Select or SearchInput instead.",
+            "Right-click / context menus — the context-menu type is deferred in v1; compose the Radix `@radix-ui/react-context-menu` primitive directly until Menu ships it.",
+            "Nesting more than 2 submenu levels — switch to a tree, cascading panels, or a dedicated page.",
+            "Showing a single hover hint or arbitrary interactive content — use Tooltip or RichTooltip instead."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Select",
+              "distinction": "Select picks a value for a form field; Menu fires actions and toggles. Use Select when the result is a submitted value, Menu for an action menu."
+            },
+            {
+              "component": "ContextMenu",
+              "distinction": "ContextMenu opens on right-click at the cursor; Menu v1 opens from a button trigger. The context-menu type is deferred — use the Radix `@radix-ui/react-context-menu` primitive directly for right-click menus."
+            },
+            {
+              "component": "Popover",
+              "distinction": "Popover (deprecated) holds arbitrary interactive content; Menu is a roving-focus list of items. Use Menu for an action list; for forms or free-form anchored layout there is no approved component — escalate to the Design System team."
+            }
+          ],
+          "implementation": "docs/design-system/guidelines/menu-implementation.md",
+          "decisions": [
+            "DL-087"
+          ]
+        }
+      }
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "User avatar with image, fallback, badge, and overflow-group composition. Five sizes and three shapes (circle, squircle, square).",
+      "categories": [
+        "data-display"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Representing a person or account with a photo, initials, or icon fallback (xs/sm/md/lg/xl).",
+            "Showing presence or status on an avatar via the AvatarBadge dot in a corner.",
+            "Stacking several people in an overlapping row with AvatarGroup and an AvatarGroupCount overflow tally.",
+            "Matching a surface's shape with circle, squircle, or square avatars."
+          ],
+          "notWhen": [
+            "Labeling a count, status word, or category as text — use Badge (StatusBadge/PlanBadge).",
+            "Flagging unread items on an icon or button — use NotificationBadge.",
+            "Showing a loading placeholder while the avatar resolves — use SkeletonAvatar.",
+            "Rendering a plain UI glyph with no person behind it — use an icon from components/icons.",
+            "Showing a brand or service logo — use AppIcon."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Badge",
+              "distinction": "Badge is a small text/status label (StatusBadge, PlanBadge); Avatar represents a person or account image. Pick Badge for words/counts, Avatar for identity."
+            },
+            {
+              "component": "NotificationBadge",
+              "distinction": "NotificationBadge is the unread dot/count overlay on an icon or button; AvatarBadge is Avatar's own presence/status dot. Use AvatarBadge inside an Avatar, NotificationBadge elsewhere."
+            },
+            {
+              "component": "AppIcon",
+              "distinction": "AppIcon renders a brand/service logo at a fixed size; Avatar renders a person or account portrait with initials/icon fallback. Use AppIcon for a product mark, Avatar for identity imagery."
+            },
+            {
+              "component": "SkeletonAvatar",
+              "distinction": "SkeletonAvatar is the shimmer placeholder shown before the image loads; Avatar is the resolved element. Render SkeletonAvatar during loading, Avatar once data arrives."
+            },
+            {
+              "component": "chip / pill",
+              "distinction": "A 'chip' or 'pill' is a compact labeled token — that is Badge or a small Button in Arbor, not Avatar. Use Badge/Button for a token, Avatar for an identity image."
+            },
+            {
+              "component": "Gravatar / profile picture",
+              "distinction": "External term for the picture itself. Arbor's Avatar is the component that renders it with AvatarImage plus an initials/icon fallback; use Avatar — there is no separate 'profile picture' component."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline status message with five statuses (info, success, warning, error, neutral), primary or secondary visual variants, and an optional dismiss action.",
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "A form submission fails and the error must stay visible above the form until it's fixed.",
+            "A persistent system condition needs to stay on the page (plan limit reached, service degradation, beta notice).",
+            "A status message is too long or important to trust to a 5-second toast.",
+            "A contextual warning belongs alongside a specific section and should be announced to screen readers."
+          ],
+          "notWhen": [
+            "Feedback is transient and the action already completed ('Profile saved', 'Link copied') — use Toast.",
+            "Someone must explicitly confirm or cancel a destructive action — use AlertDialog.",
+            "Guidance is per-field and always applies regardless of input — use Field description (inline helper text).",
+            "You'd let someone dismiss an unresolved error — omit onDismiss so the alert persists until fixed."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Toast",
+              "distinction": "Toast auto-dismisses and overlays the viewport; Alert persists in page flow and announces assertively for error/warning. Pick Alert when missing the message would cause a problem, Toast for transient confirmation."
+            },
+            {
+              "component": "AlertDialog",
+              "distinction": "AlertDialog is a modal that blocks until someone confirms or cancels; Alert never blocks and requires no decision. Pick AlertDialog for destructive confirmations, Alert to inform in place."
+            },
+            {
+              "component": "Field (inline helper/error text)",
+              "distinction": "Field description is static per-field guidance; Alert is a page- or section-level status surface for multi-field or system errors. Pick Field text for single-field validation, Alert for broader status."
+            },
+            {
+              "component": "Banner (other DS term)",
+              "distinction": "What Polaris/Atlassian call a 'banner' is Arbor's Alert — an inline persistent status surface. Use Alert; there is no separate Banner component."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/alert.md",
+          "implementation": "docs/design-system/guidelines/alert-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Notification toast built on Sonner with default and inverse surfaces, optional icon, action button, and stacked chin decoration.",
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Confirm a completed action with ambient, self-dismissing feedback (saved, copied, sent).",
+            "Surface a transient success, info, or warning that does not block what someone is doing.",
+            "Offer one optional follow-up action like undo or retry alongside brief copy.",
+            "Send programmatically via sendToast / sendToastSuccess outside React render."
+          ],
+          "notWhen": [
+            "A blocking error or destructive confirmation needs a decision — use Dialog or AlertDialog (assertive, focused).",
+            "The message must stay visible and persist on the page — use Alert inline instead.",
+            "The only way to reach an action is the toast and it auto-dismisses — put the action elsewhere too.",
+            "Validation belongs next to a field — use Field error text, not a toast."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Alert",
+              "distinction": "Alert is a persistent inline notification that stays in the layout; Toast is ambient and auto-dismisses. Pick Alert when the message must remain visible, Toast for transient feedback."
+            },
+            {
+              "component": "Dialog / AlertDialog",
+              "distinction": "Dialogs interrupt with focus and demand a choice (assertive); Toast announces politely and never blocks. Pick a dialog for errors or confirmations needing action, Toast for low-stakes status."
+            },
+            {
+              "component": "Tooltip",
+              "distinction": "Tooltip explains an element on hover/focus and is anchored to it; Toast is an unanchored, time-boxed system notification. Pick Tooltip for contextual hints, Toast for action confirmation."
+            },
+            {
+              "component": "snackbar",
+              "distinction": "Snackbar is the Material name for this same pattern. In Arbor it is Toast — built on Sonner with default/inverse surfaces. Use Toast."
+            },
+            {
+              "component": "banner",
+              "distinction": "A banner is a page-level persistent message bar; Toast is transient and floats over content. Use Alert for banner-style notices, Toast for ephemeral feedback."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/toast.md",
+          "implementation": "docs/design-system/guidelines/toast-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "NativeSelect",
+      "description": "Native HTML select styled with Arbor design tokens. Use when platform select behaviour is preferred over a custom dropdown.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "The form is simple, mobile-first, or data-dense and benefits from OS-native pickers.",
+            "You want maximum platform consistency and native scroll/selection behavior.",
+            "The list has 4 to ~10 options that need no custom rendering.",
+            "You want field error state to flow automatically via the Field component."
+          ],
+          "notWhen": [
+            "You need grouped visual labels, icons, or custom item rendering — use Select (custom).",
+            "People must search or filter a long list — use Combobox.",
+            "Fewer than 4 options — use RadioGroup or SegmentedControl.",
+            "Multiple values must be selectable — use Combobox with multiple (selections render as chips)."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Select",
+              "distinction": "Select is the custom Radix listbox with popper positioning and rich item rendering; NativeSelect wraps the browser's <select> for platform-native pickers. Pick NativeSelect for simple/mobile forms, Select for design-system-styled menus."
+            },
+            {
+              "component": "RadioGroup",
+              "distinction": "RadioGroup exposes all choices inline for a small set; NativeSelect collapses choices behind a control. Use RadioGroup under 4 options, NativeSelect for 4+."
+            },
+            {
+              "component": "Combobox",
+              "distinction": "A Combobox adds type-to-filter over a large list and supports multi-select chips; NativeSelect has no typeahead beyond the browser default. Reach for Combobox when filtering matters."
+            },
+            {
+              "component": "Menu",
+              "distinction": "Menu triggers actions/commands; NativeSelect picks a form value. Use NativeSelect when the result is a selected value, Menu for an action list."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/select.md",
+          "implementation": "docs/design-system/guidelines/native-select-implementation.md"
+        }
+      }
+    },
+    {
+      "name": "app-icon",
+      "type": "registry:ui",
+      "title": "AppIcon",
+      "description": "Typed component for 244 third-party service logos synced from Figma. Five sizes (20, 24, 28, 40, 48px) and three variants (color, mono, outline).",
+      "categories": [
+        "icons"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Showing a recognizable third-party or first-party service logo (Spotify, Instagram, PayPal) by its app name.",
+            "Building link or platform lists where each row needs its brand mark at a fixed size (20/24/28/40/48px).",
+            "You need a monochrome (currentColor) or stroke outline treatment of a brand logo, not just full color.",
+            "You want a typed app prop with a graceful fallback when a logo key is missing."
+          ],
+          "notWhen": [
+            "You need a generic UI glyph (chevron, search, trash) — import from @linktr.ee/arbor/icons (Phosphor) instead.",
+            "You need a clickable icon control — wrap it in IconButton instead.",
+            "The mark is a custom one-off not in the synced set — add an SVG to the Figma source or use a plain img.",
+            "You want to import it from the main barrel — AppIcon ships only via the @linktr.ee/arbor/components/AppIcon subpath to protect tree-shaking."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "icons",
+              "distinction": "icons re-exports the full Phosphor set of generic UI glyphs; AppIcon renders specific brand/service logos by name. Reach for icons for interface symbols, AppIcon for a recognizable product mark."
+            },
+            {
+              "component": "IconButton",
+              "distinction": "IconButton is an interactive button with an icon; AppIcon is a non-interactive presentational logo. Wrap AppIcon in IconButton (or a link) when it needs to be clickable, use AppIcon alone for display."
+            },
+            {
+              "component": "Avatar",
+              "distinction": "Avatar fits a person or entity portrait with initials fallback; AppIcon is a fixed brand mark. Use AppIcon for a logo, Avatar for user/profile imagery."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "fieldset",
+      "type": "registry:ui",
+      "title": "Fieldset",
+      "description": "Semantic grouping for form controls. Wraps radio, checkbox, and other primitives with a legend and description.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Grouping related radio or checkbox controls under one visible question or legend.",
+            "You need native <fieldset>/<legend> semantics so screen readers announce the group label per option.",
+            "A set of controls shares one description or one validation error message.",
+            "Pairing with RadioGroup or grouped Checkboxes that have no built-in group label."
+          ],
+          "notWhen": [
+            "Labeling a single input with its own label and message — use Field instead.",
+            "You want a two-column title-plus-input settings row — use Field.Root layout=\"horizontal\" instead.",
+            "You need a plain visual container with no form semantics — use a bordered container or Card.",
+            "The control already provides its own group role, like Radix RadioGroup with an aria-label."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Field",
+              "distinction": "Field wraps one input with label, message, and counter; Fieldset groups multiple controls under a shared legend. Pick Field for a single control, Fieldset for a related set."
+            },
+            {
+              "component": "RadioGroup",
+              "distinction": "RadioGroup already provides role=radiogroup; wrap it in Fieldset only to add a visible <legend>. For an invisible label, put aria-label on RadioGroup and skip Fieldset."
+            },
+            {
+              "component": "Card",
+              "distinction": "Card is a generic visual container with no form semantics; Fieldset is a semantic form grouping. Use Fieldset to group form controls for assistive tech, Card only for visual containment without group labeling."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/form-controls.md"
+        }
+      }
+    },
+    {
+      "name": "one-time-password-field",
+      "type": "registry:ui",
+      "title": "One-Time Password Field",
+      "description": "Segmented one-time-password (OTP) input built on input-otp. Per-slot boxes with auto-advance, paste distribution, a blinking caret, and one-time-code autofill. Composes with Field for label, error state, and message.",
+      "categories": [
+        "form"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Entering a short, fixed-length one-time code — an SMS or email verification code, a 2FA code, or a PIN to unlock a link.",
+            "The code should read as discrete cells with auto-advance, and benefit from OS / password-manager one-time-code autofill.",
+            "A pasted code should distribute itself across the cells automatically.",
+            "Wrapping in Field so a label, description, and error message describe the code input."
+          ],
+          "notWhen": [
+            "Capturing free-form or variable-length text — use a Text Field (Field.Input); don't fake OTP entry with a maxLength text field.",
+            "Entering a password or long secret — use a password Field, not a segmented display that renders each character in its own cell.",
+            "The value is a single multi-character token where per-character segmentation adds no clarity.",
+            "Choosing among options — use Checkbox, RadioGroup, or Select."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Field / Text Field",
+              "distinction": "A Text Field is one continuous input for free-form, variable-length text; OneTimePasswordField is segmented, fixed-length, auto-advances per character, and distributes pasted codes. Use a Text Field for normal input, OneTimePasswordField only for short one-time codes."
+            },
+            {
+              "component": "PIN input (external concept)",
+              "distinction": "A 'PIN input' is the same segmented one-time-code pattern — OneTimePasswordField is Arbor's implementation of it. There is no separate PIN component; set maxLength and render one Slot per digit."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/one-time-password-field.md",
+          "implementation": "docs/design-system/guidelines/one-time-password-field-implementation.md",
+          "decisions": [
+            "DL-086"
+          ]
+        }
+      }
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Persistent, collapsible app-shell navigation column with nested menus, icon-rail collapsing, tooltips, and an automatic off-canvas panel on mobile. Ships the Sheet panel it uses for that mobile branch — Sheet is Sidebar's internal implementation, not a component to reach for on its own.",
+      "categories": [
+        "navigation"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Building persistent, vertical app navigation that sits alongside content (e.g. an admin shell or settings layout).",
+            "Navigation benefits from collapsing to an icon rail without losing labels — collapsed labels surface as tooltips.",
+            "Grouping nested destinations (e.g. Payments and Payouts under Earn) under a parent item without inventing a second navigation surface."
+          ],
+          "notWhen": [
+            "The panel is transient and triggered on demand for a one-off action list — use Menu instead.",
+            "You only need a top app bar with title and actions — use HeaderBar.",
+            "Navigation switches between peer views of the same content within one page or component — use Tabs."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Menu",
+              "distinction": "Menu is a transient, triggered list of actions or options that opens on demand and closes after a choice; Sidebar is always present (or, on mobile, present whenever the app shell is open) and represents where you are, not a one-off action list."
+            },
+            {
+              "component": "Tabs",
+              "distinction": "Tabs switches between views of the same content within a page or component; Sidebar switches between different top-level areas of the product, each with its own URL. Use Tabs for in-page sections, Sidebar for app-level nav."
+            },
+            {
+              "component": "HeaderBar",
+              "distinction": "HeaderBar is the horizontal top app bar (title plus actions); Sidebar is the vertical side rail. Pick by axis: top chrome → HeaderBar, side nav → Sidebar."
+            },
+            {
+              "component": "Drawer",
+              "distinction": "Drawer is a temporary, dismissible overlay panel; Sidebar is a persistent nav rail. Sidebar's own mobile off-canvas panel is built on Sheet, not Drawer — Drawer remains the pick for a genuinely temporary slide-in."
+            },
+            {
+              "component": "SideNav (Figma)",
+              "distinction": "SideNav was the Figma-only working name for this spec before it shipped as Sidebar; treat SideNav references as the same shipped component, not a distinct one."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "progress-bar",
+      "type": "registry:ui",
+      "title": "ProgressBar",
+      "description": "Determinate linear progress indicator — a pill track with a fill whose width is the completion percentage. For measurable advancement toward a known end (upload, multi-step setup, quota). Not for indeterminate waits, where a Skeleton or spinner is the honest signal.",
+      "categories": [
+        "feedback"
+      ],
+      "meta": {
+        "intention": {
+          "status": "shipped",
+          "useWhen": [
+            "Advancement toward a known end is measurable: bytes uploaded, steps completed, quota consumed.",
+            "The wait is long enough to be worth quantifying — past roughly 10 seconds, a percentage reassures where a placeholder does not.",
+            "A multi-step flow shows how much of the whole remains, not just that something is happening.",
+            "The surrounding layout already explains what is progressing, or you can name it with aria-label / aria-labelledby."
+          ],
+          "notWhen": [
+            "Duration is unknown or unmeasurable — a determinate bar that sits at one value reads as broken. Use Skeleton for a structural load, or Button's loading state for a single action.",
+            "A page or content region whose layout is known is loading — Skeleton mimics the shape and communicates more.",
+            "One inline action is in flight, like a save or submit — use Button's state=\"loading\".",
+            "The bar would render narrower than roughly 150px, where the fill is too small to read as progress.",
+            "You need a circular form or a value label inside the indicator — neither is built yet; see the scope note below."
+          ],
+          "disambiguateFrom": [
+            {
+              "component": "Skeleton",
+              "distinction": "Skeleton is for indeterminate structural loads where the layout is known but the duration is not; ProgressBar communicates measurable advancement toward a known end. Pick ProgressBar past ~10 seconds or whenever progress is quantifiable."
+            },
+            {
+              "component": "Progress Ring (not shipped)",
+              "distinction": "A radial indicator for the same determinate job, used where space is tight or a circular form suits the layout. It is still in design (DS-691) and has no Arbor export — use ProgressBar until it ships rather than hand-rolling a ring."
+            },
+            {
+              "component": "Button loading state",
+              "distinction": "A single inline action in flight is the button's own concern — reach for Button state=\"loading\", not a bar next to it. ProgressBar is for a region or flow, not one control."
+            },
+            {
+              "component": "Indeterminate progress (not shipped)",
+              "distinction": "ProgressBar is determinate only — value is required. The approved design models no indeterminate, paused, or disabled state and specifies no motion for them, so they were deliberately not invented in code (DNG-1325). Use Skeleton for an unmeasurable wait."
+            }
+          ],
+          "guideline": "docs/design-system/guidelines/progress-bar.md"
+        }
+      }
+    },
+    {
+      "name": "arbor-tokens",
+      "type": "registry:style",
+      "title": "Arbor Design Tokens",
+      "description": "CSS custom properties for all Arbor design tokens including colors, spacing, shapes, typography, and theme variants. Import this CSS file at the root of your project.",
+      "categories": [
+        "tokens"
+      ]
+    },
+    {
+      "name": "arbor-tailwind-preset",
+      "type": "registry:lib",
+      "title": "Arbor Tailwind Preset",
+      "description": "Complete Tailwind CSS preset with all Arbor design token mappings, custom utilities, and plugins. Add as a preset in your tailwind.config to enable all Arbor component styles.",
+      "categories": [
+        "tokens"
+      ]
+    },
+    {
+      "name": "setup",
+      "type": "registry:style",
+      "title": "Arbor Setup",
+      "description": "One-command setup for the Arbor design system. Installs design tokens (CSS variables), Tailwind preset, and the cn utility. Run: npx shadcn@latest add @arbor/setup",
+      "categories": [
+        "setup"
+      ]
+    }
+  ],
+  "metadata": {
+    "maintainer": "Linktree",
+    "repository": "https://github.com/blstrco/arbor/tree/main/apps/registry",
+    "documentation": "https://arbor.linktr.ee"
+  }
+}

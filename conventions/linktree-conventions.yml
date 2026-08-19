@@ -53,6 +53,9 @@ rate_limiting:
   headers_documented: false
   guidance: back off and retry
   note: no numeric limit or reset header is published.
+  see: rate-limits/linktree-rate-limits.yml
+entitlement_plans:
+  see: plans/linktree-plans-pricing.yml
 entitlements:
   model: plan-gated options
   signal: UPGRADE_REQUIRED error code

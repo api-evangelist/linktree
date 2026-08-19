@@ -1,0 +1,153 @@
+# Arbor Design System
+
+> Install production-ready React components with one command. Built with TypeScript, Tailwind CSS, and Radix UI. Source files land directly in your project — no runtime dependency or lock-in.
+
+## Prerequisites
+
+- Node.js >= 20 (required by shadcn CLI)
+- A React 18+ project with Tailwind CSS v3.4+
+
+## Quick Setup (3 steps)
+
+### Step 1: Register the Arbor registry
+
+If no `components.json` exists, first run `npx shadcn@latest init`.
+
+Then add the `@arbor` registry to your `components.json`:
+
+```json
+{
+  "registries": {
+    "@arbor": "https://arbor.linktr.ee/r/{name}.json"
+  }
+}
+```
+
+### Step 2: Install Arbor
+
+```bash
+npx shadcn@latest add @arbor/setup
+```
+
+This single command installs everything you need:
+- **Design tokens** — CSS custom properties for colors, spacing, shapes, typography, and themes
+- **Tailwind preset** — maps all tokens to Tailwind utility classes
+- **cn utility** — Tailwind class merging configured for Arbor's custom tokens
+
+After installation, complete these two wiring steps:
+
+1. **Import the CSS** in your root layout or entry file:
+```tsx
+import '@/styles/arbor.css'
+```
+
+2. **Add the Tailwind preset** to your `tailwind.config.ts` (or `.js`):
+```ts
+import arborPreset from './config/arbor-tailwind-preset'
+
+export default {
+  presets: [arborPreset],
+  content: ['./src/**/*.{ts,tsx}'],
+}
+```
+
+### Step 3: Add components
+
+```bash
+npx shadcn@latest add @arbor/button
+```
+
+All component dependencies are resolved automatically.
+
+## Troubleshooting
+
+- **Node < 20**: Upgrade via nvm (`nvm install 22`)
+- **Yarn workspace errors**: Run `yarn add -W clsx tailwind-merge` first, then retry
+- **shadcn not initialized**: Run `npx shadcn@latest init` before adding the registry
+- **npx hangs or fails**: See "Fallback: Manual Install" below
+
+## Fallback: Manual Install (no shadcn CLI)
+
+If `npx shadcn` is unavailable or fails, install manually:
+
+1. Fetch the component JSON: `curl https://arbor.linktr.ee/r/button.json`
+2. Copy each file's `content` to the corresponding `path` in your project
+3. Install the listed `dependencies` with your package manager
+4. Repeat for each item in `registryDependencies`
+
+For setup without the CLI, install these three items first:
+- `https://arbor.linktr.ee/r/arbor-tokens.json` (CSS custom properties)
+- `https://arbor.linktr.ee/r/arbor-tailwind-preset.json` (Tailwind config)
+- `https://arbor.linktr.ee/r/cn.json` (class merging utility)
+
+## MCP Integration (optional)
+
+For AI assistants with MCP support, add to your `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["-y", "shadcn@latest", "mcp"]
+    }
+  }
+}
+```
+
+## Components
+
+- [Icons](https://arbor.linktr.ee/r/icons.json): Full re-export of @phosphor-icons/react. Every icon is available under bare and Icon-suffixed names; all weights, sizes, and colors are supported. Arbor's system default weight is bold — Arbor components set it explicitly, and mounting IconProvider at the app root applies it to your own bare icons (Phosphor's built-in default is regular).
+- [Button](https://arbor.linktr.ee/r/button.json): Action button built on Radix Slot with seven variants, five sizes, two shapes, an optional loading state, and start/end icon slots.
+- [Button Group](https://arbor.linktr.ee/r/button-group.json): Layout container that pairs exactly two related action buttons (e.g. Cancel / Save) with shared sizing and an equal-width, auto-width, or stacked layout. Place the primary action last in a row, or first (top) when stacked; caps at two to reduce cognitive load.
+- [Link](https://arbor.linktr.ee/r/link.json): Inline link with three sizes, four semantic color variants, underline controls, and safe external-URL handling. Composes via asChild.
+- [Text](https://arbor.linktr.ee/r/text.json): Typography component spanning Arbor's full type scale. Maps each variant to semantic HTML and composes via asChild for headings, links, and labels.
+- [sanitizeHref Utility](https://arbor.linktr.ee/r/sanitize-href.json): Strips dangerous URI protocols (javascript:, data:, vbscript:) from href values. Returns undefined for unsafe inputs.
+- [cn Utility](https://arbor.linktr.ee/r/cn.json): Class merger extending tailwind-merge with Arbor's color, border, radius, shadow, spacing, height, and typography utilities.
+- [Elevation](https://arbor.linktr.ee/r/elevation.json): Shadow utility for Arbor elevation levels 100–400. Defaults to asChild composition so it adds no wrapper div.
+- [Icon Button](https://arbor.linktr.ee/r/icon-button.json): Icon-only button with six variants, five sizes, and squircle or capsule shape. Requires aria-label for screen readers.
+- [Icon List](https://arbor.linktr.ee/r/icon-list.json): Display-only vertical list of icon-led rows: a circular icon medallion, a bold label, and an optional description, with an optional connector for a lightweight timeline. Not interactive — for clickable or step-state rows, use a different component; for columnar data, use a table.
+- [Tabs](https://arbor.linktr.ee/r/tabs.json): Tabbed navigation built on Radix UI with five variants (underline, pill, pill-subtle, segmented, segmented-pill) and three sizes.
+- [Segmented Control](https://arbor.linktr.ee/r/segmented-control.json): Compact inline control for switching between mutually exclusive options — a view or mode toggle with a sliding selected pill. Reach for Tabs with variant="segmented" instead when the segmented look has to wrap real tab panels; SegmentedControl carries no tab semantics of its own.
+- [Header Bar](https://arbor.linktr.ee/r/header-bar.json): Page header bar with title, actions, tabs, and a responsive primary/secondary variant. Supports a declarative context API and emits a headerbar:tab-change event for cross-MFE communication.
+- [Field](https://arbor.linktr.ee/r/field.json): Compound input system with floating labels, addons, actions, counters, and three control variants (filled, outline, elevated). Supports stacked (default) and horizontal (settings-row) layouts.
+- [File Input](https://arbor.linktr.ee/r/file-input.json): File upload dropzone surface for selecting files to upload. A dashed drop target with a cloud-upload glyph, click and keyboard activation, drag-and-drop, plus error and disabled states. Use it as the upload trigger; compose selected-file lists and progress above it.
+- [File Input Item](https://arbor.linktr.ee/r/file-input-item.json): Selected-file row composed above FileInput. Shows the file name with middle truncation that keeps the extension visible, secondary metadata, and idle / loading / error states with a trailing action slot, optional thumbnail preview, and a drag-handle affordance.
+- [Skeleton](https://arbor.linktr.ee/r/skeleton.json): Loading placeholder with pulse and shimmer animations. Includes Text, Avatar, Button, Input, Card, and ListItem preset compositions.
+- [useMediaQuery](https://arbor.linktr.ee/r/use-media-query.json): SSR-safe React hook tracking a CSS media query. Exports the BREAKPOINT_MD constant aligned with Tailwind's md: breakpoint.
+- [Alert Dialog](https://arbor.linktr.ee/r/alert-dialog.json): Binary-confirmation modal (Cancel/Delete, Cancel/OK, Leave/Stay). Enforces two-button footer with no close button. Built on @radix-ui/react-alert-dialog.
+- [Dialog](https://arbor.linktr.ee/r/dialog.json): Modal dialog built on Radix UI for blocking interactions. Compound API covers trigger, portal, overlay, content, header, footer, title, description, and close.
+- [AdaptiveModal](https://arbor.linktr.ee/r/adaptive-modal.json): Renders a Drawer below the breakpoint and a Dialog at or above it. Only one branch mounts at a time; state stays external.
+- [Radio](https://arbor.linktr.ee/r/radio.json): Single-select controls built on Radix UI — the canonical Radio (control) and RadioItem (control + label + description), plus RadioButton selectable surfaces (compact, pill, squircle, card).
+- [Radio Group (deprecated alias)](https://arbor.linktr.ee/r/radio-group.json): Deprecated alias of `radio` — kept so `npx shadcn add radio-group` keeps resolving during the rename window. Removed in 16.0.0; install `radio` instead.
+- [Checkbox](https://arbor.linktr.ee/r/checkbox.json): Checkbox built on Radix UI with checked, unchecked, and indeterminate states. Theme-aware inverse fill and a press-scale animation.
+- [Collapsible](https://arbor.linktr.ee/r/collapsible.json): Animated show/hide region built on Radix UI. Supports controlled and uncontrolled modes; honors prefers-reduced-motion.
+- [Popover](https://arbor.linktr.ee/r/popover.json): Deprecated — shipped without an approved design (DS-290); do not use for new UI. Floating content surface built on Radix UI with default and inverse variants, configurable side and align, and portal rendering.
+- [RichTooltip](https://arbor.linktr.ee/r/rich-tooltip.json): Click-triggered, content-rich tooltip built on Radix Popover (not Tooltip). Use for onboarding nudges and contextual education; theme-aware inverse styling.
+- [Tooltip](https://arbor.linktr.ee/r/tooltip.json): Hover-triggered label built on Radix UI with inverse styling, configurable positioning, and prefers-reduced-motion support.
+- [Select](https://arbor.linktr.ee/r/select.json): Dropdown select built on Radix UI with outline and filled triggers across three sizes. Integrates with Field for form usage.
+- [Badge](https://arbor.linktr.ee/r/badge.json): Inline label for status, metadata, and classification. Composes Status, Plan, and Notification specialized badges across nine variants and three emphasis levels.
+- [Indicator Badge](https://arbor.linktr.ee/r/indicator-badge.json): Communicates presence, activity state, or a count. Renders as a dot for binary states (active/online/error) or a count bubble for notification quantities, with a custom-color escape hatch for off-system use.
+- [Chip](https://arbor.linktr.ee/r/chip.json): Interactive compact control for filters and dismissible tags. Toggle mode renders an aria-pressed filter pill; dismissible mode adds a trailing remove button. For read-only metadata, use Badge.
+- [Combobox](https://arbor.linktr.ee/r/combobox.json): Searchable selection built on Base UI — a text input that filters an option list and keeps a persistent value. Single mode fills the input; multiple mode renders selections as dismissible Chips. Composes with Field for label, error state, and layout.
+- [Search Bar](https://arbor.linktr.ee/r/search-bar.json): A search-specific text input for filtering, querying, or navigating content in place — a named ergonomic recipe over Field with a leading magnifying-glass, an optional clear (×) button, and Escape-to-clear. No suggestion dropdown (use Combobox for a persistent value, or SearchBar + an anchored Menu to navigate) and no error state (surface "No results" in the results region).
+- [Divider](https://arbor.linktr.ee/r/divider.json): Visual separator built on Radix Separator with horizontal or vertical orientation and an optional inline label (e.g. "or").
+- [Backdrop](https://arbor.linktr.ee/r/backdrop.json): Translucent scrim that dims UI behind a modal, sheet, or drawer. Composes with Radix overlay primitives via asChild.
+- [Switch](https://arbor.linktr.ee/r/switch.json): Toggle switch built on Radix UI with compact and neutral options, an optional inline label, and animated track-and-thumb.
+- [Toggle](https://arbor.linktr.ee/r/toggle.json): An icon-only, binary pressable control (button with aria-pressed) rendered as a switch-shaped sliding pill. Two icons show the off/on states of one concept and the thumb slides over the active one. For toolbar modes and binary view switches — not form settings (use Switch) or picking one of several labeled views (use SegmentedControl).
+- [Menu](https://arbor.linktr.ee/r/menu.json): A floating panel of contextual actions opened from a trigger. Built on Radix UI with leading/trailing icon slots, an optional description line, section headings, checkbox and radio items, submenus, keyboard-shortcut hints, and a destructive variant. The canonical Arbor menu surface.
+- [Avatar](https://arbor.linktr.ee/r/avatar.json): User avatar with image, fallback, badge, and overflow-group composition. Five sizes and three shapes (circle, squircle, square).
+- [Alert](https://arbor.linktr.ee/r/alert.json): Inline status message with five statuses (info, success, warning, error, neutral), primary or secondary visual variants, and an optional dismiss action.
+- [Toast](https://arbor.linktr.ee/r/toast.json): Notification toast built on Sonner with default and inverse surfaces, optional icon, action button, and stacked chin decoration.
+- [NativeSelect](https://arbor.linktr.ee/r/native-select.json): Native HTML select styled with Arbor design tokens. Use when platform select behaviour is preferred over a custom dropdown.
+- [AppIcon](https://arbor.linktr.ee/r/app-icon.json): Typed component for 244 third-party service logos synced from Figma. Five sizes (20, 24, 28, 40, 48px) and three variants (color, mono, outline).
+- [Fieldset](https://arbor.linktr.ee/r/fieldset.json): Semantic grouping for form controls. Wraps radio, checkbox, and other primitives with a legend and description.
+- [One-Time Password Field](https://arbor.linktr.ee/r/one-time-password-field.json): Segmented one-time-password (OTP) input built on input-otp. Per-slot boxes with auto-advance, paste distribution, a blinking caret, and one-time-code autofill. Composes with Field for label, error state, and message.
+- [Sidebar](https://arbor.linktr.ee/r/sidebar.json): Persistent, collapsible app-shell navigation column with nested menus, icon-rail collapsing, tooltips, and an automatic off-canvas panel on mobile. Ships the Sheet panel it uses for that mobile branch — Sheet is Sidebar's internal implementation, not a component to reach for on its own.
+- [ProgressBar](https://arbor.linktr.ee/r/progress-bar.json): Determinate linear progress indicator — a pill track with a fill whose width is the completion percentage. For measurable advancement toward a known end (upload, multi-step setup, quota). Not for indeterminate waits, where a Skeleton or spinner is the honest signal.
+
+## API
+
+- [Registry Manifest](https://arbor.linktr.ee/manifest.json): Full registry manifest with all component metadata
+- [Component JSON](https://arbor.linktr.ee/r/{name}.json): Individual component definition (replace {name} with component name)
+- [Health Check](https://arbor.linktr.ee/health): Service health status

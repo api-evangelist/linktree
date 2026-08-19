@@ -1,0 +1,70 @@
+# Published rate limits for the Linktree programmatic surface.
+generated: '2026-08-13'
+method: searched
+source: https://mcp.linktr.ee/.well-known/mcp/tools.json
+docs: https://mcp.linktr.ee/docs
+surface: mcp-only
+limit_count: 0
+limits: []
+note: >-
+  Linktree documents that a rate limit EXISTS but publishes no number. The MCP tool manifest and
+  the tool reference both declare a `RATE_LIMITED` error code — "The caller exceeded the public
+  MCP rate limit. Retry after backing off." — with no ceiling, no window, no scope, and no reset
+  value anywhere in the published contract. An agent therefore cannot budget its calls; it can
+  only discover the limit by hitting it. limit_count is 0 because zero numeric limits are
+  published, not because the API is unlimited.
+signal:
+  documented: true
+  mechanism: error-code
+  code: RATE_LIMITED
+  transport: mcp-tool-result
+  envelope: '{ "error": "RATE_LIMITED", "message": "<human-readable>" }'
+  is_error_flag: isError
+  guidance: "Retry after backing off."
+  retry_after_value_published: false
+headers:
+  published: false
+  observed: []
+  checked:
+    - name: RateLimit / RateLimit-Policy (RFC 9331 draft)
+      present: false
+    - name: X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset
+      present: false
+    - name: Retry-After
+      present: false
+  probe:
+    url: https://mcp.linktr.ee/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    response_headers_of_note:
+      - 'www-authenticate: Bearer resource_metadata="https://mcp.linktr.ee/.well-known/oauth-protected-resource"'
+    note: >-
+      The endpoint is OAuth-gated, so an unauthenticated probe cannot observe rate-limit headers
+      on a successful call. The 401 challenge carries none. Confirming whether headers are emitted
+      on authenticated traffic requires a Linktree account token.
+status_code_on_exhaustion:
+  http: null
+  note: >-
+    MCP errors are returned as a tool result with isError:true and HTTP 200, not as an HTTP
+    status. There is no documented 429 on this surface.
+entitlement_limits:
+  documented: true
+  mechanism: error-code
+  code: UPGRADE_REQUIRED
+  field: freeAccountLimitations
+  detail: >-
+    Distinct from rate limiting: plan entitlement. Several analytics options (device, location,
+    referrer, per-link, subscriber breakdowns, custom date ranges) are gated to paid plans and
+    return UPGRADE_REQUIRED rather than RATE_LIMITED.
+  see: plans/linktree-plans-pricing.yml
+other_surfaces:
+  - surface: Arbor registry
+    url: https://arbor.linktr.ee/
+    limits_published: false
+    note: >-
+      The public component registry (manifest.json, /r/{name}.json, /health) publishes no rate
+      limits and returned no rate-limit headers on anonymous GETs.
+see:
+  - conventions/linktree-conventions.yml
+  - errors/linktree-error-codes.yml

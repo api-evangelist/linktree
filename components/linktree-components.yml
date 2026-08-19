@@ -1,0 +1,195 @@
+# Arbor — Linktree's public design system and component registry.
+generated: '2026-08-13'
+method: searched
+source: https://arbor.linktr.ee/manifest.json
+docs: https://arbor.linktr.ee/
+llms_txt: https://arbor.linktr.ee/llms.txt
+ownership:
+  confirmed: true
+  evidence: >-
+    manifest.json declares metadata.maintainer "Linktree", repository
+    github.com/blstrco/arbor (blstrco is Linktree's GitHub org — the page title on
+    github.com/blstrco is "Linktree · GitHub"), package name @linktr.ee/arbor, and the whole
+    registry is served from arbor.linktr.ee, a subdomain of Linktree's own apex.
+note: >-
+  This is a genuinely distinct surface from the MCP server: Arbor is an anonymous, unauthenticated,
+  machine-readable HTTP registry. It is the only Linktree programmatic surface an agent can call
+  today with no credentials at all. Components are NOT shipped as an npm dependency — the shadcn
+  CLI fetches each component's JSON and writes the TypeScript source into the consumer's project,
+  so there is no runtime dependency or version lock-in.
+registry:
+  name: Arbor Design System
+  package: "@linktr.ee/arbor"
+  version: 26.0.1
+  protocol_version: '1.0'
+  schema: https://ui.shadcn.com/schema/registry.json
+  item_schema: https://ui.shadcn.com/schema/registry-item.json
+  distribution: shadcn-registry
+  runtime_dependency: false
+  capabilities:
+    components: true
+endpoints:
+  - path: /manifest.json
+    url: https://arbor.linktr.ee/manifest.json
+    method: GET
+    auth: none
+    status: 200
+    content_type: application/json
+    description: Full registry manifest with all component metadata.
+  - path: /r/registry.json
+    url: https://arbor.linktr.ee/r/registry.json
+    method: GET
+    auth: none
+    status: 200
+    description: shadcn registry document (also served at /registry.json).
+  - path: "/r/{name}.json"
+    url: https://arbor.linktr.ee/r/button.json
+    method: GET
+    auth: none
+    status: 200
+    description: Individual component definition — files, dependencies, registryDependencies.
+  - path: /health
+    url: https://arbor.linktr.ee/health
+    method: GET
+    auth: none
+    status: 200
+    description: Service health status.
+    observed_body: '{"status":"healthy","service":"Arbor Registry Server","version":"1.0.0"}'
+install:
+  prerequisites:
+    - Node.js >= 20 (required by the shadcn CLI)
+    - React 18+ project with Tailwind CSS v3.4+
+  register_registry: |
+    {
+      "registries": {
+        "@arbor": "https://arbor.linktr.ee/r/{name}.json"
+      }
+    }
+  bootstrap: npx shadcn@latest add @arbor/setup
+  add_component: npx shadcn@latest add @arbor/button
+  wiring:
+    - "import '@/styles/arbor.css' in the root layout"
+    - "add ./config/arbor-tailwind-preset to presets[] in tailwind.config.ts"
+  manual_fallback: >-
+    curl https://arbor.linktr.ee/r/button.json and copy each file's `content` to its `path`,
+    then install the listed `dependencies` and repeat for each `registryDependencies` entry.
+stack:
+  - TypeScript
+  - React 18+
+  - Tailwind CSS v3.4+
+  - Radix UI
+  - Base UI
+  - "@phosphor-icons/react"
+  - Sonner
+  - input-otp
+item_count: 51
+item_types:
+  registry:ui: 45
+  registry:lib: 3
+  registry:hook: 1
+  registry:style: 2
+families:
+  - family: setup
+    count: 1
+    items: [setup]
+  - family: tokens
+    count: 2
+    items: [arbor-tokens, arbor-tailwind-preset]
+  - family: icons
+    count: 2
+    items: [icons, app-icon]
+  - family: button
+    count: 3
+    items: [button, icon-button, toggle]
+  - family: layout
+    count: 4
+    items: [button-group, header-bar, collapsible, divider]
+  - family: navigation
+    count: 5
+    items: [link, tabs, segmented-control, header-bar, sidebar]
+  - family: typography
+    count: 1
+    items: [text]
+  - family: form
+    count: 13
+    items: [field, file-input, file-input-item, radio, radio-group, checkbox, select, combobox,
+            search-bar, switch, native-select, fieldset, one-time-password-field]
+  - family: overlay
+    count: 8
+    items: [alert-dialog, dialog, adaptive-modal, popover, rich-tooltip, tooltip, backdrop, menu]
+  - family: feedback
+    count: 4
+    items: [skeleton, alert, toast, progress-bar]
+  - family: badge
+    count: 3
+    items: [badge, indicator-badge, chip]
+  - family: data-display
+    count: 2
+    items: [icon-list, avatar]
+  - family: utility
+    count: 4
+    items: [sanitize-href, cn, elevation, use-media-query]
+lifecycle:
+  status_field: meta.intention.status
+  shipped: 45
+  deprecated: 3
+  unstated: 3
+  deprecated_items:
+    - name: dialog
+      reason: >-
+        Older modal anatomy; maintain or migrate existing usage only. Route destructive
+        confirmations to AlertDialog.
+    - name: radio-group
+      reason: >-
+        Deprecated alias of `radio`, kept so `npx shadcn add radio-group` keeps resolving during
+        the rename window.
+      removal_version: 16.0.0
+    - name: popover
+      reason: >-
+        Shipped without an approved design (ticket DS-290); do not use for new UI. Route to
+        RichTooltip or Menu.
+  note: >-
+    Arbor publishes machine-readable per-component deprecation status with migration guidance,
+    and in one case a named removal version. This is real deprecation signalling on a public
+    surface — but it is component-level metadata, not a published API deprecation POLICY, so no
+    Deprecation pointer is claimed for it. See lifecycle/linktree-lifecycle.yml.
+mcp:
+  server: "@linktr.ee/arbor-mcp"
+  transport: stdio
+  install: npx -y @linktr.ee/arbor-mcp
+  tools_theme: Playroom snippets, Figma-to-code sync health, UX-writing checks
+  see: mcp/linktree-mcp.yml
+  note: >-
+    Arbor's own llms.txt additionally suggests wiring the generic `npx shadcn@latest mcp` server
+    to browse the registry, which is a third-party server, not Linktree's.
+other_component_libraries:
+  - name: "@linktr.ee/ui-link-kit"
+    registry: npm
+    version: 0.0.59
+    published: '2023-06-26'
+    status: stale
+    note: Predecessor UI kit for custom links; superseded in practice by Arbor.
+  - name: "@linktr.ee/messaging-react"
+    registry: npm
+    version: 4.0.4
+    published: '2026-08-11'
+    status: active
+    note: React messaging components built on messaging-core.
+  - name: "@linktr.ee/registry"
+    registry: npm
+    version: 0.0.9
+    published: '2025-11-20'
+    note: Component registry for LinkApps (the Marketplace app format), distinct from Arbor.
+files:
+  - path: components/linktree-arbor-registry-manifest.json
+    source: https://arbor.linktr.ee/manifest.json
+    verbatim: true
+  - path: llms/linktree-arbor-llms.txt
+    source: https://arbor.linktr.ee/llms.txt
+    verbatim: true
+spec:
+  openapi_published: false
+  note: >-
+    /openapi.json, /api-docs and /.well-known/* all return the registry's own 404 page. The
+    registry is schema-described (shadcn registry + registry-item JSON Schemas) but has no
+    OpenAPI description of its four HTTP endpoints.

@@ -1,4 +1,4 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
@@ -10,8 +10,13 @@ hosts:
 - host: mcp.linktr.ee
   https: true
   tls_version: TLSv1.2
-  cert_expires: Aug 26 15:33:15 2026 GMT
+  cert_expires: Oct 25 14:38:17 2026 GMT
   hsts: null
+- host: arbor.linktr.ee
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 22 12:35:18 2026 GMT
+  hsts: false
 domains:
 - domain: linktr.ee
   dnssec: false

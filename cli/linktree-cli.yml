@@ -1,0 +1,86 @@
+# First-party Linktree command-line tooling.
+generated: '2026-08-13'
+method: searched
+source: https://registry.npmjs.org/@linktr.ee%2Flinkapp
+note: >-
+  Linktree ships no CLI for its MCP server or for account/API administration. What it does ship,
+  on the public npm registry under its own @linktr.ee scope, is the LinkApps toolchain — the
+  scaffold/build/deploy CLI for the Marketplace "Link App" format — plus a design-system CLI path
+  through shadcn. Binaries are catalogued in packages/linktree-packages.yml; this file is their
+  command surface. Command flags below are NOT enumerated: the packages publish no public README
+  or docs site, and the LinkApps developer program is an expression-of-interest waitlist, so the
+  invocation names are recorded from the npm `bin` maps and nothing beyond them is asserted.
+clis:
+  - name: linkapp
+    package: "@linktr.ee/linkapp"
+    version: 0.0.56
+    published: '2026-02-19'
+    bin:
+      - linkapp
+      - create-linktree-link-run
+    install:
+      - npm install -g @linktr.ee/linkapp
+      - npx @linktr.ee/linkapp
+    purpose: Development, build, and deployment tooling for LinkApps.
+    commands_documented: false
+    docs: null
+  - name: create-linkapp
+    package: "@linktr.ee/create-linkapp"
+    version: 0.0.14
+    published: '2025-11-20'
+    bin:
+      - create-linkapp
+      - create-link-app
+    install:
+      - npx @linktr.ee/create-linkapp
+    purpose: Scaffolding tool for creating new LinkApps.
+    commands_documented: false
+    docs: null
+  - name: create-link-app
+    package: "@linktr.ee/create-link-app"
+    version: 2.2.5
+    published: '2026-02-19'
+    bin:
+      - create-link-app
+    install:
+      - npx @linktr.ee/create-link-app
+    purpose: Creates a Link App on Linktr.ee (the original scaffold, first published 2022-07-12).
+    commands_documented: false
+    docs: null
+    note: >-
+      Overlaps with create-linkapp, which re-declares the same `create-link-app` binary name.
+      Two live scaffolds claiming one command is a real ambiguity for a developer and is recorded
+      as observed, not reconciled.
+  - name: arbor-mcp
+    package: "@linktr.ee/arbor-mcp"
+    version: 0.12.0
+    published: '2026-08-08'
+    bin:
+      - arbor-mcp
+    install:
+      - npx -y @linktr.ee/arbor-mcp
+    purpose: >-
+      Not a general-purpose CLI — a stdio MCP server binary launched by an MCP client, exposing
+      Arbor design system tools.
+    kind: mcp-server
+    see: mcp/linktree-mcp.yml
+third_party_cli_path:
+  - name: shadcn
+    package: shadcn
+    first_party: false
+    install: npx shadcn@latest
+    purpose: >-
+      The documented way to install Arbor components. Linktree publishes the registry
+      (https://arbor.linktr.ee/r/{name}.json) but relies on the third-party shadcn CLI as the
+      client.
+    commands:
+      - "npx shadcn@latest init"
+      - "npx shadcn@latest add @arbor/setup"
+      - "npx shadcn@latest add @arbor/<component>"
+    docs: https://arbor.linktr.ee/llms.txt
+    see: components/linktree-components.yml
+gaps:
+  - No CLI exists for the MCP server, account management, links, or analytics.
+  - >-
+    None of the four first-party binaries publishes a README, a --help transcript, a changelog,
+    or a documentation URL on npm; three of the four carry no license field at all.

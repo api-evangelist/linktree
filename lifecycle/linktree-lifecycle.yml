@@ -25,6 +25,55 @@ sla:
 status_page: https://status.linktr.ee/
 changelog: https://app.getbeamer.com/linktree/en
 deprecated_operations: []
+arbor_registry:
+  added: '2026-08-13'
+  surface: https://arbor.linktr.ee/
+  versioning:
+    scheme: semver
+    current: 26.0.1
+    source: https://arbor.linktr.ee/manifest.json
+    protocol_version: '1.0'
+    service_version: '1.0.0'
+    service_version_source: https://arbor.linktr.ee/health
+  deprecation:
+    policy_url: null
+    machine_readable: true
+    field: items[].meta.intention.status
+    values: [shipped, deprecated]
+    deprecated_count: 3
+    items:
+    - name: dialog
+      removal_version: null
+      migration: Route destructive confirmations to AlertDialog; maintain existing usage only.
+    - name: radio-group
+      removal_version: 16.0.0
+      migration: Install `radio` instead; alias kept only during the rename window.
+    - name: popover
+      removal_version: null
+      migration: Shipped without an approved design (DS-290); route to RichTooltip or Menu.
+    note: >-
+      Arbor marks deprecated components in the manifest with migration guidance, and in one case
+      a named removal version — real deprecation signalling on a public surface. It is NOT a
+      published deprecation policy, and it covers design-system components rather than API
+      operations, so no Deprecation pointer is claimed from it.
+  see: components/linktree-components.yml
+first_party_package_decay:
+  checked: '2026-08-13'
+  source: https://registry.npmjs.org/
+  note: >-
+    Release currency of the first-party @linktr.ee npm scope, the only provider-published dated
+    decay evidence available for this provider.
+  active:
+  - {name: "@linktr.ee/messaging-react", version: 4.0.4, published: '2026-08-11'}
+  - {name: "@linktr.ee/arbor-mcp", version: 0.12.0, published: '2026-08-08'}
+  - {name: "@linktr.ee/linkapp", version: 0.0.56, published: '2026-02-19'}
+  - {name: "@linktr.ee/create-link-app", version: 2.2.5, published: '2026-02-19'}
+  - {name: "@linktr.ee/create-linkapp", version: 0.0.14, published: '2025-11-20'}
+  - {name: "@linktr.ee/registry", version: 0.0.9, published: '2025-11-20'}
+  stale:
+  - {name: "@linktr.ee/ui-link-kit", version: 0.0.59, published: '2023-06-26', note: superseded by Arbor}
+  - {name: "@linktr.ee/knapsack-gherkin-testcafe", version: 1.0.8, published: '2020-10-08', note: internal CI tooling}
+  see: packages/linktree-packages.yml
 developer_program:
   stage: expression-of-interest
   url: https://linktr.ee/marketplace/developer

@@ -1,15 +1,14 @@
-# Linktree MCP server — harvested from the provider's published server card and tool manifest.
 generated: '2026-07-19'
 method: searched
 source: https://linktr.ee/.well-known/mcp/server-card.json
 status: published
 server:
-  name: "Linktree MCP"
-  version: "0.1.0"
-  description: "Manage Linktree profiles, links, appearance, and analytics via the Model Context Protocol."
+  name: Linktree MCP
+  version: 0.1.0
+  description: Manage Linktree profiles, links, appearance, and analytics via the Model Context Protocol.
   url: https://mcp.linktr.ee/mcp
   transport: streamable-http
-  protocol_version: "2025-03-26"
+  protocol_version: '2025-03-26'
 discovery:
   api_catalog: https://linktr.ee/.well-known/api-catalog
   server_card: https://linktr.ee/.well-known/mcp/server-card.json
@@ -22,189 +21,241 @@ auth:
   type: oauth2
   provider: Descope
   scope_model: one scope per tool (mcp:<tool_name>)
-  bearer_methods: [header]
+  bearer_methods:
+  - header
 approval_model:
   hint_header: x-linktree-require-approval
   note: write and destructive tools set the approval hint so clients can prompt the user first.
 tool_count: 30
 tools:
-  - name: list_accessible_profiles
-    description: "Retrieve every Linktree profile the authenticated user can access across direct accounts and workspaces."
-    scope: mcp:list_accessible_profiles
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: set_active_profile
-    description: "Set the active Linktree profile for the current conversation so later tools target it."
-    scope: mcp:set_active_profile
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: get_account
-    description: "Retrieve a Linktree profile's details (display name, bio, avatar, username)."
-    scope: mcp:get_account
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: update_account_profile
-    description: "Update a Linktree profile's display name and/or bio."
-    scope: mcp:update_account_profile
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: get_suggested_bio
-    description: "Retrieve a suggested bio for a Linktree profile based on its existing content."
-    scope: mcp:get_suggested_bio
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_account_analytics
-    description: "Retrieve account-level analytics for a Linktree profile (views, clicks, CTR, and optional breakdowns)."
-    scope: mcp:get_account_analytics
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_analytics_lifetime_totals
-    description: "Retrieve lifetime analytics totals for a Linktree profile (views, clicks, CTR, earnings)."
-    scope: mcp:get_analytics_lifetime_totals
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_top_links
-    description: "Retrieve every link on a Linktree profile ranked by clicks, including links with zero clicks."
-    scope: mcp:get_top_links
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_profile_views
-    description: "Retrieve profile view counts for a Linktree profile over a recent time window."
-    scope: mcp:get_profile_views
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_social_integrations
-    description: "Retrieve the active social integrations connected to a Linktree profile."
-    scope: mcp:get_social_integrations
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_appearance
-    description: "Retrieve a Linktree profile's appearance settings (colors, fonts, button styles, background)."
-    scope: mcp:get_appearance
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: update_appearance
-    description: "Update a Linktree profile's appearance (colors, fonts, button styles, background)."
-    scope: mcp:update_appearance
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: get_knowledge_base
-    description: "Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ information)."
-    scope: mcp:get_knowledge_base
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_workspaces_for_user
-    description: "Retrieve every workspace the authenticated user is a member of."
-    scope: mcp:get_workspaces_for_user
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: get_workspace
-    description: "Retrieve details for a workspace the authenticated user belongs to."
-    scope: mcp:get_workspace
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: get_workspace_profiles
-    description: "Retrieve every Linktree profile belonging to a workspace."
-    scope: mcp:get_workspace_profiles
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: get_workspace_profiles_analytics
-    description: "Retrieve lifetime analytics for every Linktree profile in a workspace."
-    scope: mcp:get_workspace_profiles_analytics
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: get_workspace_members
-    description: "Retrieve the members of a workspace."
-    scope: mcp:get_workspace_members
-    access: read
-    approval: none
-    identity_scope: "user"
-  - name: get_links
-    description: "Retrieve the ordered links on a Linktree profile, including link-app metadata."
-    scope: mcp:get_links
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: add_link
-    description: "Add a new URL-backed link to a Linktree profile."
-    scope: mcp:add_link
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: create_collection
-    description: "Create a new empty collection on a Linktree profile."
-    scope: mcp:create_collection
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: add_links_to_collection
-    description: "Move existing top-level links into a collection on a Linktree profile."
-    scope: mcp:add_links_to_collection
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: update_link
-    description: "Update an existing link or collection on a Linktree profile (title, URL, or active state)."
-    scope: mcp:update_link
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: reorder_link
-    description: "Reorder a top-level link, collection, or collection item on a Linktree profile."
-    scope: mcp:reorder_link
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: delete_link
-    description: "Delete a top-level link from a Linktree profile."
-    scope: mcp:delete_link
-    access: destructive
-    approval: required
-    identity_scope: "user_or_account"
-  - name: get_link_analytics
-    description: "Retrieve analytics for a specific link on a Linktree profile (clicks, views, CTR, trend data)."
-    scope: mcp:get_link_analytics
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: get_social_links
-    description: "Retrieve a Linktree profile's social icon links and their display order."
-    scope: mcp:get_social_links
-    access: read
-    approval: none
-    identity_scope: "user_or_account"
-  - name: upsert_social_link
-    description: "Create or update a social icon link on a Linktree profile for a supported platform."
-    scope: mcp:upsert_social_link
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: reorder_social_links
-    description: "Move a social icon link to a new position on a Linktree profile."
-    scope: mcp:reorder_social_links
-    access: write
-    approval: required
-    identity_scope: "user_or_account"
-  - name: delete_social_link
-    description: "Delete a social icon link from a Linktree profile by platform type."
-    scope: mcp:delete_social_link
-    access: destructive
-    approval: required
-    identity_scope: "user_or_account"
+- name: list_accessible_profiles
+  description: Retrieve every Linktree profile the authenticated user can access across direct accounts
+    and workspaces.
+  scope: mcp:list_accessible_profiles
+  access: read
+  approval: none
+  identity_scope: user
+- name: set_active_profile
+  description: Set the active Linktree profile for the current conversation so later tools target it.
+  scope: mcp:set_active_profile
+  access: read
+  approval: none
+  identity_scope: user
+- name: get_account
+  description: Retrieve a Linktree profile's details (display name, bio, avatar, username).
+  scope: mcp:get_account
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: update_account_profile
+  description: Update a Linktree profile's display name and/or bio.
+  scope: mcp:update_account_profile
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: get_suggested_bio
+  description: Retrieve a suggested bio for a Linktree profile based on its existing content.
+  scope: mcp:get_suggested_bio
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_account_analytics
+  description: Retrieve account-level analytics for a Linktree profile (views, clicks, CTR, and optional
+    breakdowns).
+  scope: mcp:get_account_analytics
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_analytics_lifetime_totals
+  description: Retrieve lifetime analytics totals for a Linktree profile (views, clicks, CTR, earnings).
+  scope: mcp:get_analytics_lifetime_totals
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_top_links
+  description: Retrieve every link on a Linktree profile ranked by clicks, including links with zero clicks.
+  scope: mcp:get_top_links
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_profile_views
+  description: Retrieve profile view counts for a Linktree profile over a recent time window.
+  scope: mcp:get_profile_views
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_social_integrations
+  description: Retrieve the active social integrations connected to a Linktree profile.
+  scope: mcp:get_social_integrations
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_appearance
+  description: Retrieve a Linktree profile's appearance settings (colors, fonts, button styles, background).
+  scope: mcp:get_appearance
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: update_appearance
+  description: Update a Linktree profile's appearance (colors, fonts, button styles, background).
+  scope: mcp:update_appearance
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: get_knowledge_base
+  description: Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ
+    information).
+  scope: mcp:get_knowledge_base
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_workspaces_for_user
+  description: Retrieve every workspace the authenticated user is a member of.
+  scope: mcp:get_workspaces_for_user
+  access: read
+  approval: none
+  identity_scope: user
+- name: get_workspace
+  description: Retrieve details for a workspace the authenticated user belongs to.
+  scope: mcp:get_workspace
+  access: read
+  approval: none
+  identity_scope: user
+- name: get_workspace_profiles
+  description: Retrieve every Linktree profile belonging to a workspace.
+  scope: mcp:get_workspace_profiles
+  access: read
+  approval: none
+  identity_scope: user
+- name: get_workspace_profiles_analytics
+  description: Retrieve lifetime analytics for every Linktree profile in a workspace.
+  scope: mcp:get_workspace_profiles_analytics
+  access: read
+  approval: none
+  identity_scope: user
+- name: get_workspace_members
+  description: Retrieve the members of a workspace.
+  scope: mcp:get_workspace_members
+  access: read
+  approval: none
+  identity_scope: user
+- name: get_links
+  description: Retrieve the ordered links on a Linktree profile, including link-app metadata.
+  scope: mcp:get_links
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: add_link
+  description: Add a new URL-backed link to a Linktree profile.
+  scope: mcp:add_link
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: create_collection
+  description: Create a new empty collection on a Linktree profile.
+  scope: mcp:create_collection
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: add_links_to_collection
+  description: Move existing top-level links into a collection on a Linktree profile.
+  scope: mcp:add_links_to_collection
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: update_link
+  description: Update an existing link or collection on a Linktree profile (title, URL, or active state).
+  scope: mcp:update_link
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: reorder_link
+  description: Reorder a top-level link, collection, or collection item on a Linktree profile.
+  scope: mcp:reorder_link
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: delete_link
+  description: Delete a top-level link from a Linktree profile.
+  scope: mcp:delete_link
+  access: destructive
+  approval: required
+  identity_scope: user_or_account
+- name: get_link_analytics
+  description: Retrieve analytics for a specific link on a Linktree profile (clicks, views, CTR, trend
+    data).
+  scope: mcp:get_link_analytics
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: get_social_links
+  description: Retrieve a Linktree profile's social icon links and their display order.
+  scope: mcp:get_social_links
+  access: read
+  approval: none
+  identity_scope: user_or_account
+- name: upsert_social_link
+  description: Create or update a social icon link on a Linktree profile for a supported platform.
+  scope: mcp:upsert_social_link
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: reorder_social_links
+  description: Move a social icon link to a new position on a Linktree profile.
+  scope: mcp:reorder_social_links
+  access: write
+  approval: required
+  identity_scope: user_or_account
+- name: delete_social_link
+  description: Delete a social icon link from a Linktree profile by platform type.
+  scope: mcp:delete_social_link
+  access: destructive
+  approval: required
+  identity_scope: user_or_account
+deployment:
+  mode: both
+  endpoint: https://mcp.linktr.ee/mcp
+  install: npx -y @linktr.ee/arbor-mcp
+  package: https://www.npmjs.com/package/@linktr.ee/arbor-mcp
+  auth: oauth
+  verified: probed
+  probe: gated
+  checked: '2026-08-13'
+  source: >-
+    Remote endpoint probed directly (POST tools/list -> HTTP 401 with a WWW-Authenticate Bearer
+    resource_metadata challenge, so the server is live and OAuth-gated). The stdio package was
+    found on the npm registry under Linktree's own @linktr.ee scope.
+  note: >-
+    mode is `both` because Linktree ships two DIFFERENT MCP servers, not two transports for one
+    server. Read them separately — see additional_servers below. The remote server at
+    mcp.linktr.ee/mcp is the product surface (30 tools over profiles, links, analytics) and is the
+    one an agent can reach without a human installing anything; the stdio package is a design-system
+    server that a developer must install locally first. `auth: oauth` describes the remote endpoint.
+additional_servers:
+  - name: Arbor MCP
+    mode: local-stdio
+    endpoint: null
+    install: npx -y @linktr.ee/arbor-mcp
+    package: https://www.npmjs.com/package/@linktr.ee/arbor-mcp
+    repository: https://github.com/blstrco/arbor
+    homepage: https://arbor.linktr.ee
+    version: 0.12.0
+    published: '2026-08-08'
+    first_published: '2026-04-29'
+    release_count: 72
+    auth: none
+    verified: searched
+    source: https://registry.npmjs.org/@linktr.ee%2Farbor-mcp
+    description: >-
+      Model Context Protocol server exposing Arbor design system tools: Playroom snippets,
+      Figma-to-code sync health, UX-writing checks.
+    tools: []
+    tools_note: >-
+      The tool list is NOT recorded. A stdio server publishes no manifest to fetch and the package
+      ships no public README enumerating its tools; naming them would be fabrication. The themes
+      above are quoted verbatim from the package description. Enumerating the real tools requires
+      installing the package and calling tools/list locally.
+    scope: developer-tooling
+    see:
+      - packages/linktree-packages.yml
+      - components/linktree-components.yml

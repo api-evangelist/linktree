@@ -51,15 +51,37 @@ standards:
   evidence: >-
     userinfo_endpoint, id_token_signing_alg_values_supported and claims_supported are published,
     but /.well-known/openid-configuration returns 404 on every host.
+- id: shadcn-registry
+  conforms: true
+  version: '1.0'
+  added: '2026-08-13'
+  evidence: >-
+    https://arbor.linktr.ee/manifest.json and /r/{name}.json validate against the published
+    shadcn registry schemas ($schema https://ui.shadcn.com/schema/registry.json and
+    .../registry-item.json); the manifest declares protocol_version 1.0.
 - id: openapi
   conforms: false
-  evidence: no OpenAPI or Swagger definition is published; there is no public REST API
+  evidence: >-
+    No OpenAPI or Swagger definition is published on any host. There is no public REST API for
+    the product. The Arbor registry (arbor.linktr.ee) IS a public unauthenticated HTTP API with
+    four endpoints, but ships no OpenAPI: /openapi.json, /swagger.json and /api-docs all 404.
+  rechecked: '2026-08-13'
+  hosts_probed: [linktr.ee, mcp.linktr.ee, api.linktr.ee, arbor.linktr.ee]
 - id: rfc9457-problem-details
   conforms: false
   evidence: errors are MCP tool-result envelopes, not application/problem+json
 - id: rfc9116-security-txt
   conforms: false
-  evidence: /.well-known/security.txt returns 404 on linktr.ee and mcp.linktr.ee
+  evidence: >-
+    /.well-known/security.txt returns 404 on linktr.ee, mcp.linktr.ee and arbor.linktr.ee.
+    (https://linktr.ee/security.txt returns HTTP 200 but serves the marketing SPA shell, not an
+    RFC 9116 document — a soft-200, recorded as a miss.)
+- id: a2a-agent-card
+  conforms: false
+  added: '2026-08-13'
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 on every Linktree host.
+    See well-known/linktree-well-known.yml.
 - id: asyncapi
   conforms: false
   evidence: no event, streaming, or webhook surface is published
