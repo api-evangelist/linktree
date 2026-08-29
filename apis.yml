@@ -15,6 +15,18 @@ description: >-
   versioned JSON manifest of 51 React components plus a health endpoint and an llms.txt, and it
   ships first-party developer tooling on npm under the @linktr.ee scope — the LinkApps
   scaffold/build/deploy CLIs and a stdio Arbor MCP server.
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: approval
