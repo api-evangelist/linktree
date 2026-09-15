@@ -1,20 +1,17 @@
 aid: linktree
 name: Linktree
-description: >-
-  Linktree is the link-in-bio platform used by 70M+ creators, brands, and businesses to share
-  everything they create, curate, and sell from a single URL. Operated by Linktree Pty Ltd from
-  Collingwood, Victoria, Australia, the product builds a mobile-friendly landing page that
-  aggregates social profiles, content, products, and services behind one link, with paid Starter,
-  Pro, and Premium plans adding customization, analytics, commerce, scheduling, and AI features.
-  Linktree publishes no general-purpose public REST API — its developer program is an
-  expression-of-interest waitlist for forthcoming APIs and SDKs. It does, however, run a live,
-  fully documented OAuth 2.0-protected Model Context Protocol server at mcp.linktr.ee exposing 30
-  tools for managing profiles, links, collections, appearance, social icons, workspaces, and
-  analytics, discoverable from an RFC 9727 api-catalog on the apex domain. Alongside it Linktree
-  operates Arbor, a public unauthenticated component registry at arbor.linktr.ee serving a
-  versioned JSON manifest of 51 React components plus a health endpoint and an llms.txt, and it
-  ships first-party developer tooling on npm under the @linktr.ee scope — the LinkApps
-  scaffold/build/deploy CLIs and a stdio Arbor MCP server.
+description: Linktree is the link-in-bio platform used by 70M+ creators, brands, and businesses to share
+  everything they create, curate, and sell from a single URL. Operated by Linktree Pty Ltd from Collingwood,
+  Victoria, Australia, the product builds a mobile-friendly landing page that aggregates social profiles,
+  content, products, and services behind one link, with paid Starter, Pro, and Premium plans adding customization,
+  analytics, commerce, scheduling, and AI features. Linktree publishes no general-purpose public REST
+  API — its developer program is an expression-of-interest waitlist for forthcoming APIs and SDKs. It
+  does, however, run a live, fully documented OAuth 2.0-protected Model Context Protocol server at mcp.linktr.ee
+  exposing 30 tools for managing profiles, links, collections, appearance, social icons, workspaces, and
+  analytics, discoverable from an RFC 9727 api-catalog on the apex domain. Alongside it Linktree operates
+  Arbor, a public unauthenticated component registry at arbor.linktr.ee serving a versioned JSON manifest
+  of 51 React components plus a health endpoint and an llms.txt, and it ships first-party developer tooling
+  on npm under the @linktr.ee scope — the LinkApps scaffold/build/deploy CLIs and a stdio Arbor MCP server.
 deliveryModel:
   model: unknown
   open_source: unknown
@@ -76,14 +73,13 @@ tags_raw:
 - Design System
 - Developer Tools
 apis:
-- aid: linktree-mcp
+- aid: linktree:linktree-mcp
   name: Linktree MCP
-  description: >-
-    OAuth 2.0-protected Model Context Protocol server, speaking streamable-http, that lets agents
-    manage Linktree profiles, links, collections, appearance, social icon links, workspaces, and
-    analytics. Thirty tools, each gated by its own mcp:<tool_name> scope, with write and
-    destructive tools flagged for client-side user approval. This is Linktree's only live
-    programmatic surface — there is no public REST API.
+  description: OAuth 2.0-protected Model Context Protocol server, speaking streamable-http, that lets
+    agents manage Linktree profiles, links, collections, appearance, social icon links, workspaces, and
+    analytics. Thirty tools, each gated by its own mcp:<tool_name> scope, with write and destructive tools
+    flagged for client-side user approval. This is Linktree's only live programmatic surface — there is
+    no public REST API.
   humanURL: https://mcp.linktr.ee/docs
   baseURL: https://mcp.linktr.ee/mcp
   tags:
@@ -114,16 +110,14 @@ apis:
     url: rate-limits/linktree-rate-limits.yml
   - type: Plans
     url: plans/linktree-plans-pricing.yml
-- aid: linktree-arbor-registry
+- aid: linktree:linktree-arbor-registry
   name: Linktree Arbor Registry
-  description: >-
-    Arbor is Linktree's design system, published as a public HTTP component registry. Anonymous,
-    unauthenticated GETs return a versioned JSON manifest of 51 React components (/manifest.json,
-    registry version 26.0.1), individual component definitions at /r/{name}.json following the
-    shadcn registry-item schema, and a /health endpoint. It is the only Linktree programmatic
-    surface an agent can call today with no credentials. Components are installed as source via
-    the shadcn CLI rather than as an npm dependency, so consumers take no runtime lock-in. No
-    OpenAPI is published for its four endpoints.
+  description: Arbor is Linktree's design system, published as a public HTTP component registry. Anonymous,
+    unauthenticated GETs return a versioned JSON manifest of 51 React components (/manifest.json, registry
+    version 26.0.1), individual component definitions at /r/{name}.json following the shadcn registry-item
+    schema, and a /health endpoint. It is the only Linktree programmatic surface an agent can call today
+    with no credentials. Components are installed as source via the shadcn CLI rather than as an npm dependency,
+    so consumers take no runtime lock-in. No OpenAPI is published for its four endpoints.
   humanURL: https://arbor.linktr.ee/
   baseURL: https://arbor.linktr.ee
   tags:
@@ -235,8 +229,7 @@ x-enrichment:
   status: enriched
   artifacts_added: 7
   pass: local-v1
-  note: >-
-    Round 2. Found a previously-unrecorded second API surface — the public Arbor component
-    registry at arbor.linktr.ee — plus the first-party @linktr.ee npm scope (8 packages incl. a
-    stdio MCP server). Added packages, plans, rate-limits, components, cli. No agent card, no
-    OpenAPI, no security.txt on any host.
+  note: Round 2. Found a previously-unrecorded second API surface — the public Arbor component registry
+    at arbor.linktr.ee — plus the first-party @linktr.ee npm scope (8 packages incl. a stdio MCP server).
+    Added packages, plans, rate-limits, components, cli. No agent card, no OpenAPI, no security.txt on
+    any host.
