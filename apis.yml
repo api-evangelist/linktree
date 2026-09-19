@@ -58,7 +58,7 @@ tags:
 - Analytics
 - MCP
 - Agents
-- Design System
+- Design Systems
 - Developer Tools
 tags_raw:
 - Company
@@ -121,6 +121,11 @@ apis:
   humanURL: https://arbor.linktr.ee/
   baseURL: https://arbor.linktr.ee
   tags:
+  - Design Systems
+  - Components
+  - Developer Tools
+  - Registry
+  tags_raw:
   - Design System
   - Components
   - Developer Tools
