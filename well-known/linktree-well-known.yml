@@ -1,10 +1,15 @@
-generated: '2026-07-19'
+generated: '2026-09-19'
 method: searched
 source: live probes of the /.well-known/ surface on each Linktree host
-note: >-
-  Linktree publishes an RFC 9727 api-catalog linkset whose single anchor is the MCP endpoint —
-  the api-catalog is how the MCP server is discoverable from the apex domain. There is no
-  security.txt on any host.
+note: 'Linktree publishes an RFC 9727 api-catalog linkset whose single anchor is the MCP endpoint — the
+  api-catalog is how the MCP server is discoverable from the apex domain. There is no security.txt on
+  any host.
+
+
+  MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s primary
+  hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed and
+  were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'
 hosts:
 - host: https://linktr.ee
   documents:
@@ -66,12 +71,20 @@ hosts:
   - path: /.well-known/agent.json
     status: 404
     checked: '2026-08-13'
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: linktree-mcp-oauth-protected-resource.json
+    bytes: 182
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: linktree-mcp-oauth-authorization-server.json
+    bytes: 2153
+  path_echo_control: passed
 - host: https://arbor.linktr.ee
   added: '2026-08-13'
-  note: >-
-    The public Arbor component registry. Serves a real machine-readable API surface
-    (/manifest.json, /r/{name}.json, /health, /llms.txt) but nothing under /.well-known/ —
-    every path below returns the registry's own styled 404 HTML page, not an SPA soft-200.
+  note: The public Arbor component registry. Serves a real machine-readable API surface (/manifest.json,
+    /r/{name}.json, /health, /llms.txt) but nothing under /.well-known/ — every path below returns the
+    registry's own styled 404 HTML page, not an SPA soft-200.
   documents:
   - path: /.well-known/security.txt
     status: 404
@@ -115,18 +128,35 @@ hosts:
 agent_card:
   present: false
   checked: '2026-08-13'
-  paths: [/.well-known/agent-card.json, /.well-known/agent.json]
-  hosts: [linktr.ee, mcp.linktr.ee, arbor.linktr.ee, api.linktr.ee]
+  paths:
+  - /.well-known/agent-card.json
+  - /.well-known/agent.json
+  hosts:
+  - linktr.ee
+  - mcp.linktr.ee
+  - arbor.linktr.ee
+  - api.linktr.ee
   results: 404 on linktr.ee, mcp.linktr.ee and arbor.linktr.ee; 503 on api.linktr.ee
-  note: >-
-    No A2A agent card is served on any Linktree host. Per pipeline rule this artifact is never
-    generated or derived, so no a2a/ directory exists and no AgentCard pointer is claimed. The
-    negative probe is recorded here as data. Note that linktr.ee returns its branded HTML 404
-    page (a real 404, not an SPA soft-200), so this is a genuine absence rather than an
-    undetectable catch-all.
+  note: No A2A agent card is served on any Linktree host. Per pipeline rule this artifact is never generated
+    or derived, so no a2a/ directory exists and no AgentCard pointer is claimed. The negative probe is
+    recorded here as data. Note that linktr.ee returns its branded HTML 404 page (a real 404, not an SPA
+    soft-200), so this is a genuine absence rather than an undetectable catch-all.
 security_txt:
   present: false
-  checked: [https://linktr.ee/.well-known/security.txt, https://mcp.linktr.ee/.well-known/security.txt]
-  note: >-
-    Linktree runs a public bug bounty on Bugcrowd but does not publish an RFC 9116 security.txt.
-    See security/linktree-vulnerability-disclosure.yml.
+  checked:
+  - https://linktr.ee/.well-known/security.txt
+  - https://mcp.linktr.ee/.well-known/security.txt
+  note: Linktree runs a public bug bounty on Bugcrowd but does not publish an RFC 9116 security.txt. See
+    security/linktree-vulnerability-disclosure.yml.
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://mcp.linktr.ee
+    path: /.well-known/oauth-protected-resource
+    file: linktree-mcp-oauth-protected-resource.json
+  - host: https://mcp.linktr.ee
+    path: /.well-known/oauth-authorization-server
+    file: linktree-mcp-oauth-authorization-server.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host

@@ -213,49 +213,35 @@ tools:
   approval: required
   identity_scope: user_or_account
 deployment:
-  mode: both
+  mode: remote
   endpoint: https://mcp.linktr.ee/mcp
-  install: npx -y @linktr.ee/arbor-mcp
-  package: https://www.npmjs.com/package/@linktr.ee/arbor-mcp
-  auth: oauth
   verified: probed
   probe: gated
-  checked: '2026-08-13'
-  source: >-
-    Remote endpoint probed directly (POST tools/list -> HTTP 401 with a WWW-Authenticate Bearer
-    resource_metadata challenge, so the server is live and OAuth-gated). The stdio package was
-    found on the npm registry under Linktree's own @linktr.ee scope.
-  note: >-
-    mode is `both` because Linktree ships two DIFFERENT MCP servers, not two transports for one
-    server. Read them separately — see additional_servers below. The remote server at
-    mcp.linktr.ee/mcp is the product surface (30 tools over profiles, links, analytics) and is the
-    one an agent can reach without a human installing anything; the stdio package is a design-system
-    server that a developer must install locally first. `auth: oauth` describes the remote endpoint.
+  checked: '2026-08-12'
+  source: catalog MCP census
 additional_servers:
-  - name: Arbor MCP
-    mode: local-stdio
-    endpoint: null
-    install: npx -y @linktr.ee/arbor-mcp
-    package: https://www.npmjs.com/package/@linktr.ee/arbor-mcp
-    repository: https://github.com/blstrco/arbor
-    homepage: https://arbor.linktr.ee
-    version: 0.12.0
-    published: '2026-08-08'
-    first_published: '2026-04-29'
-    release_count: 72
-    auth: none
-    verified: searched
-    source: https://registry.npmjs.org/@linktr.ee%2Farbor-mcp
-    description: >-
-      Model Context Protocol server exposing Arbor design system tools: Playroom snippets,
-      Figma-to-code sync health, UX-writing checks.
-    tools: []
-    tools_note: >-
-      The tool list is NOT recorded. A stdio server publishes no manifest to fetch and the package
-      ships no public README enumerating its tools; naming them would be fabrication. The themes
-      above are quoted verbatim from the package description. Enumerating the real tools requires
-      installing the package and calling tools/list locally.
-    scope: developer-tooling
-    see:
-      - packages/linktree-packages.yml
-      - components/linktree-components.yml
+- name: Arbor MCP
+  mode: local-stdio
+  endpoint: null
+  install: npx -y @linktr.ee/arbor-mcp
+  package: https://www.npmjs.com/package/@linktr.ee/arbor-mcp
+  repository: https://github.com/blstrco/arbor
+  homepage: https://arbor.linktr.ee
+  version: 0.12.0
+  published: '2026-08-08'
+  first_published: '2026-04-29'
+  release_count: 72
+  auth: none
+  verified: searched
+  source: https://registry.npmjs.org/@linktr.ee%2Farbor-mcp
+  description: 'Model Context Protocol server exposing Arbor design system tools: Playroom snippets, Figma-to-code
+    sync health, UX-writing checks.'
+  tools: []
+  tools_note: The tool list is NOT recorded. A stdio server publishes no manifest to fetch and the package
+    ships no public README enumerating its tools; naming them would be fabrication. The themes above are
+    quoted verbatim from the package description. Enumerating the real tools requires installing the package
+    and calling tools/list locally.
+  scope: developer-tooling
+  see:
+  - packages/linktree-packages.yml
+  - components/linktree-components.yml
