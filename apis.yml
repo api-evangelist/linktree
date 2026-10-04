@@ -13,16 +13,19 @@ description: Linktree is the link-in-bio platform used by 70M+ creators, brands,
   of 51 React components plus a health endpoint and an llms.txt, and it ships first-party developer tooling
   on npm under the @linktr.ee scope — the LinkApps scaffold/build/deploy CLIs and a stdio Arbor MCP server.
 deliveryModel:
-  model: unknown
+  model: saas
+  license_evidence:
+    not_product:
+    - blstrco/arbor
   open_source: unknown
   commercial: true
   callable_host: false
-  label: Delivery model not determined — needs a product licence on record
+  label: Hosted service · you call their endpoint
   confidence: low
   source:
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
@@ -53,13 +56,14 @@ tags:
 - Media
 - Link in Bio
 - Creator Economy
-- Social-Media
+- Social Media
 - Marketing
 - Analytics
 - MCP
 - Agents
 - Design Systems
 - Developer Tools
+- Australia
 tags_raw:
 - Company
 - Media
@@ -72,6 +76,8 @@ tags_raw:
 - Agents
 - Design System
 - Developer Tools
+- Social-Media
+- Australia
 apis:
 - aid: linktree:linktree-mcp
   name: Linktree MCP
