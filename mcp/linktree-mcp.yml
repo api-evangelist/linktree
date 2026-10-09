@@ -245,3 +245,17 @@ additional_servers:
   see:
   - packages/linktree-packages.yml
   - components/linktree-components.yml
+rfc9728:
+  endpoint: https://mcp.linktr.ee/mcp
+  metadata_url: https://mcp.linktr.ee/.well-known/oauth-protected-resource
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://mcp.linktr.ee/mcp
+    authorization_servers:
+    - https://mcp.linktr.ee
+    bearer_methods_supported:
+    - header
+    resource_documentation: https://mcp.linktr.ee/docs
