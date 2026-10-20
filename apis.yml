@@ -61,7 +61,6 @@ tags:
 - Analytics
 - MCP
 - Agents
-- Design Systems
 - Developer Tools
 - Australia
 tags_raw:
@@ -74,7 +73,6 @@ tags_raw:
 - Analytics
 - MCP
 - Agents
-- Design System
 - Developer Tools
 - Social-Media
 - Australia
@@ -244,3 +242,5 @@ x-enrichment:
     at arbor.linktr.ee — plus the first-party @linktr.ee npm scope (8 packages incl. a stdio MCP server).
     Added packages, plans, rate-limits, components, cli. No agent card, no OpenAPI, no security.txt on
     any host.
+x-tags-removed:
+- Design Systems
