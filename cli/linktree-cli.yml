@@ -10,6 +10,27 @@ note: >-
   command surface. Command flags below are NOT enumerated: the packages publish no public README
   or docs site, and the LinkApps developer program is an expression-of-interest waitlist, so the
   invocation names are recorded from the npm `bin` maps and nothing beyond them is asserted.
+name: linkapp
+binary: linkapp
+install:
+  - npm install -g @linktr.ee/linkapp
+  - npx @linktr.ee/linkapp
+  - npx @linktr.ee/create-linkapp
+  - npx @linktr.ee/create-link-app
+commands:
+  # Binary names from the npm `bin` maps only; subcommands and flags are not published.
+  - name: linkapp
+    package: "@linktr.ee/linkapp"
+    documented: false
+  - name: create-linktree-link-run
+    package: "@linktr.ee/linkapp"
+    documented: false
+  - name: create-linkapp
+    package: "@linktr.ee/create-linkapp"
+    documented: false
+  - name: create-link-app
+    package: "@linktr.ee/create-link-app"
+    documented: false
 clis:
   - name: linkapp
     package: "@linktr.ee/linkapp"

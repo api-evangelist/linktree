@@ -1,5 +1,5 @@
 ---
-name: Manage the links on a Linktree profile
+name: linktree-manage-profile-links
 description: Add, reorder, update, and remove links on a Linktree profile via the Linktree MCP server.
 api: mcp/linktree-mcp.yml
 operations:
@@ -18,8 +18,8 @@ operations:
 
 - The only Linktree programmatic surface is the MCP server at `https://mcp.linktr.ee/mcp`
   (streamable-http). There is no public REST API.
-- Authenticate with OAuth 2.0. Every tool needs its own `mcp:<tool_name>` scope; request only
-  the scopes the flow below uses.
+- Authenticate with OAuth 2.0. One grant covers every tool: request no `scope` (or only
+  `offline_access` for a refresh token); per-tool scopes are not used (https://mcp.linktr.ee/llms.txt).
 - If the user can access more than one profile and none is active, tools return
   `PROFILE_REQUIRED` with a `candidates[]` list. Call `set_active_profile` once with a
   `username` from that list, or pass `username`/`profileUrl` on every call.

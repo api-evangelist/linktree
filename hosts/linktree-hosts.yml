@@ -1,0 +1,182 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 12
+  own: 7
+  other_domain: 4
+  platform: 1
+  roles:
+  - api
+  - docs
+  - other
+  - security
+  - source
+  - status
+  - support
+  - website
+hosts:
+- host: api.bugcrowd.com
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: bugcrowd.com
+  role: api
+  relation: other-domain
+- host: api.getbeamer.com
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: getbeamer.com
+  role: api
+  relation: other-domain
+- host: api.linktr.ee
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: linktr.ee
+  role: api
+  relation: own
+- host: app.getbeamer.com
+  found_by:
+  - pointer
+  - probed
+  - docs-index
+  - well-known
+  types:
+  - ChangeLog
+  serves:
+  - docs
+  registrable_domain: getbeamer.com
+  role: other
+  relation: other-domain
+- host: arbor.linktr.ee
+  found_by:
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types: []
+  serves:
+  - api
+  - docs
+  - hosting
+  vendor: github-pages
+  registrable_domain: linktr.ee
+  role: other
+  relation: own
+- host: bugcrowd.com
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  types:
+  - Security
+  serves: []
+  registrable_domain: bugcrowd.com
+  role: security
+  relation: other-domain
+- host: docs.linktr.ee
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - site-links
+  - namespace-probe
+  - docs-index
+  - well-known
+  types:
+  - SDKs
+  serves:
+  - docs
+  title: Installation - Linktree LinkApp SDK
+  status: 200
+  registrable_domain: linktr.ee
+  role: docs
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: help.linktr.ee
+  found_by:
+  - probed
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: linktr.ee
+  role: support
+  relation: own
+- host: linktr.ee
+  found_by:
+  - pointer
+  - probed
+  - docs-index
+  - well-known
+  - vendor-detect
+  types:
+  - Website
+  - DeveloperPortal
+  - APICatalog
+  - ChangeLog
+  - GettingStarted
+  - Support
+  - HelpCenter
+  - Guides
+  - Blog
+  - Pricing
+  - SignUp
+  - Login
+  - TermsOfService
+  - PrivacyPolicy
+  - Marketplace
+  - About
+  - Contact
+  - Newsroom
+  - Compliance
+  serves:
+  - docs
+  - cdn
+  vendor: fastly
+  registrable_domain: linktr.ee
+  role: website
+  relation: own
+- host: mcp.linktr.ee
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - docs-index
+  - contract-discovery
+  - well-known
+  types:
+  - Documentation
+  - APIReference
+  serves:
+  - api
+  - docs
+  registrable_domain: linktr.ee
+  role: docs
+  relation: own
+- host: status.linktr.ee
+  found_by:
+  - pointer
+  - probed
+  - site-links
+  - well-known
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: linktr.ee
+  role: status
+  relation: own

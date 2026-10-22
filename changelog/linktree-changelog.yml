@@ -1,4 +1,4 @@
-generated: '2026-07-19'
+generated: '2026-10-20'
 method: searched
 source: https://app.getbeamer.com/linktree/en
 url: https://app.getbeamer.com/linktree/en
@@ -7,16 +7,29 @@ platform: Beamer
 scheme: dated product news feed (no semantic version numbers)
 scope: product/feature announcements for the Linktree application
 status: 200
-entries: []
-entries_note: >-
-  The changelog is a JavaScript-rendered Beamer feed; individual dated entries could not be
-  extracted from the server-rendered HTML during this pass. The feed URL is captured and is the
-  source of truth. No entries are recorded rather than fabricating any.
+entries:
+- version: October 2026
+  date: 2026-10
+  breaking: false
+  url: https://linktr.ee/whats-new/oct-2026
+  highlights:
+  - 'Messaging inbox: Stacks groups similar messages; Spotlight surfaces priority messages'
+  - Connect to sync existing marketing tools
+  - Profile Lock gates a Linktree behind an access requirement (four ways to unlock)
+- version: September 2026
+  date: '2026-09-02'
+  breaking: false
+  url: https://linktr.ee/whats-new/sept-2026
+  highlights:
+  - New header layouts
+  - More clickable social icons under the profile title
+  - Featured link layouts
+entries_note: Recent window read 2026-10-20 from Treetop monthly product-news pages (linktr.ee/whats-new), which superseded the Beamer feed as the readable source. Product (not API) changes; dates as published
+  (October page carries no day-level date in the text read).
 developer_changelog:
   present: false
-  note: >-
-    There is no separate changelog for the MCP server or developer surface. Tool-level change
-    tracking would have to be diffed from https://mcp.linktr.ee/.well-known/mcp/tools.json.
+  note: There is no separate changelog for the MCP server or developer surface. Tool-level change tracking would have to be diffed from https://mcp.linktr.ee/.well-known/mcp/tools.json.
 related:
   engineering_blog: https://linktr.ee/blog/engineering/
   product_news: https://linktr.ee/blog/product-news
+treetop: https://linktr.ee/whats-new

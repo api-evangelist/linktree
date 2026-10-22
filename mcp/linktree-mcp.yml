@@ -1,6 +1,6 @@
-generated: '2026-07-19'
+generated: '2026-10-20'
 method: searched
-source: https://linktr.ee/.well-known/mcp/server-card.json
+source: https://mcp.linktr.ee/.well-known/mcp/tools.json
 status: published
 server:
   name: Linktree MCP
@@ -20,205 +20,584 @@ discovery:
 auth:
   type: oauth2
   provider: Descope
-  scope_model: one scope per tool (mcp:<tool_name>)
+  scope_model: single grant covers every tool; request no scope (or only offline_access for a refresh
+    token); per-tool scopes are not used
   bearer_methods:
   - header
+  scope_model_source: https://mcp.linktr.ee/llms.txt
 approval_model:
   hint_header: x-linktree-require-approval
   note: write and destructive tools set the approval hint so clients can prompt the user first.
-tool_count: 30
+tool_count: 36
 tools:
+- name: get_profile_sharing_guidance
+  summary: Get the correct Linktree profile URL and steps for adding it to a social bio; does not edit
+    or verify the bio.
+  access: read
+  approval: none
+  identity_scope: user_or_account
+  parameters:
+  - platform
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Get the selected Linktree profile URL and guidance for putting it in a social bio or website
+    field. Use when the creator asks how to share their Linktree or, after a successful link update, when
+    bio placement is relevant to their stated traffic goal. Sharing means adding the Linktree profile
+    URL to the social profile, not drafting captions or posts. This tool does not edit social profiles
+    or verif…
 - name: list_accessible_profiles
-  description: Retrieve every Linktree profile the authenticated user can access across direct accounts
-    and workspaces.
-  scope: mcp:list_accessible_profiles
+  summary: Retrieve every Linktree profile the authenticated user can access across direct accounts and
+    workspaces.
   access: read
   approval: none
   identity_scope: user
+  parameters:
+  - allPages
+  - editableOnly
+  - limit
+  - page
+  - query
+  - setActive
+  - workspaceUuid
+  description: 'Retrieve every Linktree profile the authenticated user can access across direct accounts
+    and workspaces. Pass setActive: true only when the filters resolve to exactly one profile; otherwise
+    call set_active_profile with a username from the returned candidates.'
 - name: set_active_profile
-  description: Set the active Linktree profile for the current conversation so later tools target it.
-  scope: mcp:set_active_profile
+  summary: Set the active Linktree profile for the current conversation so later tools target it.
   access: read
   approval: none
   identity_scope: user
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Set the active Linktree profile for the current conversation. Use this once after a PROFILE_REQUIRED
+    response, or pass username/profileUrl directly on individual profile-specific calls.
 - name: get_account
-  description: Retrieve a Linktree profile's details (display name, bio, avatar, username).
-  scope: mcp:get_account
+  summary: Retrieve a Linktree profile's details (display name, bio, avatar, username).
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve a Linktree profile's details (display name, bio, avatar, username). If the caller
+    has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response
+    with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: update_account_profile
-  description: Update a Linktree profile's display name and/or bio.
-  scope: mcp:update_account_profile
+  summary: Update a Linktree profile's display name and/or bio.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - bio
+  - clearBio
+  - clearDisplayName
+  - displayName
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Update a Linktree profile's display name and/or bio. If the caller has multiple accessible
+    profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call
+    `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: get_suggested_bio
-  description: Retrieve a suggested bio for a Linktree profile based on its existing content.
-  scope: mcp:get_suggested_bio
+  summary: Retrieve a suggested bio for a Linktree profile based on its existing content.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - seed
+  - temperature
+  - username
+  - workspaceUuid
+  description: Retrieve a suggested bio for a Linktree profile based on its existing content. If the caller
+    has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response
+    with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: get_account_analytics
-  description: Retrieve account-level analytics for a Linktree profile (views, clicks, CTR, and optional
-    breakdowns).
-  scope: mcp:get_account_analytics
+  summary: Retrieve account-level analytics for a Linktree profile (views, clicks, CTR, and optional breakdowns).
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - endDate
+  - startDate
+  - includeDevices
+  - includeLinks
+  - includeLocations
+  - includeReferrers
+  - includeSubscribers
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve account-level analytics for a Linktree profile, including views, clicks, CTR,
+    and optional breakdowns. If the caller has multiple accessible profiles and no active profile is set,
+    this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass
+    `username`/`profileUrl`.
 - name: get_analytics_lifetime_totals
-  description: Retrieve lifetime analytics totals for a Linktree profile (views, clicks, CTR, earnings).
-  scope: mcp:get_analytics_lifetime_totals
+  summary: Retrieve lifetime analytics totals for a Linktree profile (views, clicks, CTR, earnings).
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve lifetime analytics totals for a Linktree profile, including views, clicks, CTR,
+    and earnings. If the caller has multiple accessible profiles and no active profile is set, this returns
+    a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: get_top_links
-  description: Retrieve every link on a Linktree profile ranked by clicks, including links with zero clicks.
-  scope: mcp:get_top_links
+  summary: Retrieve every link on a Linktree profile ranked by clicks, including links with zero clicks.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve click counts for all links on a Linktree profile, including links with zero clicks,
+    ranked by performance. If the caller has multiple accessible profiles and no active profile is set,
+    this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass
+    `username`/`profileUrl`.
 - name: get_profile_views
-  description: Retrieve profile view counts for a Linktree profile over a recent time window.
-  scope: mcp:get_profile_views
+  summary: Retrieve profile view counts for a Linktree profile over a recent time window.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - days
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve profile views for a Linktree profile over a recent time window. If the caller
+    has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response
+    with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: get_social_integrations
-  description: Retrieve the active social integrations connected to a Linktree profile.
-  scope: mcp:get_social_integrations
+  summary: Retrieve the active social integrations connected to a Linktree profile.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve the active social integrations connected to a Linktree profile. If the caller
+    has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response
+    with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: get_appearance
-  description: Retrieve a Linktree profile's appearance settings (colors, fonts, button styles, background).
-  scope: mcp:get_appearance
+  summary: Retrieve a Linktree profile's appearance settings (colors, fonts, button styles, background).
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve a Linktree profile's appearance settings, including colors, fonts, button styles,
+    and background. If the caller has multiple accessible profiles and no active profile is set, this
+    returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: update_appearance
-  description: Update a Linktree profile's appearance (colors, fonts, button styles, background).
-  scope: mcp:update_appearance
+  summary: Update a Linktree profile's appearance (colors, fonts, button styles, background).
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - backgroundColor
+  - backgroundGradientStyle
+  - backgroundStyle
+  - buttonCornerStyleType
+  - buttonShadowStyleType
+  - buttonStyleType
+  - fontStyle
+  - headingFont
+  - headingSize
+  - heroMode
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Update a Linktree profile's appearance, including colors, fonts, button styles, and background
+    styling. If the caller has multiple accessible profiles and no active profile is set, this returns
+    a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: get_knowledge_base
+  summary: Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ information).
+  access: read
+  approval: none
+  identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - searchQuery
+  - username
+  - workspaceUuid
   description: Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ
-    information).
-  scope: mcp:get_knowledge_base
+    information). If the caller has multiple accessible profiles and no active profile is set, this returns
+    a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+- name: pull_recommendations
+  summary: Retrieve available Linktree recommendations for a profile and claim the ones returned for the
+    public MCP.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - limit
+  - profileUrl
+  - query
+  - topic
+  - username
+  - workspaceUuid
+  description: 'Use this tool whenever the creator asks for suggestions or ideas, or asks what to do,
+    improve or change on their Linktree. If they mention a focus, pass it as `topic`. Retrieve up to three
+    available recommendations for a Linktree profile. Treat each recommendation as input for reasoning,
+    not as text to paste to the creator: understand what it changes, use public read tools such as get_links,
+    get_a…'
+- name: submit_recommendation_feedback
+  summary: Record the creator's per-item decision (acted or dismissed) on a pulled recommendation.
+  access: write
+  approval: none
+  identity_scope: user_or_account
+  parameters:
+  - recommendation_id
+  - recommendation_type
+  - dismiss_all
+  - items
+  - note
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Record the creator's decision on a recommendation returned by pull_recommendations. Always
+    call it after the creator acts on or declines a pulled recommendation, including when they decline.
+    Send one item per recommendation item you discussed, using the item ids and kinds from the recommendation,
+    with outcome acted (adopted as suggested), acted_with_edits (adopted with changes) or dismissed. For
+    a…
 - name: get_workspaces_for_user
-  description: Retrieve every workspace the authenticated user is a member of.
-  scope: mcp:get_workspaces_for_user
+  summary: Retrieve every workspace the authenticated user is a member of.
   access: read
   approval: none
   identity_scope: user
+  parameters: []
+  description: Retrieve every workspace the authenticated user is a member of. Returns role, id, uuid,
+    name, and avatarUrl for each workspace. Use the uuid from this response when calling other workspace
+    tools.
 - name: get_workspace
-  description: Retrieve details for a workspace the authenticated user belongs to.
-  scope: mcp:get_workspace
+  summary: Retrieve details for a workspace the authenticated user belongs to.
   access: read
   approval: none
   identity_scope: user
+  parameters:
+  - workspaceId
+  - workspaceUuid
+  description: Retrieve details for a workspace the authenticated user belongs to, including the current
+    user's role (OWNER, MANAGER, or MEMBER), id, uuid, name, and avatarUrl. Optionally pass a workspaceId
+    to target a specific workspace; omit it to fetch the default workspace.
 - name: get_workspace_profiles
-  description: Retrieve every Linktree profile belonging to a workspace.
-  scope: mcp:get_workspace_profiles
+  summary: Retrieve every Linktree profile belonging to a workspace.
   access: read
   approval: none
   identity_scope: user
+  parameters:
+  - workspaceId
+  - workspaceUuid
+  description: Retrieve every Linktree profile belonging to a workspace. Returns ids, names, avatars,
+    access types, owner/admin summaries, and pending transfer state for each profile. Fetches all pages
+    automatically. Call get_workspaces_for_user first to obtain the workspaceUuid.
 - name: get_workspace_profiles_analytics
-  description: Retrieve lifetime analytics for every Linktree profile in a workspace.
-  scope: mcp:get_workspace_profiles_analytics
+  summary: Retrieve lifetime analytics for every Linktree profile in a workspace.
   access: read
   approval: none
   identity_scope: user
+  parameters:
+  - workspaceId
+  - workspaceUuid
+  description: Retrieve lifetime analytics for every Linktree profile in a workspace in a single batch
+    call. Returns views, clicks, and click-through rate per profile, sorted by views descending. Profiles
+    where analytics are unavailable have null values. Call get_workspaces_for_user first to obtain the
+    workspaceUuid.
 - name: get_workspace_members
-  description: Retrieve the members of a workspace.
-  scope: mcp:get_workspace_members
+  summary: Retrieve the members of a workspace.
   access: read
   approval: none
   identity_scope: user
+  parameters:
+  - limit
+  - page
+  - workspaceId
+  - workspaceUuid
+  description: Retrieve the members of a workspace. Returns workspace-user ids plus user ids, uuids, name,
+    profile picture, and role for each member, plus pageInfo. Returns one page at a time.
 - name: get_links
-  description: Retrieve the ordered links on a Linktree profile, including link-app metadata.
-  scope: mcp:get_links
+  summary: Retrieve the ordered links on a Linktree profile, including link-app metadata.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - ids
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: 'Retrieve the ordered links on a Linktree profile. When ids are omitted, returns the full
+    ordered links list and shop products. When a link has linkapp-specific metadata (e.g. Maps place data,
+    YouTube/Spotify embed settings, Commerce product IDs, Chatbot external URLs), it is returned under
+    a "linkapp" field. Oversize data blobs are sliced to the first 6KB and flagged with "truncated": true.
+    If the…'
 - name: add_link
-  description: Add a new URL-backed link to a Linktree profile.
-  scope: mcp:add_link
+  summary: Add a new URL-backed link to a Linktree profile.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - url
+  - active
+  - ifNotExists
+  - linkType
+  - position
+  - profileUrl
+  - query
+  - title
+  - username
+  - workspaceUuid
+  description: 'Add a new URL-backed link to a Linktree profile. Supports optional title, link type, active
+    state, target position, and duplicate suppression. The result may include needsLinkTypeChoice: true;
+    if so, present its options to the creator and call add_link again with their selected linkType. It
+    may include needsSetup: true; if so, relay the warning and editUrl so the creator can finish setup
+    in the ed…'
 - name: create_collection
-  description: Create a new empty collection on a Linktree profile.
-  scope: mcp:create_collection
+  summary: Create a new empty collection on a Linktree profile.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - title
+  - position
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Create a new empty collection on a Linktree profile. Use add_links_to_collection to put
+    links inside it. If the caller has multiple accessible profiles and no active profile is set, this
+    returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: add_links_to_collection
-  description: Move existing top-level links into a collection on a Linktree profile.
-  scope: mcp:add_links_to_collection
+  summary: Move existing top-level links into a collection on a Linktree profile.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - collectionId
+  - linkIds
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Move existing top-level links into a collection on a Linktree profile (which may be newly
+    created or already exist). Call get_links first to find the collection ID and link IDs. If the caller
+    has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response
+    with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: update_link
-  description: Update an existing link or collection on a Linktree profile (title, URL, or active state).
-  scope: mcp:update_link
+  summary: Update an existing link or collection on a Linktree profile (title, URL, or active state).
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - id
+  - active
+  - profileUrl
+  - query
+  - title
+  - url
+  - username
+  - workspaceUuid
+  description: Update an existing link or collection on a Linktree profile. Works on top-level links,
+    links inside a collection, and the collection itself. Supports sparse updates to title, URL, and active
+    state; collections do not support URL updates. If the caller has multiple accessible profiles and
+    no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile`
+    o…
 - name: reorder_link
-  description: Reorder a top-level link, collection, or collection item on a Linktree profile.
-  scope: mcp:reorder_link
+  summary: Reorder a top-level link, collection, or collection item on a Linktree profile.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - id
+  - down
+  - profileUrl
+  - query
+  - to
+  - up
+  - username
+  - workspaceUuid
+  description: Reorder a top-level link, collection, or collection item on a Linktree profile. Provide
+    exactly one of to, up, or down. If the caller has multiple accessible profiles and no active profile
+    is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once,
+    or pass `username`/`profileUrl`.
 - name: delete_link
-  description: Delete a top-level link from a Linktree profile.
-  scope: mcp:delete_link
+  summary: Delete a link from a Linktree profile, including a link inside a collection.
   access: destructive
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - id
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Delete a link from a Linktree profile, including a link inside a collection. Collections
+    and headers are not deleted by this tool. If the caller has multiple accessible profiles and no active
+    profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile`
+    once, or pass `username`/`profileUrl`.
 - name: get_link_analytics
-  description: Retrieve analytics for a specific link on a Linktree profile (clicks, views, CTR, trend
-    data).
-  scope: mcp:get_link_analytics
+  summary: Retrieve analytics for a specific link on a Linktree profile (clicks, views, CTR, trend data).
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - linkId
+  - endDate
+  - profileUrl
+  - query
+  - startDate
+  - timezone
+  - username
+  - workspaceUuid
+  description: Retrieve analytics for a specific link on a Linktree profile, including clicks, views,
+    CTR, and trend data. If the caller has multiple accessible profiles and no active profile is set,
+    this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass
+    `username`/`profileUrl`.
 - name: get_social_links
-  description: Retrieve a Linktree profile's social icon links and their display order.
-  scope: mcp:get_social_links
+  summary: Retrieve a Linktree profile's social icon links and their display order.
   access: read
   approval: none
   identity_scope: user_or_account
+  parameters:
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Retrieve a Linktree profile's social icon links and their display order. If the caller
+    has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response
+    with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: upsert_social_link
-  description: Create or update a social icon link on a Linktree profile for a supported platform.
-  scope: mcp:upsert_social_link
+  summary: Create or update a social icon link on a Linktree profile for a supported platform.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - type
+  - url
+  - active
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Create or update a social icon link on a Linktree profile for a supported platform. If
+    the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED
+    response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: reorder_social_links
-  description: Move a social icon link to a new position on a Linktree profile.
-  scope: mcp:reorder_social_links
+  summary: Move a social icon link to a new position on a Linktree profile.
   access: write
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - type
+  - down
+  - profileUrl
+  - query
+  - to
+  - up
+  - username
+  - workspaceUuid
+  description: Move a social icon link to a new position on a Linktree profile. Provide exactly one of
+    to, up, or down. If the caller has multiple accessible profiles and no active profile is set, this
+    returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 - name: delete_social_link
-  description: Delete a social icon link from a Linktree profile by platform type.
-  scope: mcp:delete_social_link
+  summary: Delete a social icon link from a Linktree profile by platform type.
   access: destructive
   approval: required
   identity_scope: user_or_account
+  parameters:
+  - type
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Delete a social icon link from a Linktree profile by platform type. If the caller has multiple
+    accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates.
+    Call `set_active_profile` once, or pass `username`/`profileUrl`.
+- name: get_conversations
+  summary: List the conversations in a Linktree profile's messages inbox.
+  access: read
+  approval: none
+  identity_scope: user_or_account
+  parameters:
+  - cursor
+  - limit
+  - profileUrl
+  - query
+  - unreadOnly
+  - username
+  - workspaceUuid
+  description: List the conversations in a Linktree profile's messages inbox, most recent first. Use unreadOnly
+    to find new messages, then call get_messages for each conversation. Reading does not mark conversations
+    as read. If the caller has multiple accessible profiles and no active profile is set, this returns
+    a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`pro…
+- name: get_messages
+  summary: Read the most recent messages in one inbox conversation.
+  access: read
+  approval: none
+  identity_scope: user_or_account
+  parameters:
+  - conversationId
+  - before
+  - limit
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Read the most recent messages in one conversation, oldest to newest. Message text is the
+    follower's raw text. Pass nextCursor as before to read older messages. If the caller has multiple
+    accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates.
+    Call `set_active_profile` once, or pass `username`/`profileUrl`.
+- name: send_message
+  summary: Reply as the creator in a conversation the follower started.
+  access: write
+  approval: required
+  identity_scope: user_or_account
+  parameters:
+  - conversationId
+  - text
+  - profileUrl
+  - query
+  - username
+  - workspaceUuid
+  description: Send a reply as the creator in an existing conversation. Calling this sends the message
+    immediately, so draft the reply with the user first. Only works in conversations where the follower
+    has already messaged the creator. If the caller has multiple accessible profiles and no active profile
+    is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once,
+    or pass `us…
 deployment:
   mode: remote
   endpoint: https://mcp.linktr.ee/mcp
   verified: probed
   probe: gated
-  checked: '2026-08-12'
-  source: catalog MCP census
+  checked: '2026-10-20'
+  source: https://mcp.linktr.ee/.well-known/mcp/tools.json
+  auth: oauth
+  probe_result: POST initialize to https://mcp.linktr.ee/mcp returned HTTP 401 {"message":"Access token
+    required"}
 additional_servers:
 - name: Arbor MCP
   mode: local-stdio
@@ -259,3 +638,8 @@ rfc9728:
     bearer_methods_supported:
     - header
     resource_documentation: https://mcp.linktr.ee/docs
+tools_note: 'Tool list is the provider-published manifest at mcp.linktr.ee/.well-known/mcp/tools.json
+  (36 tools, 2026-10-20; was 30 on 2026-07-19). tools/list was not called: the endpoint requires an OAuth
+  token.'
+descriptions_source: live tools/list (authorship probe or saved capture); filled by backfill-tools-from-authorship.py
+  --descriptions, 2026-09-28

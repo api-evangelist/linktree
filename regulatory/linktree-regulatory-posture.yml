@@ -1,0 +1,100 @@
+generated: '2026-10-20'
+method: searched
+probe: true
+source:
+- https://linktr.ee/s/privacy
+- https://linktr.ee/s/terms
+- https://linktr.ee/trust/report
+- https://linktr.ee/transparency-report
+- https://linktr.ee/transparency-report/january-june-2024
+signals:
+  data_subject_request:
+    url: https://linktr.ee/about/dsar-form
+    section: What are your rights in relation to personal information?
+    note: The Privacy Notice sends access, correction, deletion, restriction and portability requests to a Data Request Form at /about/dsar-form (page returned 200 on 2026-10-20 and loads the form client-side). No API is documented.
+    evidence:
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'You can use our Data Request Form to: Access, correct, update or request deletion of your personal information. Object to or restrict how we process your personal information. Request portability of your personal information.'
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'To exercise your rights, you can contact us: By email at privacy@linktr.ee By visiting this page on our website: linktr.ee/help By completing our Data Request Form .'
+  global_privacy_control:
+    honored: true
+    url: https://linktr.ee/s/privacy
+    section: 6. Opt Out Preference Signal
+    note: A published statement that the website treats a GPC signal as a valid opt-out request. This is the provider's statement, not a header test.
+    evidence:
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'The Website recognizes the Global Privacy Control (“GPC”) signal. If you are using a browser setting or plug-in that sends an opt-out preference signal to each website you visit, we will treat that as a valid request to opt out.'
+  age_assurance:
+    url: https://linktr.ee/s/privacy
+    section: Age Assurance Information
+    note: The Terms set jurisdictional minimum ages and 18+ features. The Privacy Notice names Yoti as its age assurance provider, using selfie-based age estimation.
+    evidence:
+    - source: https://linktr.ee/s/terms
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'To create an account and become a Linktree user, you must meet the minimum age requirements in your jurisdiction. Certain features and services are intended for users who are 18 years of age and older.'
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'In certain circumstances, we may require you to verify your age in order to access specific features, content, or monetisation tools on the Platform, or to comply with legal requirements.'
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'One available method may involve the analysis of a selfie image or live camera capture by our age assurance provider, Yoti.'
+  ai_transparency:
+    url: https://linktr.ee/s/terms
+    section: 14. Generative AI
+    note: The Terms disclose AI features, warn about the reliability of their output, and say Inputs and Output may be shared with AI model providers. This is a terms-of-use disclosure, not a separate AI transparency page.
+    evidence:
+    - source: https://linktr.ee/s/terms
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'Linktree may offer artificial intelligence features ("AI Features") that generate outputs ("Output") from information you or others provide and/or information available through Linktree or third parties ("Input"). Output may be inaccurate, incomplete, misleading, offensive, or unsuitable'
+    - source: https://linktr.ee/s/terms
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'To provide and support AI Features, we may process and store Inputs and Output (including conversation history) and share them with service providers (including AI model providers)'
+  notice_and_action:
+    url: https://linktr.ee/trust/report
+    section: Report a Safety Violation
+    note: A public reporting route for content that may violate the Community Standards or Terms, with a separate appeal route for account decisions.
+    evidence:
+    - source: https://linktr.ee/trust/report
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'If you encounter content on Linktree that might violate our Community Standards or Terms and Conditions , please use the button below to start a report. We take abuse reports very seriously, review all requests, and take action as necessary.'
+  transparency_report:
+    url: https://linktr.ee/transparency-report
+    note: The hub lists twice-yearly reports (Jan-Jun 2024 through Jul-Dec 2025). The first edition cites the Digital Services Act.
+    evidence:
+    - source: https://linktr.ee/transparency-report
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'Our latest global transparency report covers the second half of 2025, from July through December.'
+    - source: https://linktr.ee/transparency-report/january-june-2024
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'This is the first edition of our Transparency Report, which provides insight into our content moderation efforts over a six-month period (Jan - June 2024) and reaffirms our commitment to safety, transparency, and compliance with the Digital Services Act .'
+  data_retention:
+    url: https://linktr.ee/s/privacy
+    section: How long do we retain your personal information?
+    note: Purpose-bound retention, with no fixed period for user data. The only stated period is two years for unsuccessful job applicants.
+    evidence:
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'We will retain your personal information for the period necessary to fulfill the purposes outlined in this Privacy Notice and in accordance with applicable legal and regulatory requirements in respect of permitted or required retention periods and limitation periods relevant to legal action.'
+    - source: https://linktr.ee/s/privacy
+      http_status: 200
+      fetched: '2026-10-20'
+      quote: 'If your application is unsuccessful, we may retain your information on file for a maximum of two years for consideration in future opportunities.'
+not_recorded:
+  subprocessors: 'The Terms say "Additionally, our Privacy Notice includes a list of our subprocessors." but the Privacy Notice fetched 2026-10-20 has no subprocessor list under that name. It only names individual processors in passing (Stripe, PayPal, Square, Gem, Yoti, OpenAI), so no Subprocessors signal is recorded.'
+  data_residency: 'The Privacy Notice says only that personal information "may be transferred to and processed in countries other than the country in which you are a resident". No residency commitment is made.'

@@ -3,10 +3,10 @@
 Manage Linktree profiles, links, appearance, and analytics via the Model Context Protocol.
 
 - **Endpoint:** `https://mcp.linktr.ee/mcp` (transport: `streamable-http`, protocol `2025-03-26`)
-- **Auth:** OAuth 2.0 (Descope). Each tool requires its own `mcp:<tool>` scope; discover the authorization server via [protected-resource metadata](https://mcp.linktr.ee/.well-known/oauth-protected-resource).
+- **Auth:** OAuth 2.0 (Descope); discover the authorization server via [protected-resource metadata](https://mcp.linktr.ee/.well-known/oauth-protected-resource). One grant covers every tool — request no `scope` (or only `offline_access` for a refresh token); per-tool scopes are not used.
 - **Machine-readable manifest:** [https://mcp.linktr.ee/.well-known/mcp/tools.json](https://mcp.linktr.ee/.well-known/mcp/tools.json) · **llms.txt:** [https://mcp.linktr.ee/llms.txt](https://mcp.linktr.ee/llms.txt)
 
-This server exposes **30 tools**. Tools tagged _approval required_ perform writes/deletes and set the `x-linktree-require-approval` hint so clients can prompt the user first.
+This server exposes **36 tools**. Tools tagged _approval required_ perform writes/deletes and set the `x-linktree-require-approval` hint so clients can prompt the user first.
 
 ## Profile targeting
 
@@ -14,11 +14,24 @@ Most tools accept optional `username`, `profileUrl`, `query`, and `workspaceUuid
 
 ## Tools
 
+### `get_profile_sharing_guidance`
+
+Get the selected Linktree profile URL and guidance for putting it in a social bio or website field. Use when the creator asks how to share their Linktree or, after a successful link update, when bio placement is relevant to their stated traffic goal. Sharing means adding the Linktree profile URL to the social profile, not drafting captions or posts. This tool does not edit social profiles or verify bio placement. Do not claim the URL has been added. If the creator already has the correct URL in their bio, no change is needed. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+
+- **Access:** read · **Approval:** none · **Identity:** user_or_account
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `platform` | instagram | tiktok | youtube | facebook | x | linkedin | other | no | The social platform where the creator wants to put their Linktree profile URL in their bio or website field. |
+| `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
+| `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
+| `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
+| `workspaceUuid` | string | no | Optional workspace UUID to narrow discovery before resolving the target profile. |
+
 ### `list_accessible_profiles`
 
 Retrieve every Linktree profile the authenticated user can access across direct accounts and workspaces. Pass setActive: true only when the filters resolve to exactly one profile; otherwise call set_active_profile with a username from the returned candidates.
 
-- **Scope:** `mcp:list_accessible_profiles`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 | Parameter | Type | Required | Description |
@@ -35,7 +48,6 @@ Retrieve every Linktree profile the authenticated user can access across direct 
 
 Set the active Linktree profile for the current conversation. Use this once after a PROFILE_REQUIRED response, or pass username/profileUrl directly on individual profile-specific calls.
 
-- **Scope:** `mcp:set_active_profile`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 | Parameter | Type | Required | Description |
@@ -49,7 +61,6 @@ Set the active Linktree profile for the current conversation. Use this once afte
 
 Retrieve a Linktree profile's details (display name, bio, avatar, username). If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_account`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -63,7 +74,6 @@ Retrieve a Linktree profile's details (display name, bio, avatar, username). If 
 
 Update a Linktree profile's display name and/or bio. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:update_account_profile`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -81,7 +91,6 @@ Update a Linktree profile's display name and/or bio. If the caller has multiple 
 
 Retrieve a suggested bio for a Linktree profile based on its existing content. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_suggested_bio`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -97,7 +106,6 @@ Retrieve a suggested bio for a Linktree profile based on its existing content. I
 
 Retrieve account-level analytics for a Linktree profile, including views, clicks, CTR, and optional breakdowns. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_account_analytics`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -119,7 +127,6 @@ Retrieve account-level analytics for a Linktree profile, including views, clicks
 - View Custom Date Ranges: Free accounts are limited to the SDK free-plan analytics date range.
 - Device-Based Analytics: includeDevices requests device-based analytics.
 - Location-Based Analytics: includeLocations requests location-based analytics.
-- Referrer-Based Analytics: includeReferrers requests traffic source analytics.
 - Individual Link Analytics: includeLinks requests individual link analytics.
 - Audience - Linktree Subscribe: includeSubscribers requests subscriber data.
 
@@ -127,7 +134,6 @@ Retrieve account-level analytics for a Linktree profile, including views, clicks
 
 Retrieve lifetime analytics totals for a Linktree profile, including views, clicks, CTR, and earnings. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_analytics_lifetime_totals`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -141,7 +147,6 @@ Retrieve lifetime analytics totals for a Linktree profile, including views, clic
 
 Retrieve click counts for all links on a Linktree profile, including links with zero clicks, ranked by performance. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_top_links`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -155,7 +160,6 @@ Retrieve click counts for all links on a Linktree profile, including links with 
 
 Retrieve profile views for a Linktree profile over a recent time window. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_profile_views`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -174,7 +178,6 @@ Retrieve profile views for a Linktree profile over a recent time window. If the 
 
 Retrieve the active social integrations connected to a Linktree profile. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_social_integrations`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -188,7 +191,6 @@ Retrieve the active social integrations connected to a Linktree profile. If the 
 
 Retrieve a Linktree profile's appearance settings, including colors, fonts, button styles, and background. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_appearance`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -202,20 +204,19 @@ Retrieve a Linktree profile's appearance settings, including colors, fonts, butt
 
 Update a Linktree profile's appearance, including colors, fonts, button styles, and background styling. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:update_appearance`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `backgroundColor` | string | no | Background color of the page as a 6-digit hex color code. |
-| `backgroundGradientStyle` | GREEN | NOIR | ORANGE | PINK | RAINBOW | CUSTOM | no | Gradient style to use when the background style is GRADIENTANIMATED or GRADIENTSTILL. |
-| `backgroundStyle` | string | no | Background style for the profile. |
-| `buttonCornerStyleType` | SHARP | CURVED | ROUND | no | Button corner style type (SHARP, CURVED, or ROUND). |
-| `buttonShadowStyleType` | SOFT | HARD | NONE | no | Button shadow style type (SOFT, HARD, or NONE). |
+| `backgroundGradientStyle` | string | no | Preset gradient to use when the background style is GRADIENTSTILL or GRADIENTANIMATED: GREEN, NOIR, ORANGE, PINK, RAINBOW, BLOOM, TWILIGHT, RISE, or GLOW. CUSTOM builds the gradient from the background color instead. |
+| `backgroundStyle` | string | no | Background style for the profile: FLAT (solid color), BLUR, COLORUP, COLORDOWN, or GRADIENTRADIAL (gradients built from the background color), GRADIENTSTILL or GRADIENTANIMATED (preset gradients, chosen with backgroundGradientStyle), or the GRID, MORPH, ORGANIC, or MATRIX patterns. |
+| `buttonCornerStyleType` | SHARP | CURVED | ROUND | ROUNDED_NONE | ROUNDED_SM | ROUNDED_LG | ROUNDED_FULL | no | Button corner style: ROUNDED_NONE (square), ROUNDED_SM, ROUNDED_LG, or ROUNDED_FULL (pill). The older SHARP, CURVED, and ROUND are still accepted and match ROUNDED_NONE, ROUNDED_LG, and ROUNDED_FULL. |
+| `buttonShadowStyleType` | SOFT | HARD | NONE | SHADOW_NONE | SHADOW_SM | SHADOW_LG | SHADOW_FULL | no | Button shadow style: SHADOW_NONE, SHADOW_SM, SHADOW_LG, or SHADOW_FULL. The older NONE, SOFT, and HARD are still accepted and match SHADOW_NONE, SHADOW_SM, and SHADOW_FULL. |
 | `buttonStyleType` | FILL | OUTLINE | GLASS | no | Button style type (FILL, OUTLINE, or GLASS). |
 | `fontStyle` | string | no | Body font for the page text. Must be one of the supported fonts (use the exact name): Albert Sans, Belanosima, Bricolage Grotesque, DM Sans, Epilogue, IBM Plex Sans, Inter, Lato, Link Sans, M Plus Rounded, Manrope, Oxanium, Poppins, Red Hat Display, Roboto, Rubik, Space Grotesk, Syne, BioRhyme, Bitter, Caudex, Corben, Domine, Hahmlet, IBM Plex Serif, Lora, Merriweather, Noto Serif, Old Standard TT, PT Serif, Playfair Display, Roboto Serif, Roboto Slab, Source Serif Pro, IBM Plex Mono, Space Mono, Shantell Sans. Do not invent fonts — values outside this list are ignored. |
 | `headingFont` | string | no | Heading font for the page text. Must be one of the supported fonts (use the exact name): Alfa Slab One, Anton, Belanosima, BioRhyme, Black Sansa, Chango, Chillax, Domine, Fustat, Gasoek One, IBM Plex Sans, Kavivanar, Link Sans, Manrope, Misto, Monofett, Old Standard TT, Oxanium, Playfair Display, Poppins, Roboto, Roboto Slab, Salsa, Sonder, Space Mono, Summer Glow, Viaoda Libre, Wagon, Albert Sans, Bricolage Grotesque, DM Sans, Epilogue, Inter, Lato, M Plus Rounded, Red Hat Display, Rubik, Space Grotesk, Syne, Bitter, Caudex, Corben, Hahmlet, IBM Plex Serif, Lora, Merriweather, Noto Serif, PT Serif, Roboto Serif, Source Serif Pro, IBM Plex Mono, Shantell Sans. Use "default" to match the body font. Do not invent fonts — values outside this list are ignored. |
-| `headingSize` | normal | large | no | Heading size for the page text. |
+| `headingSize` | normal | large | no | Heading size. Linktree sets it from the profile layout: hero → large, cutout/shape → extra large (not settable here), other layouts → normal. A size that doesn't match the layout is reported in unappliedFields. |
 | `heroMode` | boolean | no | Enable hero avatar mode for the profile. |
 | `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
 | `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
@@ -224,19 +225,15 @@ Update a Linktree profile's appearance, including colors, fonts, button styles, 
 
 **Free-plan limitations** (some options require a paid plan):
 
-- DesignHeroProfileImage: heroMode requests the hero profile image feature.
+- Header Layout - Hero: heroMode requests the hero header layout feature.
 - Gradients: Gradient background options require gradient background access.
 - Backgrounds: Pattern background options require background feature access.
-- Wallpaper Color: backgroundColor requests custom wallpaper color access.
-- Title Font Size: headingSize can request gated title font sizes.
-- Title Font: headingFont requests title font customization.
-- Fonts: fontStyle can request premium fonts.
+- Custom Title Font: headingFont requests title font customization.
 
 ### `get_knowledge_base`
 
 Retrieve a Linktree profile's knowledge base entries (business, product, policy, or FAQ information). If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_knowledge_base`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -251,11 +248,43 @@ Retrieve a Linktree profile's knowledge base entries (business, product, policy,
 
 - AI Chatbot: Creator knowledge entries are configured through the AI Chatbot feature.
 
+### `pull_recommendations`
+
+Use this tool whenever the creator asks for suggestions or ideas, or asks what to do, improve or change on their Linktree. If they mention a focus, pass it as `topic`. Retrieve up to three available recommendations for a Linktree profile. Treat each recommendation as input for reasoning, not as text to paste to the creator: understand what it changes, use public read tools such as get_links, get_account, get_appearance, get_social_links, and get_link_analytics for context when needed, explain it in your own words, and propose a concrete action. Only use write tools such as add_link, update_link, upsert_social_link, and update_appearance after the creator agrees. `items` is the same recommendations as unified items (id, status, headline, summary, why, facts, action); prefer it when present. Track the creator's decision on each item and always submit it afterward with submit_recommendation_feedback (dismiss_all if they are not interested in a recommendation). If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+
+- **Access:** read · **Approval:** none · **Identity:** user_or_account
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `limit` | number | no | Maximum number of recommendations to retrieve. Defaults to 3. |
+| `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
+| `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
+| `topic` | string | no | What the creator wants help with, in their words (e.g. 'grow my newsletter', 'sell more merch'). Omit for general suggestions. |
+| `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
+| `workspaceUuid` | string | no | Optional workspace UUID to narrow discovery before resolving the target profile. |
+
+### `submit_recommendation_feedback`
+
+Record the creator's decision on a recommendation returned by pull_recommendations. Always call it after the creator acts on or declines a pulled recommendation, including when they decline. Send one item per recommendation item you discussed, using the item ids and kinds from the recommendation, with outcome acted (adopted as suggested), acted_with_edits (adopted with changes) or dismissed. For acted items, set link_id to the id of the link you actually created or updated. Example: a recommendation suggests 5 products and the creator adds 2 and skips 3, so send 2 items with outcome acted, signal added_to_profile and the new link_id, plus 3 items with outcome dismissed and signal explicit_dismiss. If the creator is not interested in the recommendation at all, set dismiss_all to true (items may then be empty). Only tell the creator feedback was recorded when this tool confirms it. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+
+- **Access:** write · **Approval:** none · **Identity:** user_or_account
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `recommendation_id` | string | yes | Id of the recommendation returned by pull_recommendations. |
+| `recommendation_type` | string | yes | Type of the recommendation returned by pull_recommendations. |
+| `dismiss_all` | boolean | no | Set to true when the creator is not interested in this recommendation. |
+| `items` | object[] | no | One entry for each recommendation item the creator acted on or declined. |
+| `note` | string | no | Optional note about the creator’s decision. |
+| `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
+| `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
+| `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
+| `workspaceUuid` | string | no | Optional workspace UUID to narrow discovery before resolving the target profile. |
+
 ### `get_workspaces_for_user`
 
 Retrieve every workspace the authenticated user is a member of. Returns role, id, uuid, name, and avatarUrl for each workspace. Use the uuid from this response when calling other workspace tools.
 
-- **Scope:** `mcp:get_workspaces_for_user`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 No parameters.
@@ -264,7 +293,6 @@ No parameters.
 
 Retrieve details for a workspace the authenticated user belongs to, including the current user's role (OWNER, MANAGER, or MEMBER), id, uuid, name, and avatarUrl. Optionally pass a workspaceId to target a specific workspace; omit it to fetch the default workspace.
 
-- **Scope:** `mcp:get_workspace`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 | Parameter | Type | Required | Description |
@@ -276,7 +304,6 @@ Retrieve details for a workspace the authenticated user belongs to, including th
 
 Retrieve every Linktree profile belonging to a workspace. Returns ids, names, avatars, access types, owner/admin summaries, and pending transfer state for each profile. Fetches all pages automatically. Call get_workspaces_for_user first to obtain the workspaceUuid.
 
-- **Scope:** `mcp:get_workspace_profiles`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 | Parameter | Type | Required | Description |
@@ -288,7 +315,6 @@ Retrieve every Linktree profile belonging to a workspace. Returns ids, names, av
 
 Retrieve lifetime analytics for every Linktree profile in a workspace in a single batch call. Returns views, clicks, and click-through rate per profile, sorted by views descending. Profiles where analytics are unavailable have null values. Call get_workspaces_for_user first to obtain the workspaceUuid.
 
-- **Scope:** `mcp:get_workspace_profiles_analytics`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 | Parameter | Type | Required | Description |
@@ -300,7 +326,6 @@ Retrieve lifetime analytics for every Linktree profile in a workspace in a singl
 
 Retrieve the members of a workspace. Returns workspace-user ids plus user ids, uuids, name, profile picture, and role for each member, plus pageInfo. Returns one page at a time.
 
-- **Scope:** `mcp:get_workspace_members`
 - **Access:** read · **Approval:** none · **Identity:** user
 
 | Parameter | Type | Required | Description |
@@ -314,7 +339,6 @@ Retrieve the members of a workspace. Returns workspace-user ids plus user ids, u
 
 Retrieve the ordered links on a Linktree profile. When ids are omitted, returns the full ordered links list and shop products. When a link has linkapp-specific metadata (e.g. Maps place data, YouTube/Spotify embed settings, Commerce product IDs, Chatbot external URLs), it is returned under a "linkapp" field. Oversize data blobs are sliced to the first 6KB and flagged with "truncated": true. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_links`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -327,9 +351,8 @@ Retrieve the ordered links on a Linktree profile. When ids are omitted, returns 
 
 ### `add_link`
 
-Add a new URL-backed link to a Linktree profile. Supports optional title, link type, active state, target position, and duplicate suppression. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+Add a new URL-backed link to a Linktree profile. Supports optional title, link type, active state, target position, and duplicate suppression. The result may include needsLinkTypeChoice: true; if so, present its options to the creator and call add_link again with their selected linkType. It may include needsSetup: true; if so, relay the warning and editUrl so the creator can finish setup in the editor. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`. After a successful update, if putting their Linktree URL in a social bio is relevant to the creator's stated goal, get_profile_sharing_guidance can return the correct profile URL and placement steps; pass the same explicit username, profileUrl, query, or workspaceUuid target as the update, even if another profile is active or default. Do not repeat the suggestion if already completed or declined.
 
-- **Scope:** `mcp:add_link`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -337,7 +360,7 @@ Add a new URL-backed link to a Linktree profile. Supports optional title, link t
 | `url` | string | yes | The URL to add. |
 | `active` | boolean | no | Whether the link should be active immediately. Defaults to true. |
 | `ifNotExists` | boolean | no | If true, returns the existing link instead of creating a duplicate. |
-| `linkType` | string | no | Optional Linktree link type override. |
+| `linkType` | string | no | Optional Linktree link type override. In LinkCoach v2, if multiple types match, present the options and re-call with the creator’s choice. |
 | `position` | number | no | Optional target position for the link. |
 | `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
 | `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
@@ -358,7 +381,6 @@ Add a new URL-backed link to a Linktree profile. Supports optional title, link t
 
 Create a new empty collection on a Linktree profile. Use add_links_to_collection to put links inside it. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:create_collection`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -374,7 +396,6 @@ Create a new empty collection on a Linktree profile. Use add_links_to_collection
 
 Move existing top-level links into a collection on a Linktree profile (which may be newly created or already exist). Call get_links first to find the collection ID and link IDs. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:add_links_to_collection`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -388,9 +409,8 @@ Move existing top-level links into a collection on a Linktree profile (which may
 
 ### `update_link`
 
-Update an existing link or collection on a Linktree profile. Works on top-level links, links inside a collection, and the collection itself. Supports sparse updates to title, URL, and active state; collections do not support URL updates. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+Update an existing link or collection on a Linktree profile. Works on top-level links, links inside a collection, and the collection itself. Supports sparse updates to title, URL, and active state; collections do not support URL updates. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`. After a successful update, if putting their Linktree URL in a social bio is relevant to the creator's stated goal, get_profile_sharing_guidance can return the correct profile URL and placement steps; pass the same explicit username, profileUrl, query, or workspaceUuid target as the update, even if another profile is active or default. Do not repeat the suggestion if already completed or declined.
 
-- **Scope:** `mcp:update_link`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -408,7 +428,6 @@ Update an existing link or collection on a Linktree profile. Works on top-level 
 
 Reorder a top-level link, collection, or collection item on a Linktree profile. Provide exactly one of to, up, or down. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:reorder_link`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -424,9 +443,8 @@ Reorder a top-level link, collection, or collection item on a Linktree profile. 
 
 ### `delete_link`
 
-Delete a supported top-level link from a Linktree profile. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+Delete a link from a Linktree profile, including a link inside a collection. Collections and headers are not deleted by this tool. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:delete_link`
 - **Access:** destructive · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -441,7 +459,6 @@ Delete a supported top-level link from a Linktree profile. If the caller has mul
 
 Retrieve analytics for a specific link on a Linktree profile, including clicks, views, CTR, and trend data. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_link_analytics`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -464,7 +481,6 @@ Retrieve analytics for a specific link on a Linktree profile, including clicks, 
 
 Retrieve a Linktree profile's social icon links and their display order. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:get_social_links`
 - **Access:** read · **Approval:** none · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -478,7 +494,6 @@ Retrieve a Linktree profile's social icon links and their display order. If the 
 
 Create or update a social icon link on a Linktree profile for a supported platform. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:upsert_social_link`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -495,7 +510,6 @@ Create or update a social icon link on a Linktree profile for a supported platfo
 
 Move a social icon link to a new position on a Linktree profile. Provide exactly one of to, up, or down. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:reorder_social_links`
 - **Access:** write · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
@@ -513,12 +527,58 @@ Move a social icon link to a new position on a Linktree profile. Provide exactly
 
 Delete a social icon link from a Linktree profile by platform type. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
 
-- **Scope:** `mcp:delete_social_link`
 - **Access:** destructive · **Approval:** required · **Identity:** user_or_account
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `type` | string | yes | The social platform type to remove, for example INSTAGRAM or YOUTUBE. |
+| `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
+| `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
+| `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
+| `workspaceUuid` | string | no | Optional workspace UUID to narrow discovery before resolving the target profile. |
+
+### `get_conversations`
+
+List the conversations in a Linktree profile's messages inbox, most recent first. Use unreadOnly to find new messages, then call get_messages for each conversation. Reading does not mark conversations as read. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+
+- **Access:** read · **Approval:** none · **Identity:** user_or_account
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `cursor` | string | no | nextCursor from a previous get_conversations call, to fetch the next page. |
+| `limit` | number | no | Conversations to return. Defaults to 20, max 30. |
+| `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
+| `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
+| `unreadOnly` | boolean | no | Only return conversations with unread messages. |
+| `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
+| `workspaceUuid` | string | no | Optional workspace UUID to narrow discovery before resolving the target profile. |
+
+### `get_messages`
+
+Read the most recent messages in one conversation, oldest to newest. Message text is the follower's raw text. Pass nextCursor as before to read older messages. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+
+- **Access:** read · **Approval:** none · **Identity:** user_or_account
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `conversationId` | string | yes | The conversationId returned by get_conversations. |
+| `before` | string | no | nextCursor from a previous get_messages call, to fetch older messages. |
+| `limit` | number | no | Messages to return. Defaults to 100, max 100. |
+| `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
+| `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
+| `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
+| `workspaceUuid` | string | no | Optional workspace UUID to narrow discovery before resolving the target profile. |
+
+### `send_message`
+
+Send a reply as the creator in an existing conversation. Calling this sends the message immediately, so draft the reply with the user first. Only works in conversations where the follower has already messaged the creator. If the caller has multiple accessible profiles and no active profile is set, this returns a PROFILE_REQUIRED response with candidates. Call `set_active_profile` once, or pass `username`/`profileUrl`.
+
+- **Access:** write · **Approval:** required · **Identity:** user_or_account
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `conversationId` | string | yes | The conversationId returned by get_conversations. |
+| `text` | string | yes | The reply text to send, exactly as it should appear. |
 | `profileUrl` | string | no | Optional Linktree profile URL to target, such as https://linktr.ee/example. Preferred over free-text query for multi-profile users. |
 | `query` | string | no | Optional search query for discovery or disambiguation. Matches username, display name, or real name. |
 | `username` | string | no | Optional Linktree username to target, with or without a leading @. Preferred selector for multi-profile users. |
@@ -536,6 +596,9 @@ Errors are returned as an MCP tool result with `isError: true` and a single text
 | `UNAUTHORIZED` | The request is missing required identity/authorization headers or the token cannot act on the target. |
 | `RATE_LIMITED` | The caller exceeded the public MCP rate limit. Retry after backing off. |
 | `UPGRADE_REQUIRED` | The tool or requested option requires a paid Linktree plan. |
+| `PRODUCT_TITLE_READONLY` | The link displays the title of its linked Shop product, which link mutations cannot write. Rename the product in Shop instead. Nothing was changed. |
+| `FEATURED_LAYOUT_INELIGIBLE` | The link does not meet the featured layout prerequisites: a non-SVG image thumbnail that is not an icon, and no animation. Nothing was changed. |
+| `IMAGE_IMPORT_FAILED` | The image URL could not be copied into Linktree-hosted storage, so it was not used. Nothing was changed. Use a different, publicly reachable image URL. |
 | `UPSTREAM_ERROR` | A downstream Linktree service returned an error while handling the request. |
 | `UNEXPECTED_ERROR` | An unclassified error occurred. Safe to retry once; report if it persists. |
 

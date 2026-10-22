@@ -1,12 +1,10 @@
-# Cross-cutting conventions for the Linktree agentic (MCP) surface.
-generated: '2026-07-19'
+generated: '2026-10-20'
 method: searched
 source: https://mcp.linktr.ee/docs
 docs: https://mcp.linktr.ee/docs
 surface: mcp-only
 notes:
-  - Linktree publishes no public REST API. The only programmatic surface is the MCP server
-    at https://mcp.linktr.ee/mcp, so these conventions are MCP tool-call semantics, not HTTP semantics.
+- Linktree publishes no public REST API. The only programmatic surface is the MCP server at https://mcp.linktr.ee/mcp, so these conventions are MCP tool-call semantics, not HTTP semantics.
 authentication:
   style: oauth2-bearer
   provider: Descope
@@ -15,27 +13,33 @@ authentication:
   see: authentication/linktree-authentication.yml
 resource_targeting:
   name: profile targeting
-  params: [username, profileUrl, query, workspaceUuid]
+  params:
+  - username
+  - profileUrl
+  - query
+  - workspaceUuid
   active_profile:
     tool: set_active_profile
     behavior: persists the target profile for the rest of the conversation
   ambiguity_error: PROFILE_REQUIRED
-  note: >-
-    When the caller can access multiple profiles and none is active, tools return PROFILE_REQUIRED
-    with a candidates[] list and a nextAction hint rather than guessing a target.
+  note: When the caller can access multiple profiles and none is active, tools return PROFILE_REQUIRED with a candidates[] list and a nextAction hint rather than guessing a target.
 pagination:
   style: page-number
-  params: [page, limit]
+  params:
+  - page
+  - limit
   defaults:
     page: 1
     limit: 100
   all_pages_param: allPages
-  observed_on: [list_accessible_profiles]
+  observed_on:
+  - list_accessible_profiles
 idempotency:
+  coverage: none
   supported: false
-  evidence: >-
-    No idempotency key, request-id, or de-duplication contract is documented in the published
-    MCP tool reference or tool manifest.
+  evidence: 'No idempotency key, request-id, or de-duplication contract is documented in the published MCP tool reference or tool manifest. Re-checked 2026-10-20 against tools.json (36 tools: 23 read, 11
+    write, 2 destructive): no idempotency key or replay protection on any write tool.'
+  source: https://mcp.linktr.ee/.well-known/mcp/tools.json
 approval:
   supported: true
   hint_header: x-linktree-require-approval
@@ -44,7 +48,9 @@ approval:
   see: agentic-access/linktree-agentic-access.yml
 error_envelope:
   style: mcp-tool-result
-  fields: [error, message]
+  fields:
+  - error
+  - message
   is_error_flag: isError
   see: errors/linktree-error-codes.yml
 rate_limiting:
@@ -60,11 +66,43 @@ entitlements:
   model: plan-gated options
   signal: UPGRADE_REQUIRED error code
   field: freeAccountLimitations (per tool, in the tool manifest)
-  note: >-
-    Several analytics options (device, location, referrer, per-link, subscriber breakdowns and
-    custom date ranges) require a paid Linktree plan.
+  note: Several analytics options (device, location, referrer, per-link, subscriber breakdowns and custom date ranges) require a paid Linktree plan.
 versioning:
   mcp_protocol_version: '2025-03-26'
-  server_version: '0.1.0'
+  server_version: 0.1.0
   scheme: MCP protocol date + server semver
   note: server card advertises protocol 2025-06-18 while the tool reference states 2025-03-26.
+reversibility:
+  source: https://mcp.linktr.ee/.well-known/mcp/tools.json
+  docs: https://mcp.linktr.ee/docs
+  summary: 'No undo, restore or trash operation is published; no reversal window is stated anywhere. Destructive tools (delete_link, delete_social_link) are marked access: destructive with approval: required.'
+  surfaces:
+  - write: add_link
+    reversal: delete_link
+    grade: documented
+    window: null
+    note: Inverse operation exists; no window stated.
+  - write: create_collection
+    reversal: null
+    grade: none
+    note: delete_link states "Collections and headers are not deleted by this tool"; no collection delete tool is published.
+  - write: upsert_social_link
+    reversal: delete_social_link
+    grade: documented
+    window: null
+  - write: delete_link
+    reversal: null
+    grade: none
+    note: 'No restore/undo tool; deletion is gated by approval: required instead.'
+  - write: delete_social_link
+    reversal: null
+    grade: none
+    note: Re-creatable via upsert_social_link, but no restore of the deleted record is documented.
+  - write: update_account_profile / update_appearance / update_link / reorder_link / reorder_social_links
+    reversal: null
+    grade: none
+    note: Can be overwritten by another update; no versioned rollback documented.
+  - write: send_message
+    reversal: null
+    grade: none
+    note: No recall/unsend documented.

@@ -1,0 +1,58 @@
+generated: '2026-10-20'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: fastly
+  name: Fastly
+  area: cdn
+  host: linktr.ee
+  evidence: header:x-served-by:cache-
+  signal: header
+  confidence: high
+  kin_score: []
+- vendor: github-pages
+  name: GitHub Pages
+  area: hosting
+  host: arbor.linktr.ee
+  evidence: cname:github.io
+  signal: cname
+  confidence: high
+  kin_score: []
+reliance:
+  areas_vendor_served:
+  - cdn
+  - hosting
+  vendor_count: 2
+  areas_observed: 12
+  share_of_observable_areas: 0.167
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: custom'
+- linktr.ee (Website)
+- linktr.ee (DeveloperPortal)
+- mcp.linktr.ee (Documentation)
+- mcp.linktr.ee (APIReference)
+- status.linktr.ee (StatusPage)
+- linktr.ee (GettingStarted)
+- linktr.ee (Support)
+- linktr.ee (HelpCenter)
+- linktr.ee (SignUp)
+- linktr.ee (Login)
+- mcp.linktr.ee (baseURL)
+- arbor.linktr.ee (baseURL)
+- mcp.linktr.ee (mcp)

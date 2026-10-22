@@ -1,5 +1,4 @@
-# Linktree MCP error catalog — the published tool-result error contract.
-generated: '2026-07-19'
+generated: '2026-10-20'
 method: searched
 source: https://mcp.linktr.ee/.well-known/mcp/tools.json
 docs: https://mcp.linktr.ee/docs#error-contract
@@ -7,27 +6,38 @@ format: mcp-tool-result
 envelope:
   transport: MCP tool result with isError true
   body: single text content block containing JSON
-  fields: [error, message]
+  fields:
+  - error
+  - message
   extended_fields:
-    PROFILE_REQUIRED: [reason, candidates, nextAction]
+    PROFILE_REQUIRED:
+    - reason
+    - candidates
+    - nextAction
   note: not RFC 9457 — Linktree exposes no REST surface, so errors are MCP tool-result envelopes.
 problems:
-  - code: PROFILE_REQUIRED
-    title: "The caller has multiple accessible profiles (or none selected) and must choose one. The envelope includes `candidates` and a `nextAction`."
-  - code: NOT_FOUND
-    title: "A referenced resource (link, collection, integration, account) does not exist."
-  - code: INVALID_INPUT
-    title: "A parameter was missing, empty, or invalid for the requested operation."
-  - code: UNAUTHORIZED
-    title: "The request is missing required identity/authorization headers or the token cannot act on the target."
-  - code: RATE_LIMITED
-    title: "The caller exceeded the public MCP rate limit. Retry after backing off."
-  - code: UPGRADE_REQUIRED
-    title: "The tool or requested option requires a paid Linktree plan."
-  - code: UPSTREAM_ERROR
-    title: "A downstream Linktree service returned an error while handling the request."
-  - code: UNEXPECTED_ERROR
-    title: "An unclassified error occurred. Safe to retry once; report if it persists."
+- code: PROFILE_REQUIRED
+  title: The caller has multiple accessible profiles (or none selected) and must choose one. The envelope includes `candidates` and a `nextAction`.
+- code: NOT_FOUND
+  title: A referenced resource (link, collection, integration, account) does not exist.
+- code: INVALID_INPUT
+  title: A parameter was missing, empty, or invalid for the requested operation.
+- code: UNAUTHORIZED
+  title: The request is missing required identity/authorization headers or the token cannot act on the target.
+- code: RATE_LIMITED
+  title: The caller exceeded the public MCP rate limit. Retry after backing off.
+- code: UPGRADE_REQUIRED
+  title: The tool or requested option requires a paid Linktree plan.
+- code: UPSTREAM_ERROR
+  title: A downstream Linktree service returned an error while handling the request.
+- code: UNEXPECTED_ERROR
+  title: An unclassified error occurred. Safe to retry once; report if it persists.
+- code: PRODUCT_TITLE_READONLY
+  title: The link displays the title of its linked Shop product, which link mutations cannot write. Rename the product in Shop instead. Nothing was changed.
+- code: FEATURED_LAYOUT_INELIGIBLE
+  title: 'The link does not meet the featured layout prerequisites: a non-SVG image thumbnail that is not an icon, and no animation. Nothing was changed.'
+- code: IMAGE_IMPORT_FAILED
+  title: The image URL could not be copied into Linktree-hosted storage, so it was not used. Nothing was changed. Use a different, publicly reachable image URL.
 retry_guidance:
   RATE_LIMITED: back off and retry
   UNEXPECTED_ERROR: safe to retry once, then report
