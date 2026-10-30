@@ -64,6 +64,134 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Linktree is a company surfaced as a portfolio company of index-ventures, insight-partners and added to the API Evangelist network as a stub for enrichment. Sector: media. This profile is a lead awaiting the enrichment pipeline.
+Linktree is the link-in-bio platform used by 70M+ creators, brands, and businesses to share everything they create, curate, and sell from a single URL. Operated by Linktree Pty Ltd from Collingwood, Victoria, Australia, the product builds a mobile-friendly landing page that aggregates social profiles, content, products, and services behind one link, with paid Starter, Pro, and Premium plans adding customization, analytics, commerce, scheduling, and AI features. Linktree publishes no general-purpose public REST API — its developer program is an expression-of-interest waitlist for forthcoming APIs and SDKs. It documents a LinkApp SDK for building custom LinkApps at docs.linktr.ee, and it does, however, run a live, fully documented OAuth 2.0-protected Model Context Protocol server at mcp.linktr.ee exposing 30 tools for managing profiles, links, collections, appearance, social icons, workspaces, and analytics, discoverable from an RFC 9727 api-catalog on the apex domain. Alongside it Linktree operates Arbor, a public unauthenticated component registry at arbor.linktr.ee serving a versioned JSON manifest of 51 React components plus a health endpoint and an llms.txt, and it ships first-party developer tooling on npm under the @linktr.ee scope — the LinkApps scaffold/build/deploy CLIs and a stdio Arbor MCP server.
 
-Backed by: index-ventures, insight-partners — http://www.linktr.ee
+**Areas:** Company · Media · Link in Bio · Creator Economy · Social Media · Marketing · Analytics · MCP · Agents · Developer Tools · Australia
+
+## Linktree on APIs.io
+
+Everything profiled for Linktree is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/linktree/](https://apis.io/providers/linktree/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Linktree MCP](https://apis.io/apis/linktree/linktree-mcp/) — OAuth 2.0-protected Model Context Protocol server, speaking streamable-http, that lets agents manage Linktree profiles, links, collections, appearance,…
+- [Linktree Arbor Registry](https://apis.io/apis/linktree/linktree-arbor-registry/) — Arbor is Linktree's design system, published as a public HTTP component registry. Anonymous, unauthenticated GETs return a versioned JSON manifest of 51…
+- [Linktree LinkApps SDK](https://apis.io/apis/linktree/linktree-linkapps-sdk/) — Developer documentation at docs.linktr.ee for building custom LinkApps, the embeddable apps that appear on Linktree profiles, using the @linktr.ee/linkapp…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Linktree MCP](https://apis.io/servers/linktree/linktree-mcp/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Linktree Agentic Access](https://apis.io/agentic-access/linktree/linktree-agentic-access/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Linktree Authentication](https://apis.io/security/linktree/linktree-authentication/)
+- [Linktree Domain Security](https://apis.io/security/linktree/linktree-domain-security/)
+- [Linktree Trust Center](https://apis.io/security/linktree/linktree-trust-center/)
+- [Linktree Vulnerability Disclosure](https://apis.io/security/linktree/linktree-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Linktree Scopes](https://apis.io/scopes/linktree/linktree-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Linktree Plans Pricing](https://apis.io/plans/linktree/linktree-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Linktree Rate Limits](https://apis.io/rate-limits/linktree/linktree-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://linktr.ee/)
+- [Documentation](https://mcp.linktr.ee/docs)
+- [Getting started](https://linktr.ee/help/en/collections/3020860-getting-started-with-linktree)
+- [API reference](https://mcp.linktr.ee/docs)
+- [Pricing](https://linktr.ee/s/pricing)
+- [Sign up](https://linktr.ee/register)
+- [Support](https://linktr.ee/help/en)
+- [Changelog](https://linktr.ee/whats-new)
+- [Blog](https://linktr.ee/blog)
+- [Security](https://bugcrowd.com/engagements/linktree-mbb-og)
+- [Compliance](https://linktr.ee/trust)
+- [Terms of service](https://linktr.ee/s/terms)
+- [Privacy policy](https://linktr.ee/s/privacy)
+- [GitHub](https://github.com/blstrco)
+- [Status](https://status.linktr.ee/)
+
+## API Evangelist rating
+
+**Kin Score 52.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 82.5 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 73.2 |
+| Access clarity | 92.1 |
+
+**Agent readiness 49.5** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | yes |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 45.1** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/linktree/](https://apis.io/providers/linktree/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Linktree: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/linktree/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
